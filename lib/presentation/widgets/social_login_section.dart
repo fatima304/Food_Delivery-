@@ -1,0 +1,54 @@
+import 'package:flutter/material.dart';
+import 'package:food_delivery/core/constants/app_colors.dart';
+import 'package:food_delivery/core/constants/app_images.dart';
+import 'package:food_delivery/core/style/app_text_styles.dart';
+
+class SocialLoginSection extends StatelessWidget {
+  const SocialLoginSection({super.key});
+  @override
+  Widget build(BuildContext context) => Column(
+    children: [
+      const Row(
+        children: [
+          Expanded(child: Divider(color: AppColors.dividerGrey)),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 14),
+            child: Text(
+              'Or continue with',
+              style: AppTextStyles.body14GreyRegular,
+            ),
+          ),
+          Expanded(child: Divider(color: AppColors.dividerGrey)),
+        ],
+      ),
+      const SizedBox(height: 24),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _SocialTile(img: AppImages.google),
+          const SizedBox(width: 12),
+          _SocialTile(img: AppImages.apple),
+          const SizedBox(width: 12),
+          _SocialTile(img: AppImages.facebook),
+        ],
+      ),
+    ],
+  );
+}
+
+class _SocialTile extends StatelessWidget {
+  const _SocialTile({required this.img});
+  final String img;
+  @override
+  Widget build(BuildContext context) => Expanded(
+    child: Container(
+      height: 56,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: AppColors.socialButtonBackground,
+        borderRadius: BorderRadius.circular(18),
+      ),
+      child: Image.asset(img, width: 24, height: 24),
+    ),
+  );
+}
