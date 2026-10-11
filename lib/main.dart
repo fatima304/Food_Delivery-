@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery/presentation/screens/onboarding_screen.dart';
+import 'package:food_delivery/presentation/screens/login_screen.dart';
 
 void main() => runApp(const FoodDeliveryApp());
 
@@ -11,7 +11,7 @@ class FoodDeliveryApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Food Delivery',
       theme: ThemeData(useMaterial3: true),
-      home: const OnboardingScreen(),
+      home: const LoginScreen(),
     );
   }
 }
