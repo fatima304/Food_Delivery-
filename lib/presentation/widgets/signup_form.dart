@@ -8,9 +8,13 @@ import 'package:food_delivery/presentation/widgets/custom_text_form_field.dart';
 import 'password_field.dart';
 
 class SignupForm extends StatefulWidget {
-  const SignupForm({super.key, required this.onValidSubmit});
-  final void Function(String name, String email, String phone, String password)
-  onValidSubmit;
+  const SignupForm({
+    super.key,
+    required this.onValidSubmit,
+    this.isLoading = false,
+  });
+  final void Function(String name, String email, String password) onValidSubmit;
+  final bool isLoading;
   @override
   State<SignupForm> createState() => _SignupFormState();
 }
@@ -18,13 +22,11 @@ class SignupForm extends StatefulWidget {
 class _SignupFormState extends State<SignupForm> {
   final key = GlobalKey<FormState>();
   final name = TextEditingController(), email = TextEditingController();
-  final phone = TextEditingController(),
-      password = TextEditingController(),
-      confirm = TextEditingController();
+  final password = TextEditingController(), confirm = TextEditingController();
   bool agreed = false;
   @override
   void dispose() {
-    for (final c in [name, email, phone, password, confirm]) {
+    for (final c in [name, email, password, confirm]) {
       c.dispose();
     }
     super.dispose();
@@ -50,6 +52,8 @@ class _SignupFormState extends State<SignupForm> {
           validator: AuthValidators.email,
         ),
         const SizedBox(height: 12),
+
+        const SizedBox(height: 12),
         PasswordField(controller: password),
         const SizedBox(height: 12),
         CustomTextFormField(
@@ -74,22 +78,25 @@ class _SignupFormState extends State<SignupForm> {
         ),
         const SizedBox(height: 20),
         CustomButton(
-          text: 'Create account',
-          onPressed: () {
-            if (!key.currentState!.validate()) return;
-            if (!agreed) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Please accept the terms first')),
-              );
-              return;
-            }
-            widget.onValidSubmit(
-              name.text.trim(),
-              email.text.trim(),
-              phone.text.trim(),
-              password.text,
-            );
-          },
+          text: widget.isLoading ? 'Creating account...' : 'Create account',
+          onPressed: widget.isLoading
+              ? null
+              : () {
+                  if (!key.currentState!.validate()) return;
+                  if (!agreed) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Please accept the terms first'),
+                      ),
+                    );
+                    return;
+                  }
+                  widget.onValidSubmit(
+                    name.text.trim(),
+                    email.text.trim(),
+                    password.text,
+                  );
+                },
         ),
       ],
     ),

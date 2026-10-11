@@ -30,8 +30,15 @@ class AuthCubit extends Cubit<AuthState> {
           return 'This user account has been disabled.';
         case 'too-many-requests':
           return 'Too many attempts. Please try again later.';
+        case 'invalid-credential':
+        case 'invalid-login-credentials':
+          return 'Incorrect email or password. Please try again.';
+        case 'network-request-failed':
+          return 'No internet connection. Check your connection and try again.';
+        case 'operation-not-allowed':
+          return 'Email sign-in is unavailable right now. Please contact support.';
         default:
-          return 'An authentication error occurred: ${error.message}';
+          return 'Unable to complete your request. Please try again.';
       }
     }
 
@@ -44,6 +51,7 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> login({required String email, required String password}) async {
+    if (state is AuthLoading) return;
     emit(AuthLoading());
 
     try {
@@ -60,6 +68,7 @@ class AuthCubit extends Cubit<AuthState> {
     required String email,
     required String password,
   }) async {
+    if (state is AuthLoading) return;
     emit(AuthLoading());
 
     try {
@@ -76,6 +85,8 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> logout() async {
+    if (state is AuthLoading) return;
+    emit(AuthLoading());
     try {
       await _authRepository.logout();
       // Emit AuthInitial to signal successful logout

@@ -21,7 +21,6 @@ class AuthService {
     required String email,
     required String password,
     String? fullName,
-    String phone = '',
   }) async {
     final userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
       email: email,
@@ -36,7 +35,7 @@ class AuthService {
     // Save user profile to Firestore
     if (userCredential.user != null) {
       try {
-        await _saveUserProfile(userCredential.user!.uid, fullName ?? '', email, phone);
+        await _saveUserProfile(userCredential.user!.uid, fullName ?? '', email);
       } on FirebaseException {
         // Auth account already exists; do not present this as a failed sign-up.
         // Retry profile sync separately once Firestore is available.
@@ -51,7 +50,6 @@ class AuthService {
     String uid,
     String fullName,
     String email,
-    String phone,
   ) async {
     final userDoc = _firestore.collection('users').doc(uid);
 
@@ -61,7 +59,6 @@ class AuthService {
       await userDoc.set({
         'fullName': fullName,
         'email': email,
-        'phone': phone,
         'createdAt': FieldValue.serverTimestamp(),
       });
     }

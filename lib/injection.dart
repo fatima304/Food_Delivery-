@@ -10,21 +10,14 @@ final getIt = GetIt.instance;
 
 void setupDependencies() {
   // Services
-   getIt.registerLazySingleton<FirestoreService>(
-    () => FirestoreService(),
-  );
+  getIt.registerLazySingleton<FirestoreService>(() => FirestoreService());
 
-  getIt.registerLazySingleton<AuthService>(
-    () => AuthService(),
-  );
+  getIt.registerLazySingleton<AuthService>(() => AuthService());
 
   // Authentication
   getIt.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(getIt<AuthService>()),
   );
 
-  getIt.registerFactory<AuthCubit>(
-    () => AuthCubit(getIt<AuthRepository>()),
-  );
-
+  getIt.registerFactory<AuthCubit>(() => AuthCubit(getIt<AuthRepository>()));
 }

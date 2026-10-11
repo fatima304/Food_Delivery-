@@ -7,8 +7,13 @@ import 'package:food_delivery/presentation/widgets/custom_text_form_field.dart';
 import 'password_field.dart';
 
 class LoginForm extends StatefulWidget {
-  const LoginForm({super.key, required this.onValidSubmit});
+  const LoginForm({
+    super.key,
+    required this.onValidSubmit,
+    this.isLoading = false,
+  });
   final void Function(String email, String password) onValidSubmit;
+  final bool isLoading;
   @override
   State<LoginForm> createState() => _LoginFormState();
 }
@@ -54,11 +59,13 @@ class _LoginFormState extends State<LoginForm> {
         ),
         const SizedBox(height: 34),
         CustomButton(
-          text: 'Sign In',
-          onPressed: () {
-            if (key.currentState!.validate())
-              widget.onValidSubmit(email.text.trim(), password.text);
-          },
+          text: widget.isLoading ? 'Signing in...' : 'Sign In',
+          onPressed: widget.isLoading
+              ? null
+              : () {
+                  if (key.currentState!.validate())
+                    widget.onValidSubmit(email.text.trim(), password.text);
+                },
         ),
       ],
     ),
