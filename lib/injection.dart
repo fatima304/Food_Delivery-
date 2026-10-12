@@ -1,3 +1,4 @@
+import 'package:food_delivery/presentation/blocs/cart_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:food_delivery/presentation/blocs/meal_details_cubit.dart';
 import 'package:dio/dio.dart';
@@ -16,6 +17,8 @@ import 'package:food_delivery/services/firestore_service.dart';
 final getIt = GetIt.instance;
 
 void setupDependencies() {
+  // Singleton: one cart instance for the whole authenticated app.
+  getIt.registerLazySingleton<CartBloc>(() => CartBloc());
   // Home (TheMealDB)
   getIt.registerLazySingleton<Dio>(
     () => Dio(

@@ -1,3 +1,6 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../blocs/cart_bloc.dart';
+import '../blocs/cart_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -47,8 +50,8 @@ class AppNav extends StatelessWidget {
           label: 'Explore',
         ),
         BottomNavigationBarItem(
-          icon: Icon(CupertinoIcons.cart),
-          activeIcon: Icon(CupertinoIcons.cart_fill),
+          icon: _CartBadge(icon: CupertinoIcons.cart),
+          activeIcon: _CartBadge(icon: CupertinoIcons.cart_fill),
           label: 'Cart',
         ),
         BottomNavigationBarItem(
@@ -64,4 +67,41 @@ class AppNav extends StatelessWidget {
       ],
     );
   }
+}
+
+class _CartBadge extends StatelessWidget {
+  const _CartBadge({required this.icon});
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) => BlocBuilder<CartBloc, CartState>(
+    builder: (context, state) => Stack(
+      clipBehavior: Clip.none,
+      children: [
+        Icon(icon),
+        if (state.count > 0)
+          Positioned(
+            top: -7,
+            right: -11,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+              constraints: const BoxConstraints(minWidth: 17, minHeight: 17),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.error,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                state.count > 99 ? '99+' : '${state.count}',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onError,
+                  fontSize: 9,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+      ],
+    ),
+  );
 }

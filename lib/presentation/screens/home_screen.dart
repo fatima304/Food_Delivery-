@@ -1,3 +1,5 @@
+import '../blocs/cart_bloc.dart';
+import '../blocs/cart_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -203,11 +205,10 @@ class _HomeContent extends StatelessWidget {
                       child: HomeMealCard(
                         meal: state.meals[i],
                         onAdd: (meal) {
+                          context.read<CartBloc>().add(CartAdd(meal));
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text(
-                                'Cart integration is coming next: ${meal.name}',
-                              ),
+                              content: Text('Added to cart: ${meal.name}'),
                               behavior: SnackBarBehavior.floating,
                               duration: const Duration(seconds: 2),
                             ),

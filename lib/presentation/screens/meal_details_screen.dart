@@ -1,3 +1,5 @@
+import '../blocs/cart_bloc.dart';
+import '../blocs/cart_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -405,19 +407,19 @@ class _MealDetailsContentState extends State<_MealDetailsContent> {
                                                 child: SizedBox(
                                                   height: 46,
                                                   child: ElevatedButton(
-                                                    onPressed: () =>
-                                                        ScaffoldMessenger.of(
-                                                          context,
-                                                        ).showSnackBar(
-                                                          const SnackBar(
-                                                            content: Text(
-                                                              'Cart integration is coming next.',
-                                                            ),
-                                                            behavior:
-                                                                SnackBarBehavior
-                                                                    .floating,
+                                                    onPressed: () {
+                                                      context.read<CartBloc>().add(
+                                                        CartAdd(meal, quantity: quantity),
+                                                      );
+                                                      ScaffoldMessenger.of(context).showSnackBar(
+                                                        SnackBar(
+                                                          content: Text(
+                                                            '$quantity x ${meal.name} added to cart',
                                                           ),
+                                                          behavior: SnackBarBehavior.floating,
                                                         ),
+                                                      );
+                                                    },
                                                     style: ElevatedButton.styleFrom(
                                                       backgroundColor: green,
                                                       foregroundColor:
