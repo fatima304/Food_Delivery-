@@ -1,6 +1,7 @@
 import 'package:food_delivery/l10n/app_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:food_delivery/core/style/app_theme.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/firebase_options.dart';
 import 'package:food_delivery/injection.dart';
@@ -24,10 +25,9 @@ class FoodDeliveryApp extends StatelessWidget {
       title: 'StreetBite',
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      theme: ThemeData(
-        useMaterial3: true,
-        colorSchemeSeed: const Color(0xFF08BF72),
-      ),
+      theme: AppTheme.light,
+      darkTheme: AppTheme.dark,
+      themeMode: ThemeMode.dark,
       home: const AuthGate(),
     ),
   );

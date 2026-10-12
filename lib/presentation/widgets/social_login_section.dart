@@ -11,15 +11,17 @@ class SocialLoginSection extends StatelessWidget {
     children: [
       Row(
         children: [
-          const Expanded(child: Divider(color: AppColors.dividerGrey)),
+          const Expanded(child: Divider()),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 14),
             child: Text(
               AppLocalizations.of(context)!.orContinueWith,
-              style: AppTextStyles.body14GreyRegular,
+              style: AppTextStyles.body14GreyRegular.copyWith(
+                color: Theme.of(context).textTheme.bodyMedium?.color,
+              ),
             ),
           ),
-          const Expanded(child: Divider(color: AppColors.dividerGrey)),
+          const Expanded(child: Divider()),
         ],
       ),
       const SizedBox(height: 24),
@@ -46,7 +48,7 @@ class _SocialTile extends StatelessWidget {
       height: 56,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: AppColors.socialButtonBackground,
+        color: Theme.of(context).colorScheme.surfaceContainerHigh,
         borderRadius: BorderRadius.circular(18),
       ),
       child: Image.asset(img, width: 24, height: 24),

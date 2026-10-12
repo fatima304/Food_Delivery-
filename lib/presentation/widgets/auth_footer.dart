@@ -14,10 +14,22 @@ class AuthFooter extends StatelessWidget {
   Widget build(BuildContext context) => Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      Flexible(child: Text(message, style: AppTextStyles.body14DarkRegular)),
+      Flexible(
+        child: Text(
+          message,
+          style: AppTextStyles.body14DarkRegular.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+        ),
+      ),
       TextButton(
         onPressed: onTap,
-        child: Text(action, style: AppTextStyles.link16GreenSemiBold),
+        child: Text(
+          action,
+          style: AppTextStyles.link16GreenSemiBold.copyWith(
+            color: Theme.of(context).colorScheme.primary,
+          ),
+        ),
       ),
     ],
   );

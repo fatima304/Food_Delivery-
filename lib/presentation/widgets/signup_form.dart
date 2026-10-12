@@ -76,12 +76,14 @@ class _SignupFormState extends State<SignupForm> {
         CheckboxListTile(
           value: agreed,
           onChanged: (v) => setState(() => agreed = v ?? false),
-          activeColor: AppColors.primaryGreen,
+          activeColor: Theme.of(context).colorScheme.primary,
           controlAffinity: ListTileControlAffinity.leading,
           contentPadding: EdgeInsets.zero,
           title: Text(
             AppLocalizations.of(context)!.termsAgreement,
-            style: AppTextStyles.body14DarkRegular,
+            style: AppTextStyles.body14DarkRegular.copyWith(
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
           ),
         ),
         const SizedBox(height: 20),

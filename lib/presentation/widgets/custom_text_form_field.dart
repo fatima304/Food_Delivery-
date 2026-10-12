@@ -35,16 +35,20 @@ class CustomTextFormField extends StatelessWidget {
     obscureText: obscureText,
     keyboardType: keyboardType,
     textInputAction: textInputAction,
-    style: AppTextStyles.input16DarkMedium,
+    style: AppTextStyles.input16DarkMedium.copyWith(
+      color: Theme.of(context).colorScheme.onSurface,
+    ),
     decoration: InputDecoration(
       hintText: hintText,
-      hintStyle: AppTextStyles.hint16GreyRegular,
+      hintStyle: AppTextStyles.hint16GreyRegular.copyWith(
+        color: Theme.of(context).inputDecorationTheme.hintStyle?.color,
+      ),
       prefixIcon: prefixIcon,
       suffixIcon: suffixIcon,
-      prefixIconColor: AppColors.iconGrey,
-      suffixIconColor: AppColors.iconGrey,
+      prefixIconColor: Theme.of(context).iconTheme.color,
+      suffixIconColor: Theme.of(context).iconTheme.color,
       filled: true,
-      fillColor: AppColors.fieldBackground,
+      fillColor: Theme.of(context).inputDecorationTheme.fillColor,
       contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(20),
@@ -56,16 +60,19 @@ class CustomTextFormField extends StatelessWidget {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(20),
-        borderSide: const BorderSide(color: AppColors.primaryGreen),
+        borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(20),
-        borderSide: const BorderSide(color: AppColors.error),
+        borderSide: BorderSide(color: Theme.of(context).colorScheme.error),
       ),
-      errorStyle: const TextStyle(color: AppColors.error, fontSize: 12),
+      errorStyle: TextStyle(
+        color: Theme.of(context).colorScheme.error,
+        fontSize: 12,
+      ),
       focusedErrorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(20),
-        borderSide: const BorderSide(color: AppColors.error),
+        borderSide: BorderSide(color: Theme.of(context).colorScheme.error),
       ),
     ),
   );

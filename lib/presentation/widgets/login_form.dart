@@ -56,7 +56,9 @@ class _LoginFormState extends State<LoginForm> {
             ),
             child: Text(
               AppLocalizations.of(context)!.forgotPassword,
-              style: AppTextStyles.link14GreenMedium,
+              style: AppTextStyles.link14GreenMedium.copyWith(
+                color: Theme.of(context).colorScheme.primary,
+              ),
             ),
           ),
         ),

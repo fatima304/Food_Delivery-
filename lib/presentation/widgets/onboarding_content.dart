@@ -30,18 +30,22 @@ class OnboardingContent extends StatelessWidget {
             AppLocalizations.of(context)!.onboardingTitle,
             style: AppTextStyles.heading32BlackBold.copyWith(
               fontSize: isSmall ? 28 : 32,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
           Text(
             AppLocalizations.of(context)!.onboardingAccent,
             style: AppTextStyles.onboardingGreenBold.copyWith(
               fontSize: isSmall ? 30 : 36,
+              color: Theme.of(context).colorScheme.primary,
             ),
           ),
           SizedBox(height: isSmall ? 8 : 12),
           Text(
             AppLocalizations.of(context)!.onboardingDescription,
-            style: AppTextStyles.onboardingDescription,
+            style: AppTextStyles.onboardingDescription.copyWith(
+              color: Theme.of(context).textTheme.bodyMedium?.color,
+            ),
           ),
           const Spacer(),
           SizedBox(height: isSmall ? 16 : 24),
@@ -55,7 +59,9 @@ class OnboardingContent extends StatelessWidget {
               onPressed: onSignIn,
               child: Text(
                 AppLocalizations.of(context)!.onboardingSignIn,
-                style: AppTextStyles.link14GreenMedium,
+                style: AppTextStyles.link14GreenMedium.copyWith(
+                  color: Theme.of(context).colorScheme.primary,
+                ),
                 textAlign: TextAlign.center,
               ),
             ),

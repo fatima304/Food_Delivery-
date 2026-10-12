@@ -8,9 +8,19 @@ class AuthHeader extends StatelessWidget {
   Widget build(BuildContext context) => Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Text(title, style: AppTextStyles.heading32BlackBold),
+      Text(
+        title,
+        style: AppTextStyles.heading32BlackBold.copyWith(
+          color: Theme.of(context).colorScheme.onSurface,
+        ),
+      ),
       const SizedBox(height: 8),
-      Text(subtitle, style: AppTextStyles.body18GreyRegular),
+      Text(
+        subtitle,
+        style: AppTextStyles.body18GreyRegular.copyWith(
+          color: Theme.of(context).textTheme.bodyMedium?.color,
+        ),
+      ),
       const SizedBox(height: 40),
     ],
   );

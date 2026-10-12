@@ -8,7 +8,7 @@ class AuthScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    backgroundColor: AppColors.white,
+    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
     body: SafeArea(
       child: Center(
         child: ConstrainedBox(
@@ -21,9 +21,9 @@ class AuthScaffold extends StatelessWidget {
                 if (showBack)
                   IconButton(
                     onPressed: () => Navigator.maybePop(context),
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.arrow_back_ios_new,
-                      color: AppColors.black,
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                     padding: EdgeInsets.zero,
                     alignment: Alignment.centerLeft,
