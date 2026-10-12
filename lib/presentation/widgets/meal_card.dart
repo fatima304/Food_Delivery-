@@ -10,16 +10,16 @@ class MealCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) => InkWell(
     // onTap: () => Navigator.push(
-    //   // context,
-    //   // MaterialPageRoute(
-    //   //   builder: (_) => MealDetailsScreen(name: name, price: price),
-    //   // ),
+    // context,
+    // MaterialPageRoute(
+    //   builder: (_) => MealDetailsScreen(name: name, price: price),
+    // ),
     // ),
     child: UiCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const FoodPhoto(height: 105),
+          const FoodPhoto(height: 100),
           const SizedBox(height: 8),
           Text(
             name,
@@ -43,7 +43,7 @@ class MealCard extends StatelessWidget {
                 ),
               ),
               IconButton(
-                onPressed: () => showDemo(context, 'Added to cart (UI demo)'),
+                onPressed: () => showDemo(context, 'Added to cart'),
                 icon: const Icon(
                   Icons.add_circle,
                   color: AppColors.primaryGreen,
