@@ -1,3 +1,4 @@
+import 'package:food_delivery/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery/core/helper/responsive_helper.dart';
 import 'package:food_delivery/core/style/app_text_styles.dart';
@@ -26,33 +27,41 @@ class OnboardingContent extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Delicious food\ndelivered to',
+            AppLocalizations.of(context)!.onboardingTitle,
             style: AppTextStyles.heading32BlackBold.copyWith(
               fontSize: isSmall ? 28 : 32,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
           Text(
-            'your doorstep',
+            AppLocalizations.of(context)!.onboardingAccent,
             style: AppTextStyles.onboardingGreenBold.copyWith(
               fontSize: isSmall ? 30 : 36,
+              color: Theme.of(context).colorScheme.primary,
             ),
           ),
           SizedBox(height: isSmall ? 8 : 12),
-          const Text(
-            'Discover the best restaurants near you '
-            'and enjoy your favorite meals at home.',
-            style: AppTextStyles.onboardingDescription,
+          Text(
+            AppLocalizations.of(context)!.onboardingDescription,
+            style: AppTextStyles.onboardingDescription.copyWith(
+              color: Theme.of(context).textTheme.bodyMedium?.color,
+            ),
           ),
           const Spacer(),
           SizedBox(height: isSmall ? 16 : 24),
-          CustomButton(text: 'Get Started  →', onPressed: onStart),
+          CustomButton(
+            text: AppLocalizations.of(context)!.getStarted,
+            onPressed: onStart,
+          ),
           const SizedBox(height: 8),
           Center(
             child: TextButton(
               onPressed: onSignIn,
-              child: const Text(
-                'Already have an account?  Sign In',
-                style: AppTextStyles.link14GreenMedium,
+              child: Text(
+                AppLocalizations.of(context)!.onboardingSignIn,
+                style: AppTextStyles.link14GreenMedium.copyWith(
+                  color: Theme.of(context).colorScheme.primary,
+                ),
                 textAlign: TextAlign.center,
               ),
             ),
