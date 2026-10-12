@@ -24,7 +24,9 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       final updated = [...state.items];
       final index = updated.indexWhere((e) => e.meal.id == event.mealId);
       if (index < 0) return;
-      updated[index] = updated[index].copyWith(quantity: updated[index].quantity + 1);
+      updated[index] = updated[index].copyWith(
+        quantity: updated[index].quantity + 1,
+      );
       _update(updated, emit);
     });
     on<CartDecrease>((event, emit) {
@@ -34,18 +36,24 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       if (updated[index].quantity <= 1) {
         updated.removeAt(index);
       } else {
-        updated[index] = updated[index].copyWith(quantity: updated[index].quantity - 1);
+        updated[index] = updated[index].copyWith(
+          quantity: updated[index].quantity - 1,
+        );
       }
       _update(updated, emit);
     });
     on<CartRemove>((event, emit) {
-      final updated = state.items.where((e) => e.meal.id != event.mealId).toList();
+      final updated = state.items
+          .where((e) => e.meal.id != event.mealId)
+          .toList();
       if (updated.length != state.items.length) _update(updated, emit);
     });
     on<CartClear>((event, emit) => _update([], emit));
   }
 
   void _update(List<CartItem> items, Emitter<CartState> emit) {
-    emit(CartState(items: List.unmodifiable(items), revision: state.revision + 1));
+    emit(
+      CartState(items: List.unmodifiable(items), revision: state.revision + 1),
+    );
   }
 }

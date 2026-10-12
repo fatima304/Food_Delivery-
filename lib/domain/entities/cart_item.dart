@@ -8,8 +8,6 @@ class CartItem {
 
   double get total => meal.price * quantity;
 
-  CartItem copyWith({int? quantity}) => CartItem(
-        meal: meal,
-        quantity: quantity ?? this.quantity,
-      );
+  CartItem copyWith({int? quantity}) =>
+      CartItem(meal: meal, quantity: quantity ?? this.quantity);
 }

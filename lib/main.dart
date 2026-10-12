@@ -24,14 +24,14 @@ class FoodDeliveryApp extends StatelessWidget {
     child: BlocProvider(
       create: (_) => getIt<CartBloc>(),
       child: MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'StreetBite',
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      theme: AppTheme.light,
-      darkTheme: AppTheme.dark,
-      themeMode: ThemeMode.system,
-      home: const AuthGate(),
+        debugShowCheckedModeBanner: false,
+        title: 'StreetBite',
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        theme: AppTheme.light,
+        darkTheme: AppTheme.dark,
+        themeMode: ThemeMode.system,
+        home: const AuthGate(),
       ),
     ),
   );
