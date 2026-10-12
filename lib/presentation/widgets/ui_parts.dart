@@ -13,7 +13,17 @@ class SectionHeading extends StatelessWidget {
     padding: const EdgeInsets.symmetric(vertical: 12),
     child: Row(
       children: [
-        Expanded(child: Text(title)),
+        Expanded(
+          child: Text(
+            title,
+            style: AppTextStyles.heading24BlackBold.copyWith(
+              fontSize: 18,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Theme.of(context).colorScheme.onSurface
+                  : AppColors.black,
+            ),
+          ),
+        ),
         if (action != null)
           TextButton(onPressed: action, child: const Text('See all')),
       ],
