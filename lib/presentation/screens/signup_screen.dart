@@ -1,3 +1,4 @@
+import 'package:food_delivery/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/presentation/blocs/auth_cubit.dart';
@@ -22,25 +23,22 @@ class SignupScreen extends StatelessWidget {
     child: AuthScaffold(
       child: Column(
         children: [
-          const AuthHeader(
-            title: 'Create account',
-            subtitle: 'Join us and start ordering your favorite food',
+          AuthHeader(
+            title: AppLocalizations.of(context)!.createAccount,
+            subtitle: AppLocalizations.of(context)!.signUpSubtitle,
           ),
           BlocBuilder<AuthCubit, AuthState>(
             builder: (context, state) => SignupForm(
               isLoading: state is AuthLoading,
-              onValidSubmit: (name, email, password) =>
-                  context.read<AuthCubit>().signUp(
-                    fullName: name,
-                    email: email,
-                    password: password,
-                  ),
+              onValidSubmit: (name, email, password) => context
+                  .read<AuthCubit>()
+                  .signUp(fullName: name, email: email, password: password),
             ),
           ),
           const SizedBox(height: 22),
           AuthFooter(
-            message: 'Already have an account?',
-            action: 'Sign In',
+            message: AppLocalizations.of(context)!.haveAccount,
+            action: AppLocalizations.of(context)!.signIn,
             onTap: () => Navigator.pop(context),
           ),
         ],

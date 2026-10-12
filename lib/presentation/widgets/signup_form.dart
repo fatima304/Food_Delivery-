@@ -1,3 +1,5 @@
+import 'package:food_delivery/core/helper/localized_validation.dart';
+import 'package:food_delivery/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery/core/constants/app_colors.dart';
 import 'package:food_delivery/core/helper/validator.dart';
@@ -39,17 +41,21 @@ class _SignupFormState extends State<SignupForm> {
       children: [
         CustomTextFormField(
           controller: name,
-          hintText: 'Full name',
+          hintText: AppLocalizations.of(context)!.fullName,
           prefixIcon: const Icon(Icons.person_outline),
-          validator: (value) => AuthValidators.fullName(value),
+          validator: (value) => LocalizedValidation.message(
+            context,
+            AuthValidators.fullName(value),
+          ),
         ),
         const SizedBox(height: 12),
         CustomTextFormField(
           controller: email,
-          hintText: 'Email address',
+          hintText: AppLocalizations.of(context)!.emailAddress,
           prefixIcon: const Icon(Icons.mail_outline),
           keyboardType: TextInputType.emailAddress,
-          validator: AuthValidators.email,
+          validator: (value) =>
+              LocalizedValidation.message(context, AuthValidators.email(value)),
         ),
         const SizedBox(height: 12),
 
@@ -58,11 +64,13 @@ class _SignupFormState extends State<SignupForm> {
         const SizedBox(height: 12),
         CustomTextFormField(
           controller: confirm,
-          hintText: 'Confirm password',
+          hintText: AppLocalizations.of(context)!.confirmPassword,
           prefixIcon: const Icon(Icons.lock_outline),
           obscureText: true,
-          validator: (value) =>
-              AuthValidators.confirmPassword(value, password.text),
+          validator: (value) => LocalizedValidation.message(
+            context,
+            AuthValidators.confirmPassword(value, password.text),
+          ),
         ),
         const SizedBox(height: 12),
         CheckboxListTile(
@@ -71,22 +79,26 @@ class _SignupFormState extends State<SignupForm> {
           activeColor: AppColors.primaryGreen,
           controlAffinity: ListTileControlAffinity.leading,
           contentPadding: EdgeInsets.zero,
-          title: const Text(
-            'I agree to the Terms of Service and Privacy Policy',
+          title: Text(
+            AppLocalizations.of(context)!.termsAgreement,
             style: AppTextStyles.body14DarkRegular,
           ),
         ),
         const SizedBox(height: 20),
         CustomButton(
-          text: widget.isLoading ? 'Creating account...' : 'Create account',
+          text: widget.isLoading
+              ? AppLocalizations.of(context)!.creatingAccount
+              : AppLocalizations.of(context)!.createAccount,
           onPressed: widget.isLoading
               ? null
               : () {
                   if (!key.currentState!.validate()) return;
                   if (!agreed) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Please accept the terms first'),
+                      SnackBar(
+                        content: Text(
+                          AppLocalizations.of(context)!.acceptTerms,
+                        ),
                       ),
                     );
                     return;

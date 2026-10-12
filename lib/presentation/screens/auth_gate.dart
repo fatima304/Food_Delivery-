@@ -1,3 +1,4 @@
+import 'package:food_delivery/l10n/app_localizations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery/presentation/screens/onboarding_screen.dart';
@@ -14,12 +15,8 @@ class AuthGate extends StatelessWidget {
         return const Scaffold(body: Center(child: CircularProgressIndicator()));
       }
       if (snapshot.hasError) {
-        return const Scaffold(
-          body: Center(
-            child: Text(
-              'Unable to check your session. Please restart the app.',
-            ),
-          ),
+        return Scaffold(
+          body: Center(child: Text(AppLocalizations.of(context)!.sessionError)),
         );
       }
       return snapshot.data == null

@@ -1,3 +1,4 @@
+import 'package:food_delivery/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -21,7 +22,7 @@ class AuthHomeScreen extends StatelessWidget {
           children: [
             const Icon(Icons.check_circle, color: Colors.green, size: 56),
             const SizedBox(height: 16),
-            const Text('You are signed in!'),
+            Text(AppLocalizations.of(context)!.signedIn),
             const SizedBox(height: 8),
             Text(FirebaseAuth.instance.currentUser?.email ?? ''),
             const SizedBox(height: 24),
@@ -32,7 +33,7 @@ class AuthHomeScreen extends StatelessWidget {
                     : () => context.read<AuthCubit>().logout(),
                 child: state is AuthLoading
                     ? const CircularProgressIndicator()
-                    : const Text('Sign out'),
+                    : Text(AppLocalizations.of(context)!.signOut),
               ),
             ),
           ],

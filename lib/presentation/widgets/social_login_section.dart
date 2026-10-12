@@ -1,3 +1,4 @@
+import 'package:food_delivery/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery/core/constants/app_colors.dart';
 import 'package:food_delivery/core/constants/app_images.dart';
@@ -8,17 +9,17 @@ class SocialLoginSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
     children: [
-      const Row(
+      Row(
         children: [
-          Expanded(child: Divider(color: AppColors.dividerGrey)),
+          const Expanded(child: Divider(color: AppColors.dividerGrey)),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 14),
+            padding: const EdgeInsets.symmetric(horizontal: 14),
             child: Text(
-              'Or continue with',
+              AppLocalizations.of(context)!.orContinueWith,
               style: AppTextStyles.body14GreyRegular,
             ),
           ),
-          Expanded(child: Divider(color: AppColors.dividerGrey)),
+          const Expanded(child: Divider(color: AppColors.dividerGrey)),
         ],
       ),
       const SizedBox(height: 24),

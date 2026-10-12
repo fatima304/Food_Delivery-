@@ -1,3 +1,5 @@
+import 'package:food_delivery/core/helper/localized_validation.dart';
+import 'package:food_delivery/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery/core/helper/validator.dart';
 import 'package:food_delivery/core/style/app_text_styles.dart';
@@ -36,10 +38,11 @@ class _LoginFormState extends State<LoginForm> {
       children: [
         CustomTextFormField(
           controller: email,
-          hintText: 'Email address',
+          hintText: AppLocalizations.of(context)!.emailAddress,
           prefixIcon: const Icon(Icons.mail_outline),
           keyboardType: TextInputType.emailAddress,
-          validator: AuthValidators.email,
+          validator: (value) =>
+              LocalizedValidation.message(context, AuthValidators.email(value)),
         ),
         const SizedBox(height: 14),
         PasswordField(controller: password),
@@ -47,19 +50,21 @@ class _LoginFormState extends State<LoginForm> {
           alignment: Alignment.centerRight,
           child: TextButton(
             onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Password reset is not connected yet'),
+              SnackBar(
+                content: Text(AppLocalizations.of(context)!.resetNotConnected),
               ),
             ),
-            child: const Text(
-              'Forgot password?',
+            child: Text(
+              AppLocalizations.of(context)!.forgotPassword,
               style: AppTextStyles.link14GreenMedium,
             ),
           ),
         ),
         const SizedBox(height: 34),
         CustomButton(
-          text: widget.isLoading ? 'Signing in...' : 'Sign In',
+          text: widget.isLoading
+              ? AppLocalizations.of(context)!.signingIn
+              : AppLocalizations.of(context)!.signIn,
           onPressed: widget.isLoading
               ? null
               : () {

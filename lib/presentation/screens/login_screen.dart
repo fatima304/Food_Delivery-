@@ -1,3 +1,4 @@
+import 'package:food_delivery/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/presentation/blocs/auth_cubit.dart';
@@ -24,9 +25,9 @@ class LoginScreen extends StatelessWidget {
     child: AuthScaffold(
       child: Column(
         children: [
-          const AuthHeader(
-            title: 'Welcome back',
-            subtitle: 'Sign in to continue to your account',
+          AuthHeader(
+            title: AppLocalizations.of(context)!.welcomeBack,
+            subtitle: AppLocalizations.of(context)!.signInSubtitle,
           ),
           BlocBuilder<AuthCubit, AuthState>(
             builder: (context, state) => LoginForm(
@@ -40,8 +41,8 @@ class LoginScreen extends StatelessWidget {
           const SocialLoginSection(),
           const SizedBox(height: 45),
           AuthFooter(
-            message: 'Don’t have an account?',
-            action: 'Sign Up',
+            message: AppLocalizations.of(context)!.noAccount,
+            action: AppLocalizations.of(context)!.signUp,
             onTap: () => Navigator.push(
               context,
               MaterialPageRoute(builder: (_) => const SignupScreen()),
