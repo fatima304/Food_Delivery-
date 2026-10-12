@@ -8,6 +8,12 @@ class HomeRepositoryImpl implements HomeRepository {
   HomeRepositoryImpl(this.api);
 
   @override
+  Future<MealModel?> getMealDetails(String id) async {
+    final meals = (await api.mealDetails(id)).meals;
+    return meals == null || meals.isEmpty ? null : meals.first;
+  }
+
+  @override
   Future<List<MealCategoryModel>> getCategories() async =>
       (await api.fetchCategories()).categories ?? [];
 

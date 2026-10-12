@@ -9,6 +9,7 @@ import '../widgets/home_categories.dart';
 import '../widgets/home_meal_card.dart';
 import '../widgets/ui_parts.dart';
 import 'search_screen.dart';
+import 'meal_details_screen.dart';
 import 'settings_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -189,19 +190,30 @@ class _HomeContent extends StatelessWidget {
                           crossAxisSpacing: 12,
                           mainAxisSpacing: 12,
                         ),
-                    itemBuilder: (context, i) => HomeMealCard(
-                      meal: state.meals[i],
-                      onAdd: (meal) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              'Cart integration is coming next: ${meal.name}',
-                            ),
-                            behavior: SnackBarBehavior.floating,
-                            duration: const Duration(seconds: 2),
+                    itemBuilder: (context, i) => GestureDetector(
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => MealDetailsScreen(
+                            mealId: state.meals[i].id,
+                            initialMeal: state.meals[i],
                           ),
-                        );
-                      },
+                        ),
+                      ),
+                      child: HomeMealCard(
+                        meal: state.meals[i],
+                        onAdd: (meal) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                'Cart integration is coming next: ${meal.name}',
+                              ),
+                              behavior: SnackBarBehavior.floating,
+                              duration: const Duration(seconds: 2),
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ),
                 const SizedBox(height: 20),

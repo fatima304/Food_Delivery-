@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:food_delivery/presentation/blocs/meal_details_cubit.dart';
 import 'package:dio/dio.dart';
 import 'package:food_delivery/services/meal_api_service.dart';
 import 'package:food_delivery/core/constants/api_constants.dart';
@@ -32,6 +33,10 @@ void setupDependencies() {
     () => HomeRepositoryImpl(getIt<MealApiService>()),
   );
   getIt.registerFactory<HomeCubit>(() => HomeCubit(getIt<HomeRepository>()));
+
+  getIt.registerFactory<MealDetailsCubit>(
+    () => MealDetailsCubit(getIt<HomeRepository>()),
+  );
 
   // Services
   getIt.registerLazySingleton<FirestoreService>(() => FirestoreService());
