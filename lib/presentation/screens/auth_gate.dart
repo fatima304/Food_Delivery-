@@ -2,7 +2,7 @@ import 'package:food_delivery/l10n/app_localizations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery/presentation/screens/onboarding_screen.dart';
-import 'package:food_delivery/presentation/screens/auth_home_screen.dart';
+import 'package:food_delivery/presentation/screens/home_screen.dart';
 
 /// Firebase's auth stream is the source of truth, including after app restart.
 class AuthGate extends StatelessWidget {
@@ -21,7 +21,7 @@ class AuthGate extends StatelessWidget {
       }
       return snapshot.data == null
           ? const OnboardingScreen()
-          : const AuthHomeScreen();
+          : const HomeScreen();
     },
   );
 }

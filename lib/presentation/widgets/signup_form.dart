@@ -1,7 +1,6 @@
 import 'package:food_delivery/core/helper/localized_validation.dart';
 import 'package:food_delivery/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
-import 'package:food_delivery/core/constants/app_colors.dart';
 import 'package:food_delivery/core/helper/validator.dart';
 import 'package:food_delivery/core/style/app_text_styles.dart';
 import 'package:food_delivery/presentation/widgets/custom_button.dart';

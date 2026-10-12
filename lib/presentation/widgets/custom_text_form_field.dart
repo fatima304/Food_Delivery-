@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery/core/constants/app_colors.dart';
 import 'package:food_delivery/core/style/app_text_styles.dart';
 
 class CustomTextFormField extends StatelessWidget {

@@ -1,6 +1,5 @@
 import 'package:food_delivery/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
-import 'package:food_delivery/core/constants/app_colors.dart';
 import 'package:food_delivery/core/constants/app_images.dart';
 import 'package:food_delivery/core/style/app_text_styles.dart';
 

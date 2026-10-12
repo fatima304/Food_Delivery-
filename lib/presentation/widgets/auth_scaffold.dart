@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery/core/constants/app_colors.dart';
 
 class AuthScaffold extends StatelessWidget {
   const AuthScaffold({super.key, required this.child, this.showBack = true});
