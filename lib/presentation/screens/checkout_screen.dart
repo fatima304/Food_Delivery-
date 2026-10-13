@@ -17,7 +17,7 @@ class CheckoutScreen extends StatefulWidget {
 }
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
-  String delivery = 'Standard', payment = 'Cash on Delivery';
+  String  payment = 'Cash on Delivery';
   bool placing = false;
 
   Future<void> _placeOrder() async {
@@ -30,7 +30,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       await cart.waitForWrites();
       await getIt<OrdersRepository>().placeOrder(
         items: state.items, subtotal: state.subtotal,
-        deliveryFee: state.deliveryFee, deliveryTime: delivery,
+        deliveryFee: state.deliveryFee, 
         payment: payment == 'Cash on Delivery'
             ? const CashPayment() : const CardPayment(),
       );
@@ -67,21 +67,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     body: ListView(
       padding: const EdgeInsets.all(18),
       children: [
-        const FoodPhoto(height: 140),
-        const SectionHeading('Delivery Address'),
-        const ListTile(
-          leading: Icon(Icons.location_on_outlined),
-          title: Text('Home'),
-          subtitle: Text('Park Way 145, Maadi, Cairo'),
-        ),
-        const SectionHeading('Delivery Time'),
-        for (final option in ['Express', 'Standard'])
-          RadioListTile<String>(
-            title: Text(option),
-            value: option,
-            groupValue: delivery,
-            onChanged: (v) => setState(() => delivery = v!),
-          ),
+        const FoodPhoto(height: 150),
         const SectionHeading('Payment Method'),
         for (final option in ['Cash on Delivery', 'Credit / Debit Card'])
           RadioListTile<String>(
@@ -90,13 +76,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             groupValue: payment,
             onChanged: (v) => setState(() => payment = v!),
           ),
-        TextButton.icon(
-          onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Card payment is a demo. Do not enter real card details.')),
-          ),
-          icon: const Icon(Icons.credit_card),
-          label: const Text('Add Card'),
-        ),
         const SectionHeading('Order Summary'),
         BlocBuilder<CartBloc, CartState>(builder: (_, cart) => Column(children: [
           ListTile(title: const Text('Subtotal'), trailing: Text('\$${cart.subtotal.toStringAsFixed(2)}')),

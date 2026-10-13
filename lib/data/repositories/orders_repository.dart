@@ -19,7 +19,7 @@ class OrdersRepository {
 
   Future<String> placeOrder({required List<CartItem> items,
     required double subtotal, required double deliveryFee,
-    required PaymentMethod payment, required String deliveryTime}) async {
+    required PaymentMethod payment,}) async {
     final uid = auth.currentUser?.uid;
     if (uid == null) throw StateError('Please sign in to place an order.');
     if (items.isEmpty) throw StateError('Your cart is empty.');
@@ -43,7 +43,6 @@ class OrdersRepository {
       'deliveryFee': deliveryFee,
       'total': total,
       'paymentMethod': payment.id,
-      'deliveryTime': deliveryTime,
       'status': 'pending',
       'createdAt': FieldValue.serverTimestamp(),
     });

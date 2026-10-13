@@ -13,7 +13,7 @@ import '../widgets/home_meal_card.dart';
 import '../widgets/ui_parts.dart';
 import 'search_screen.dart';
 import 'meal_details_screen.dart';
-import 'settings_screen.dart';
+import 'nearby_vendors_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -40,27 +40,6 @@ class _HomeContent extends StatelessWidget {
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 18),
               children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: ListTile(
-                        contentPadding: EdgeInsets.zero,
-                        leading: Icon(Icons.location_on, color: colors.primary),
-                        title: const Text('Cairo, Egypt'),
-                        subtitle: const Text('Deliver to your location'),
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const SettingsScreen(),
-                        ),
-                      ),
-                      icon: const Icon(Icons.brightness_6_outlined),
-                    ),
-                  ],
-                ),
                 TextField(
                   readOnly: true,
                   onTap: () => Navigator.push(
@@ -75,6 +54,22 @@ class _HomeContent extends StatelessWidget {
                     border: OutlineInputBorder(
                       borderSide: BorderSide.none,
                       borderRadius: BorderRadius.circular(18),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Material(
+                  color: colors.primaryContainer,
+                  borderRadius: BorderRadius.circular(18),
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+                    leading: Icon(Icons.map_outlined, color: colors.primary, size: 30),
+                    title: const Text('Nearby Vendors', style: TextStyle(fontWeight: FontWeight.w700)),
+                    subtitle: const Text('Explore 5 food spots on the map'),
+                    trailing: Icon(Icons.arrow_forward_ios_rounded, color: colors.primary, size: 18),
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const NearbyVendorsScreen()),
                     ),
                   ),
                 ),
