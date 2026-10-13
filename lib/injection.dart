@@ -1,3 +1,4 @@
+import 'presentation/blocs/search_cubit.dart';
 import 'data/repositories/profile_repository.dart';
 import 'data/repositories/cart_repository.dart';
 import 'data/repositories/orders_repository.dart';
@@ -63,6 +64,7 @@ void setupDependencies() {
     () => HomeRepositoryImpl(getIt<MealApiService>()),
   );
   getIt.registerFactory<HomeCubit>(() => HomeCubit(getIt<HomeRepository>()));
+  getIt.registerFactory<SearchCubit>(() => SearchCubit(getIt<HomeRepository>()));
 
   getIt.registerFactory<MealDetailsCubit>(
     () => MealDetailsCubit(getIt<HomeRepository>()),
