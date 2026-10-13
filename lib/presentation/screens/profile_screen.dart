@@ -1,15 +1,13 @@
-import 'favourites_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../injection.dart';
 import '../blocs/biometric_cubit.dart';
 import '../blocs/biometric_state.dart';
-import '../blocs/device_info_cubit.dart';
-import '../blocs/device_info_state.dart';
 import '../widgets/app_nav.dart';
 import '../widgets/profile_header.dart';
 import '../widgets/profile_menu_tile.dart';
+import 'favourites_screen.dart';
 import 'home_screen.dart';
 import 'orders_screen.dart';
 import 'settings_screen.dart';
@@ -21,7 +19,6 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) => MultiBlocProvider(
     providers: [
       BlocProvider(create: (_) => getIt<BiometricCubit>()..authenticate()),
-      BlocProvider(create: (_) => getIt<DeviceInfoCubit>()..getDeviceInfo()),
     ],
     child: const _ProfileContent(),
   );
@@ -122,7 +119,10 @@ class _ProfileContent extends StatelessWidget {
       ProfileMenuTile(
         icon: Icons.favorite_border,
         title: 'Favourites',
-        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const FavouritesScreen())),
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const FavouritesScreen()),
+        ),
       ),
       ProfileMenuTile(
         icon: Icons.receipt_long_outlined,
@@ -140,27 +140,7 @@ class _ProfileContent extends StatelessWidget {
           MaterialPageRoute(builder: (_) => const SettingsScreen()),
         ),
       ),
-      BlocBuilder<DeviceInfoCubit, DeviceInfoState>(
-        builder: (context, state) {
-          String subtitle;
-          if (state.status == DeviceInfoStatus.loading ||
-              state.status == DeviceInfoStatus.initial) {
-            subtitle = 'Loading device information...';
-          } else if (state.status == DeviceInfoStatus.success &&
-              state.deviceInfo != null) {
-            final info = state.deviceInfo!;
-            subtitle = '${info.modelName} • OS ${info.osVersion}';
-          } else {
-            subtitle = state.errorMessage ?? 'Device details unavailable';
-          }
-          return ProfileMenuTile(
-            icon: Icons.phone_android_outlined,
-            title: 'Device Details',
-            subtitle: subtitle,
-            showDivider: false,
-          );
-        },
-      ),
+
     ],
   );
 }
