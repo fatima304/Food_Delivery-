@@ -1,9 +1,12 @@
+import 'package:food_delivery/core/helper/localized_state_error.dart';
+
 import '../blocs/favourites_cubit.dart';
 import '../blocs/cart_bloc.dart';
 import '../blocs/cart_event.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_delivery/l10n/app_localizations.dart';
 
 import '../../core/style/app_text_styles.dart';
 import '../../data/models/meal_model.dart';
@@ -44,6 +47,7 @@ class _MealDetailsContentState extends State<_MealDetailsContent> {
     final colors = theme.colorScheme;
     final green = colors.primary;
     final muted = colors.onSurfaceVariant;
+    final l10n = AppLocalizations.of(context)!;
 
     final titleStyle = AppTextStyles.heading24BlackBold.copyWith(
       color: colors.onSurface,
@@ -53,429 +57,460 @@ class _MealDetailsContentState extends State<_MealDetailsContent> {
 
     return BlocBuilder<FavouritesCubit, FavouritesState>(
       builder: (context, favourites) => BlocBuilder<MealDetailsCubit, MealDetailsState>(
-      builder: (context, state) {
-        final meal = state.meal ?? widget.initialMeal;
-        final favorite = favourites.contains(widget.mealId);
+        builder: (context, state) {
+          final meal = state.meal ?? widget.initialMeal;
+          final favorite = favourites.contains(widget.mealId);
 
-        return Scaffold(
-          backgroundColor: colors.surface,
-          body: meal == null
-              ? SafeArea(
-                  child: Column(
-                    children: [
-                      _topBar(context, titleStyle),
-                      Expanded(
-                        child: Center(
-                          child: state.loading
-                              ? const CircularProgressIndicator()
-                              : Padding(
-                                  padding: const EdgeInsets.all(28),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(
-                                        Icons.restaurant_menu_rounded,
-                                        size: 48,
-                                        color: muted,
-                                      ),
-                                      const SizedBox(height: 12),
-                                      Text(
-                                        state.error ?? 'Meal not found',
-                                        textAlign: TextAlign.center,
-                                        style: AppTextStyles.body16GreyRegular
-                                            .copyWith(color: muted),
-                                      ),
-                                      const SizedBox(height: 12),
-                                      TextButton.icon(
-                                        onPressed: () => context
-                                            .read<MealDetailsCubit>()
-                                            .load(widget.mealId),
-                                        icon: const Icon(Icons.refresh_rounded),
-                                        label: const Text('Try again'),
-                                      ),
-                                    ],
+          return Scaffold(
+            backgroundColor: colors.surface,
+            body: meal == null
+                ? SafeArea(
+                    child: Column(
+                      children: [
+                        _topBar(context, titleStyle, l10n),
+                        Expanded(
+                          child: Center(
+                            child: state.loading
+                                ? const CircularProgressIndicator()
+                                : Padding(
+                                    padding: const EdgeInsets.all(28),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Icon(
+                                          Icons.restaurant_menu_rounded,
+                                          size: 48,
+                                          color: muted,
+                                        ),
+                                        const SizedBox(height: 12),
+                                        Text(
+                                          state.error == null
+                                              ? l10n.mealNotFound
+                                              : localizedStateError(
+                                                  context,
+                                                  state.error,
+                                                ),
+                                          textAlign: TextAlign.center,
+                                          style: AppTextStyles.body16GreyRegular
+                                              .copyWith(color: muted),
+                                        ),
+                                        const SizedBox(height: 12),
+                                        TextButton.icon(
+                                          onPressed: () => context
+                                              .read<MealDetailsCubit>()
+                                              .load(widget.mealId),
+                                          icon: const Icon(
+                                            Icons.refresh_rounded,
+                                          ),
+                                          label: Text(l10n.tryAgain),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                )
-              : SafeArea(
-                  child: Column(
-                    children: [
-                      _topBar(context, titleStyle),
-                      Expanded(
-                        child: LayoutBuilder(
-                          builder: (context, constraints) {
-                            final imageHeight = (constraints.maxWidth * .79)
-                                .clamp(230.0, 350.0);
+                      ],
+                    ),
+                  )
+                : SafeArea(
+                    child: Column(
+                      children: [
+                        _topBar(context, titleStyle, l10n),
+                        Expanded(
+                          child: LayoutBuilder(
+                            builder: (context, constraints) {
+                              final imageHeight = (constraints.maxWidth * .79)
+                                  .clamp(230.0, 350.0);
 
-                            return SingleChildScrollView(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  Stack(
-                                    children: [
-                                      Image.network(
-                                        meal.imageUrl,
-                                        height: imageHeight,
-                                        width: double.infinity,
-                                        fit: BoxFit.cover,
-                                        errorBuilder: (_, _, _) => Container(
+                              return SingleChildScrollView(
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    Stack(
+                                      children: [
+                                        Image.network(
+                                          meal.imageUrl,
                                           height: imageHeight,
-                                          color: colors.surfaceContainerLow,
-                                          child: Icon(
-                                            Icons.restaurant_menu_rounded,
-                                            size: 66,
-                                            color: green,
+                                          width: double.infinity,
+                                          fit: BoxFit.cover,
+                                          errorBuilder: (_, _, _) => Container(
+                                            height: imageHeight,
+                                            color: colors.surfaceContainerLow,
+                                            child: Icon(
+                                              Icons.restaurant_menu_rounded,
+                                              size: 66,
+                                              color: green,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      PositionedDirectional(
-                                        top: 16,
-                                        start: 18,
-                                        child: _roundIcon(
-                                          context,
-                                          Icons.arrow_back_ios_new_rounded,
-                                          () =>
-                                              Navigator.of(context).maybePop(),
+                                        PositionedDirectional(
+                                          top: 16,
+                                          start: 18,
+                                          child: _roundIcon(
+                                            context,
+                                            Icons.arrow_back_ios_new_rounded,
+                                            () =>
+                                                Navigator.of(context)
+                                                    .maybePop(),
+                                          ),
                                         ),
-                                      ),
-                                      PositionedDirectional(
-                                        top: 16,
-                                        end: 18,
-                                        child: _roundIcon(
-                                          context,
-                                          favorite
-                                              ? Icons.favorite_rounded
-                                              : Icons.favorite_border_rounded,
-                                          () => context.read<FavouritesCubit>().toggle(meal),
-                                          iconColor: favorite
-                                              ? colors.error
-                                              : colors.onSurface,
+                                        PositionedDirectional(
+                                          top: 16,
+                                          end: 18,
+                                          child: _roundIcon(
+                                            context,
+                                            favorite
+                                                ? Icons.favorite_rounded
+                                                : Icons.favorite_border_rounded,
+                                            () => context
+                                                .read<FavouritesCubit>()
+                                                .toggle(meal),
+                                            iconColor: favorite
+                                                ? colors.error
+                                                : colors.onSurface,
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  Transform.translate(
-                                    offset: const Offset(0, -18),
-                                    child: Container(
-                                      padding: const EdgeInsets.fromLTRB(
-                                        20,
-                                        22,
-                                        20,
-                                        20,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: colors.surface,
-                                        borderRadius:
-                                            const BorderRadius.vertical(
-                                              top: Radius.circular(24),
+                                      ],
+                                    ),
+                                    Transform.translate(
+                                      offset: const Offset(0, -18),
+                                      child: Container(
+                                        padding: const EdgeInsets.fromLTRB(
+                                          20,
+                                          22,
+                                          20,
+                                          20,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: colors.surface,
+                                          borderRadius:
+                                              const BorderRadius.vertical(
+                                                top: Radius.circular(24),
+                                              ),
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Expanded(
+                                                  child: Text(
+                                                    meal.name,
+                                                    maxLines: 2,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: AppTextStyles
+                                                        .heading24BlackBold
+                                                        .copyWith(
+                                                          fontSize: 23,
+                                                          color:
+                                                              colors.onSurface,
+                                                          height: 1.25,
+                                                        ),
+                                                  ),
+                                                ),
+                                                IconButton(
+                                                  padding: EdgeInsets.zero,
+                                                  constraints:
+                                                      const BoxConstraints(
+                                                        minWidth: 36,
+                                                        minHeight: 36,
+                                                      ),
+                                                  onPressed: () => context
+                                                      .read<FavouritesCubit>()
+                                                      .toggle(meal),
+                                                  icon: Icon(
+                                                    favorite
+                                                        ? Icons.favorite_rounded
+                                                        : Icons
+                                                              .favorite_border_rounded,
+                                                    color: favorite
+                                                        ? colors.error
+                                                        : muted,
+                                                    size: 24,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Expanded(
-                                                child: Text(
-                                                  meal.name,
-                                                  maxLines: 2,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
+                                            const SizedBox(height: 7),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  '\$${meal.price.toStringAsFixed(2)}',
                                                   style: AppTextStyles
                                                       .heading24BlackBold
                                                       .copyWith(
-                                                        fontSize: 23,
-                                                        color: colors.onSurface,
-                                                        height: 1.25,
+                                                        fontSize: 22,
+                                                        color: green,
                                                       ),
                                                 ),
-                                              ),
-                                              IconButton(
-                                                padding: EdgeInsets.zero,
-                                                constraints:
-                                                    const BoxConstraints(
-                                                      minWidth: 36,
-                                                      minHeight: 36,
-                                                    ),
-                                                onPressed: () => context.read<FavouritesCubit>().toggle(meal),
-                                                icon: Icon(
-                                                  favorite
-                                                      ? Icons.favorite_rounded
-                                                      : Icons
-                                                            .favorite_border_rounded,
-                                                  color: favorite
-                                                      ? colors.error
-                                                      : muted,
-                                                  size: 24,
+                                                const SizedBox(width: 13),
+                                                Icon(
+                                                  Icons.star_rounded,
+                                                  color: Colors.amber.shade700,
+                                                  size: 17,
                                                 ),
+                                                const SizedBox(width: 3),
+                                                Text(
+                                                  l10n.freshMeal,
+                                                  style: AppTextStyles
+                                                      .body14GreyRegular
+                                                      .copyWith(color: muted),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(height: 17),
+                                            Wrap(
+                                              spacing: 18,
+                                              runSpacing: 8,
+                                              children: [
+                                                _info(
+                                                  Icons.verified_outlined,
+                                                  l10n.fresh,
+                                                  green,
+                                                  muted,
+                                                ),
+                                                if (meal.category?.isNotEmpty ==
+                                                    true)
+                                                  _info(
+                                                    Icons
+                                                        .restaurant_menu_outlined,
+                                                    meal.category!,
+                                                    green,
+                                                    muted,
+                                                  ),
+                                                if (meal.area?.isNotEmpty ==
+                                                    true)
+                                                  _info(
+                                                    Icons.public_rounded,
+                                                    meal.area!,
+                                                    green,
+                                                    muted,
+                                                  ),
+                                              ],
+                                            ),
+                                            const SizedBox(height: 22),
+
+                                            // Category
+                                            if (meal.category?.isNotEmpty ==
+                                                true) ...[
+                                              _sectionTitle(
+                                                l10n.category,
+                                                colors.onSurface,
                                               ),
-                                            ],
-                                          ),
-                                          const SizedBox(height: 7),
-                                          Row(
-                                            children: [
+                                              const SizedBox(height: 5),
                                               Text(
-                                                '\$${meal.price.toStringAsFixed(2)}',
-                                                style: AppTextStyles
-                                                    .heading24BlackBold
-                                                    .copyWith(
-                                                      fontSize: 22,
-                                                      color: green,
-                                                    ),
-                                              ),
-                                              const SizedBox(width: 13),
-                                              Icon(
-                                                Icons.star_rounded,
-                                                color: Colors.amber.shade700,
-                                                size: 17,
-                                              ),
-                                              const SizedBox(width: 3),
-                                              Text(
-                                                'Fresh meal',
+                                                meal.category!,
                                                 style: AppTextStyles
                                                     .body14GreyRegular
                                                     .copyWith(color: muted),
                                               ),
+                                              const SizedBox(height: 18),
                                             ],
-                                          ),
-                                          const SizedBox(height: 17),
-                                          Wrap(
-                                            spacing: 18,
-                                            runSpacing: 8,
-                                            children: [
-                                              _info(
-                                                Icons.verified_outlined,
-                                                'Fresh',
-                                                green,
-                                                muted,
-                                              ),
-                                              if (meal.category?.isNotEmpty ==
-                                                  true)
-                                                _info(
-                                                  Icons
-                                                      .restaurant_menu_outlined,
-                                                  meal.category!,
-                                                  green,
-                                                  muted,
-                                                ),
-                                              if (meal.area?.isNotEmpty == true)
-                                                _info(
-                                                  Icons.public_rounded,
-                                                  meal.area!,
-                                                  green,
-                                                  muted,
-                                                ),
-                                            ],
-                                          ),
-                                          const SizedBox(height: 22),
 
-                                          // Category
-                                          if (meal.category?.isNotEmpty ==
-                                              true) ...[
+                                            // Origin
+                                            if (meal.area?.isNotEmpty ==
+                                                true) ...[
+                                              _sectionTitle(
+                                                l10n.origin,
+                                                colors.onSurface,
+                                              ),
+                                              const SizedBox(height: 5),
+                                              Text(
+                                                meal.area!,
+                                                style: AppTextStyles
+                                                    .body14GreyRegular
+                                                    .copyWith(color: muted),
+                                              ),
+                                              const SizedBox(height: 22),
+                                            ],
+
+                                            // Description
                                             _sectionTitle(
-                                              'Category',
+                                              l10n.description,
                                               colors.onSurface,
                                             ),
-                                            const SizedBox(height: 5),
-                                            Text(
-                                              meal.category!,
-                                              style: AppTextStyles
-                                                  .body14GreyRegular
-                                                  .copyWith(color: muted),
+                                            const SizedBox(height: 8),
+
+                                            _buildDescription(
+                                              meal.instructions
+                                                          ?.trim()
+                                                          .isNotEmpty ==
+                                                      true
+                                                  ? meal.instructions!.trim()
+                                                  : l10n.noDescription,
+                                              muted,
+                                              green,
+                                              l10n,
                                             ),
-                                            const SizedBox(height: 18),
-                                          ],
 
-                                          // Origin
-                                          if (meal.area?.isNotEmpty ==
-                                              true) ...[
-                                            _sectionTitle(
-                                              'Origin',
-                                              colors.onSurface,
-                                            ),
-                                            const SizedBox(height: 5),
-                                            Text(
-                                              meal.area!,
-                                              style: AppTextStyles
-                                                  .body14GreyRegular
-                                                  .copyWith(color: muted),
-                                            ),
-                                            const SizedBox(height: 22),
-                                          ],
-
-                                          // Description
-                                          _sectionTitle(
-                                            'Description',
-                                            colors.onSurface,
-                                          ),
-                                          const SizedBox(height: 8),
-
-                                          _buildDescription(
-                                            meal.instructions
-                                                        ?.trim()
-                                                        .isNotEmpty ==
-                                                    true
-                                                ? meal.instructions!.trim()
-                                                : 'No description available.',
-                                            muted,
-                                            green,
-                                          ),
-
-                                          if (state.loading) ...[
-                                            const SizedBox(height: 15),
-                                            const LinearProgressIndicator(
-                                              minHeight: 2,
-                                            ),
-                                          ],
-
-                                          if (state.error != null) ...[
-                                            const SizedBox(height: 12),
-                                            Text(
-                                              state.error!,
-                                              style: TextStyle(
-                                                color: colors.error,
+                                            if (state.loading) ...[
+                                              const SizedBox(height: 15),
+                                              const LinearProgressIndicator(
+                                                minHeight: 2,
                                               ),
-                                            ),
-                                            TextButton(
-                                              onPressed: () => context
-                                                  .read<MealDetailsCubit>()
-                                                  .load(widget.mealId),
-                                              child: const Text('Try again'),
-                                            ),
-                                          ],
+                                            ],
 
-                                          const SizedBox(height: 25),
-
-                                          // Quantity & Add to Cart
-                                          Row(
-                                            children: [
-                                              Container(
-                                                height: 46,
-                                                decoration: BoxDecoration(
-                                                  color: colors.surface,
-                                                  borderRadius:
-                                                      BorderRadius.circular(14),
-                                                  border: Border.all(
-                                                    color: colors.outlineVariant
-                                                        .withValues(alpha: .55),
-                                                  ),
+                                            if (state.error != null) ...[
+                                              const SizedBox(height: 12),
+                                              Text(
+                                                localizedStateError(
+                                                  context,
+                                                  state.error,
                                                 ),
-                                                child: Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    _quantityButton(
-                                                      Icons.remove_rounded,
-                                                      quantity > 1
-                                                          ? () => setState(
-                                                              () => quantity--,
-                                                            )
-                                                          : null,
-                                                      muted,
-                                                    ),
-                                                    Text(
-                                                      '$quantity',
-                                                      style: AppTextStyles
-                                                          .body16DarkRegular
-                                                          .copyWith(
-                                                            fontWeight:
-                                                                FontWeight.w700,
-                                                            color: colors
-                                                                .onSurface,
-                                                          ),
-                                                    ),
-                                                    _quantityButton(
-                                                      Icons.add_rounded,
-                                                      () => setState(
-                                                        () => quantity++,
-                                                      ),
-                                                      colors.onSurface,
-                                                    ),
-                                                  ],
+                                                style: TextStyle(
+                                                  color: colors.error,
                                                 ),
                                               ),
-                                              const SizedBox(width: 10),
-                                              Expanded(
-                                                child: SizedBox(
+                                              TextButton(
+                                                onPressed: () => context
+                                                    .read<MealDetailsCubit>()
+                                                    .load(widget.mealId),
+                                                child: Text(l10n.tryAgain),
+                                              ),
+                                            ],
+
+                                            const SizedBox(height: 25),
+
+                                            // Quantity & Add to Cart
+                                            Row(
+                                              children: [
+                                                Container(
                                                   height: 46,
-                                                  child: ElevatedButton(
-                                                    onPressed: () {
-                                                      context
-                                                          .read<CartBloc>()
-                                                          .add(
-                                                            CartAdd(
-                                                              meal,
-                                                              quantity:
-                                                                  quantity,
-                                                            ),
-                                                          );
-                                                      ScaffoldMessenger.of(
-                                                        context,
-                                                      ).showSnackBar(
-                                                        SnackBar(
-                                                          content: Text(
-                                                            '$quantity x ${meal.name} added to cart',
-                                                          ),
-                                                          behavior:
-                                                              SnackBarBehavior
-                                                                  .floating,
+                                                  decoration: BoxDecoration(
+                                                    color: colors.surface,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          14,
                                                         ),
-                                                      );
-                                                    },
-                                                    style: ElevatedButton.styleFrom(
-                                                      backgroundColor: green,
-                                                      foregroundColor:
-                                                          colors.onPrimary,
-                                                      elevation: 0,
-                                                      shape: RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                              14,
-                                                            ),
-                                                      ),
-                                                    ),
-                                                    child: Text(
-                                                      'Add to Cart',
-                                                      style: AppTextStyles
-                                                          .button16WhiteSemiBold
-                                                          .copyWith(
-                                                            color: colors
-                                                                .onPrimary,
+                                                    border: Border.all(
+                                                      color: colors
+                                                          .outlineVariant
+                                                          .withValues(
+                                                            alpha: .55,
                                                           ),
                                                     ),
                                                   ),
+                                                  child: Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      _quantityButton(
+                                                        Icons.remove_rounded,
+                                                        quantity > 1
+                                                            ? () => setState(
+                                                                () =>
+                                                                    quantity--,
+                                                              )
+                                                            : null,
+                                                        muted,
+                                                      ),
+                                                      Text(
+                                                        '$quantity',
+                                                        style: AppTextStyles
+                                                            .body16DarkRegular
+                                                            .copyWith(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700,
+                                                              color: colors
+                                                                  .onSurface,
+                                                            ),
+                                                      ),
+                                                      _quantityButton(
+                                                        Icons.add_rounded,
+                                                        () => setState(
+                                                          () => quantity++,
+                                                        ),
+                                                        colors.onSurface,
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
+                                                const SizedBox(width: 10),
+                                                Expanded(
+                                                  child: SizedBox(
+                                                    height: 46,
+                                                    child: ElevatedButton(
+                                                      onPressed: () {
+                                                        context
+                                                            .read<CartBloc>()
+                                                            .add(
+                                                              CartAdd(
+                                                                meal,
+                                                                quantity:
+                                                                    quantity,
+                                                              ),
+                                                            );
+                                                        ScaffoldMessenger.of(
+                                                          context,
+                                                        ).showSnackBar(
+                                                          SnackBar(
+                                                            content: Text(
+                                                              '$quantity x ${meal.name} ${l10n.addedToCartQuantity}',
+                                                            ),
+                                                            behavior:
+                                                                SnackBarBehavior
+                                                                    .floating,
+                                                          ),
+                                                        );
+                                                      },
+                                                      style: ElevatedButton.styleFrom(
+                                                        backgroundColor: green,
+                                                        foregroundColor:
+                                                            colors.onPrimary,
+                                                        elevation: 0,
+                                                        shape: RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                14,
+                                                              ),
+                                                        ),
+                                                      ),
+                                                      child: Text(
+                                                        l10n.addToCart,
+                                                        style: AppTextStyles
+                                                            .button16WhiteSemiBold
+                                                            .copyWith(
+                                                              color: colors
+                                                                  .onPrimary,
+                                                            ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-        );
-      },
+          );
+        },
       ),
     );
   }
 
   // Expandable Description
-  Widget _buildDescription(String description, Color muted, Color green) {
+  Widget _buildDescription(
+    String description,
+    Color muted,
+    Color green,
+    AppLocalizations l10n,
+  ) {
     final descriptionStyle = AppTextStyles.body14GreyRegular.copyWith(
       color: muted,
       height: 1.6,
@@ -517,7 +552,7 @@ class _MealDetailsContentState extends State<_MealDetailsContent> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        isDescriptionExpanded ? 'See Less' : 'See More',
+                        isDescriptionExpanded ? l10n.seeLess : l10n.seeMore,
                         style: AppTextStyles.body14GreyRegular.copyWith(
                           color: green,
                           fontWeight: FontWeight.w700,
@@ -542,9 +577,13 @@ class _MealDetailsContentState extends State<_MealDetailsContent> {
     );
   }
 
-  Widget _topBar(BuildContext context, TextStyle titleStyle) => SizedBox(
+  Widget _topBar(
+    BuildContext context,
+    TextStyle titleStyle,
+    AppLocalizations l10n,
+  ) => SizedBox(
     height: 48,
-    child: Center(child: Text('Meal Details', style: titleStyle)),
+    child: Center(child: Text(l10n.mealDetails, style: titleStyle)),
   );
 
   Widget _roundIcon(

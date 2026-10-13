@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_delivery/l10n/app_localizations.dart';
+
 import '../../injection.dart';
 import '../../data/repositories/orders_repository.dart';
 import '../../domain/repositories/payment_method.dart';
@@ -7,7 +9,9 @@ import '../blocs/cart_bloc.dart';
 import '../blocs/cart_event.dart';
 import '../blocs/cart_state.dart';
 import 'orders_screen.dart';
+
 import 'package:food_delivery/presentation/widgets/custom_button.dart';
+
 import '../widgets/ui_parts.dart';
 
 class CheckoutScreen extends StatefulWidget {
@@ -17,7 +21,7 @@ class CheckoutScreen extends StatefulWidget {
 }
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
-  String  payment = 'Cash on Delivery';
+  PaymentMethod payment = const CashPayment();
   bool placing = false;
 
   Future<void> _placeOrder() async {
@@ -29,15 +33,17 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     try {
       await cart.waitForWrites();
       await getIt<OrdersRepository>().placeOrder(
-        items: state.items, subtotal: state.subtotal,
-        deliveryFee: state.deliveryFee, 
-        payment: payment == 'Cash on Delivery'
-            ? const CashPayment() : const CardPayment(),
+        items: state.items,
+        subtotal: state.subtotal,
+        deliveryFee: state.deliveryFee,
+        payment: payment,
       );
       cart.add(const CartClear());
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Order placed successfully!')),
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.orderPlacedSuccessfully),
+        ),
       );
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (_) => const OrdersScreen()),
@@ -45,44 +51,68 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       );
     } catch (_) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Could not place your order. Please try again.'),
-      ));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.couldNotPlaceOrder),
+        ),
+      );
     } finally {
       if (mounted) setState(() => placing = false);
     }
   }
+
   @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('Checkout')),
-    bottomNavigationBar: SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: CustomButton(
-          text: placing ? 'Placing Order...' : 'Place Order',
-          onPressed: placing ? null : _placeOrder,
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return Scaffold(
+      appBar: AppBar(title: Text(l10n.checkout)),
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: CustomButton(
+            text: placing ? l10n.placingOrder : l10n.placeOrder,
+            onPressed: placing ? null : _placeOrder,
+          ),
         ),
       ),
-    ),
-    body: ListView(
-      padding: const EdgeInsets.all(18),
-      children: [
-        const FoodPhoto(height: 150),
-        const SectionHeading('Payment Method'),
-        for (final option in ['Cash on Delivery', 'Credit / Debit Card'])
-          RadioListTile<String>(
-            title: Text(option),
-            value: option,
-            groupValue: payment,
-            onChanged: (v) => setState(() => payment = v!),
+      body: ListView(
+        padding: const EdgeInsets.all(18),
+        children: [
+          const FoodPhoto(height: 150),
+          SectionHeading(l10n.paymentMethod),
+          RadioListTile<bool>(
+            title: Text(l10n.cashOnDelivery),
+            value: true,
+            groupValue: payment is CashPayment,
+            onChanged: (v) => setState(() => payment = const CashPayment()),
           ),
-        const SectionHeading('Order Summary'),
-        BlocBuilder<CartBloc, CartState>(builder: (_, cart) => Column(children: [
-          ListTile(title: const Text('Subtotal'), trailing: Text('\$${cart.subtotal.toStringAsFixed(2)}')),
-          ListTile(title: const Text('Delivery Fee'), trailing: Text('\$${cart.deliveryFee.toStringAsFixed(2)}')),
-          ListTile(title: const Text('Total'), trailing: Text('\$${cart.total.toStringAsFixed(2)}')),
-        ])),
-      ],
-    ),
-  );
+          RadioListTile<bool>(
+            title: Text(l10n.creditDebitCard),
+            value: false,
+            groupValue: payment is CashPayment,
+            onChanged: (v) => setState(() => payment = const CardPayment()),
+          ),
+          SectionHeading(l10n.orderSummary),
+          BlocBuilder<CartBloc, CartState>(
+            builder: (_, cart) => Column(
+              children: [
+                ListTile(
+                  title: Text(l10n.subtotal),
+                  trailing: Text('\$${cart.subtotal.toStringAsFixed(2)}'),
+                ),
+                ListTile(
+                  title: Text(l10n.deliveryFee),
+                  trailing: Text('\$${cart.deliveryFee.toStringAsFixed(2)}'),
+                ),
+                ListTile(
+                  title: Text(l10n.total),
+                  trailing: Text('\$${cart.total.toStringAsFixed(2)}'),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }

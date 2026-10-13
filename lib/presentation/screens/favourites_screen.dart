@@ -1,5 +1,8 @@
+import 'package:food_delivery/core/helper/localized_state_error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_delivery/l10n/app_localizations.dart';
+
 import '../blocs/favourites_cubit.dart';
 import 'meal_details_screen.dart';
 import 'home_screen.dart';
@@ -8,61 +11,122 @@ class FavouritesScreen extends StatelessWidget {
   const FavouritesScreen({super.key});
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('Favourites')),
-    body: BlocBuilder<FavouritesCubit, FavouritesState>(
-      builder: (context, state) {
-        if (state.loading) return const Center(child: CircularProgressIndicator());
-        if (state.error != null && state.meals.isEmpty) {
-          return Center(child: Text(state.error!, textAlign: TextAlign.center));
-        }
-        if (state.meals.isEmpty) {
-          return Center(child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 24),
-            child: Column(mainAxisSize: MainAxisSize.min, children: [
-              Image.asset('assets/images/empty_favourites.png', height: 220,
-                errorBuilder: (_, __, ___) => const Icon(Icons.favorite_border_rounded, size: 100)),
-              const SizedBox(height: 8),
-              Text('No favourites yet', style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
-              const SizedBox(height: 10),
-              Text('Tap the heart on meals to save your favourites here.',
-                textAlign: TextAlign.center, style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant)),
-              const SizedBox(height: 24),
-              SizedBox(width: double.infinity, height: 50,
-                child: FilledButton(onPressed: () => Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (_) => const HomeScreen()), (_) => false),
-                  child: const Text('Explore Meals'))),
-            ])));
-        }
-        return ListView.separated(
-          padding: const EdgeInsets.all(18),
-          itemCount: state.meals.length,
-          separatorBuilder: (_, __) => const SizedBox(height: 12),
-          itemBuilder: (context, index) {
-            final meal = state.meals[index];
-            return Card(
-              clipBehavior: Clip.antiAlias,
-              child: ListTile(
-                contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                leading: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.network(meal.imageUrl, width: 64, height: 64,
-                    fit: BoxFit.cover, errorBuilder: (_, __, ___) =>
-                      const SizedBox(width: 64, child: Icon(Icons.restaurant))),
-                ),
-                title: Text(meal.name, maxLines: 2, overflow: TextOverflow.ellipsis),
-                subtitle: Text('\$${meal.price.toStringAsFixed(2)}'),
-                trailing: IconButton(
-                  icon: const Icon(Icons.favorite_rounded, color: Colors.red),
-                  onPressed: () => context.read<FavouritesCubit>().toggle(meal),
-                ),
-                onTap: () => Navigator.push(context, MaterialPageRoute(
-                  builder: (_) => MealDetailsScreen(mealId: meal.id, initialMeal: meal))),
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return Scaffold(
+      appBar: AppBar(title: Text(l10n.favourites)),
+      body: BlocBuilder<FavouritesCubit, FavouritesState>(
+        builder: (context, state) {
+          if (state.loading)
+            return const Center(child: CircularProgressIndicator());
+          if (state.error != null && state.meals.isEmpty) {
+            return Center(
+              child: Text(
+                localizedStateError(context, state.error),
+                textAlign: TextAlign.center,
               ),
             );
-          },
-        );
-      },
-    ),
-  );
+          }
+          if (state.meals.isEmpty) {
+            return Center(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 28,
+                  vertical: 24,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Image.asset(
+                      'assets/images/empty_favourites.png',
+                      height: 220,
+                      errorBuilder: (_, __, ___) =>
+                          const Icon(Icons.favorite_border_rounded, size: 100),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      l10n.noFavouritesYet,
+                      style: Theme.of(context).textTheme.headlineSmall
+                          ?.copyWith(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      l10n.noFavouritesDescription,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: FilledButton(
+                        onPressed: () => Navigator.of(context)
+                            .pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                builder: (_) => const HomeScreen(),
+                              ),
+                              (_) => false,
+                            ),
+                        child: Text(l10n.exploreMeals),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
+          return ListView.separated(
+            padding: const EdgeInsets.all(18),
+            itemCount: state.meals.length,
+            separatorBuilder: (_, __) => const SizedBox(height: 12),
+            itemBuilder: (context, index) {
+              final meal = state.meals[index];
+              return Card(
+                clipBehavior: Clip.antiAlias,
+                child: ListTile(
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
+                  ),
+                  leading: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.network(
+                      meal.imageUrl,
+                      width: 64,
+                      height: 64,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => const SizedBox(
+                        width: 64,
+                        child: Icon(Icons.restaurant),
+                      ),
+                    ),
+                  ),
+                  title: Text(
+                    meal.name,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  subtitle: Text('\$${meal.price.toStringAsFixed(2)}'),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.favorite_rounded, color: Colors.red),
+                    onPressed: () =>
+                        context.read<FavouritesCubit>().toggle(meal),
+                  ),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) =>
+                          MealDetailsScreen(mealId: meal.id, initialMeal: meal),
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
 }

@@ -1,8 +1,11 @@
+import 'package:food_delivery/core/helper/localized_state_error.dart';
+
 import '../blocs/cart_bloc.dart';
 import '../blocs/cart_event.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_delivery/l10n/app_localizations.dart';
 
 import '../../injection.dart';
 import '../blocs/home_cubit.dart';
@@ -31,6 +34,7 @@ class _HomeContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       bottomNavigationBar: const AppNav(index: 0),
       body: SafeArea(
@@ -54,11 +58,11 @@ class _HomeContent extends StatelessWidget {
                       color: colors.primary,
                       size: 30,
                     ),
-                    title: const Text(
-                      'Nearby Vendors',
-                      style: TextStyle(fontWeight: FontWeight.w700),
+                    title: Text(
+                      l10n.nearbyVendors,
+                      style: const TextStyle(fontWeight: FontWeight.w700),
                     ),
-                    subtitle: const Text('Explore 5 food spots on the map'),
+                    subtitle: Text(l10n.nearbyVendorsSubtitle),
                     trailing: Icon(
                       Icons.arrow_forward_ios_rounded,
                       color: colors.primary,
@@ -81,7 +85,7 @@ class _HomeContent extends StatelessWidget {
                   ),
                   decoration: InputDecoration(
                     prefixIcon: const Icon(Icons.search),
-                    hintText: 'Search for meals or vendors',
+                    hintText: l10n.searchHint,
                     filled: true,
                     fillColor: colors.surfaceContainerLow,
                     border: OutlineInputBorder(
@@ -97,9 +101,9 @@ class _HomeContent extends StatelessWidget {
                   child: PageView(
                     children: [
                       for (final title in [
-                        'Special Offers • Up to 50% OFF',
-                        'Fresh meals near you',
-                        'Street food favourites',
+                        l10n.specialOffers,
+                        l10n.freshMeals,
+                        l10n.streetFoodFavourites,
                       ])
                         Card(
                           color: colors.primaryContainer,
@@ -126,13 +130,13 @@ class _HomeContent extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SectionHeading('Categories'),
+                SectionHeading(l10n.categories),
                 HomeCategories(
                   categories: state.categories,
                   selected: state.selectedCategory,
                   onSelected: context.read<HomeCubit>().selectCategory,
                 ),
-                const SectionHeading('Hot Offers'),
+                SectionHeading(l10n.hotOffers),
                 SizedBox(
                   height: 130,
                   child: ListView.separated(
@@ -165,7 +169,7 @@ class _HomeContent extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SectionHeading('Popular Meals'),
+                SectionHeading(l10n.popularMeals),
                 if (state.loading)
                   const Padding(
                     padding: EdgeInsets.all(24),
@@ -174,24 +178,27 @@ class _HomeContent extends StatelessWidget {
                 if (state.error != null)
                   Column(
                     children: [
-                      Text(state.error!, textAlign: TextAlign.center),
+                      Text(
+                        localizedStateError(context, state.error),
+                        textAlign: TextAlign.center,
+                      ),
                       TextButton(
                         onPressed: () => state.selectedCategory == null
                             ? context.read<HomeCubit>().load()
                             : context.read<HomeCubit>().selectCategory(
                                 state.selectedCategory,
                               ),
-                        child: const Text('Try again'),
+                        child: Text(l10n.tryAgain),
                       ),
                     ],
                   ),
                 if (!state.loading &&
                     state.error == null &&
                     state.meals.isEmpty)
-                  const Center(
+                  Center(
                     child: Padding(
-                      padding: EdgeInsets.all(24),
-                      child: Text('No meals found.'),
+                      padding: const EdgeInsets.all(24),
+                      child: Text(l10n.noMealsFound),
                     ),
                   ),
                 if (state.meals.isNotEmpty)
@@ -222,7 +229,7 @@ class _HomeContent extends StatelessWidget {
                           context.read<CartBloc>().add(CartAdd(meal));
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text('Added to cart: ${meal.name}'),
+                              content: Text('${l10n.addedToCart} ${meal.name}'),
                               behavior: SnackBarBehavior.floating,
                               duration: const Duration(seconds: 2),
                             ),

@@ -7,12 +7,16 @@ abstract class PaymentMethod {
 
 class CashPayment implements PaymentMethod {
   const CashPayment();
-  @override String get id => 'cash';
-  @override Future<void> process(double total) async {}
+  @override
+  String get id => 'cash';
+  @override
+  Future<void> process(double total) async {}
 }
 
 class CardPayment implements PaymentMethod {
   const CardPayment();
-  @override String get id => 'card_demo';
-  @override Future<void> process(double total) async {}
+  @override
+  String get id => 'card_demo';
+  @override
+  Future<void> process(double total) async {}
 }

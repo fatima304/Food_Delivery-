@@ -1,3 +1,4 @@
+import 'package:food_delivery/l10n/app_localizations.dart';
 
 import 'package:flutter/material.dart';
 
@@ -35,51 +36,42 @@ class _SplashScreenState extends State<SplashScreen>
       curve: const Interval(0.0, 0.55, curve: Curves.easeOut),
     );
 
-    _logoScale = Tween<double>(
-      begin: 0.85,
-      end: 1.0,
-    ).animate(
+    _logoScale = Tween<double>(begin: 0.85, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
         curve: const Interval(0.0, 0.55, curve: Curves.easeOutBack),
       ),
     );
 
-    _logoSlide = Tween<Offset>(
-      begin: const Offset(0, 0.2),
-      end: Offset.zero,
-    ).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: const Interval(0.0, 0.55, curve: Curves.easeOut),
-      ),
-    );
+    _logoSlide = Tween<Offset>(begin: const Offset(0, 0.2), end: Offset.zero)
+        .animate(
+          CurvedAnimation(
+            parent: _controller,
+            curve: const Interval(0.0, 0.55, curve: Curves.easeOut),
+          ),
+        );
 
     _textOpacity = CurvedAnimation(
       parent: _controller,
       curve: const Interval(0.35, 1.0, curve: Curves.easeInOut),
     );
 
-    _textSlide = Tween<Offset>(
-      begin: const Offset(0, 0.3),
-      end: Offset.zero,
-    ).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: const Interval(0.35, 1.0, curve: Curves.easeOut),
-      ),
-    );
+    _textSlide = Tween<Offset>(begin: const Offset(0, 0.3), end: Offset.zero)
+        .animate(
+          CurvedAnimation(
+            parent: _controller,
+            curve: const Interval(0.35, 1.0, curve: Curves.easeOut),
+          ),
+        );
 
     _controller.forward();
 
-    Future.delayed(const Duration(milliseconds: 1900), () {
+    Future.delayed(const Duration(seconds: 10), () {
       if (!mounted) return;
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(
-          builder: (_) => const OnboardingScreen(),
-        ),
+        MaterialPageRoute(builder: (_) => const OnboardingScreen()),
       );
     });
   }
@@ -130,7 +122,7 @@ class _SplashScreenState extends State<SplashScreen>
                       ),
                     ),
                     const SizedBox(height: 6),
-                    const Text('Good Food. Brighter Mood.'),
+                    Text(AppLocalizations.of(context)!.goodFoodBrighterMood),
                   ],
                 ),
               ),

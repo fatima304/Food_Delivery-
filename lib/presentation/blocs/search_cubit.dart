@@ -11,7 +11,13 @@ class SearchCubit extends Cubit<SearchState> {
 
   Future<void> load() async {
     final requestId = ++_requestId;
-    emit(SearchState(categories: state.categories, meals: state.meals, loading: true));
+    emit(
+      SearchState(
+        categories: state.categories,
+        meals: state.meals,
+        loading: true,
+      ),
+    );
     try {
       final categories = await _repository.getCategories();
       final meals = await _repository.getMeals();
@@ -19,7 +25,13 @@ class SearchCubit extends Cubit<SearchState> {
       emit(SearchState(categories: categories, meals: meals.take(12).toList()));
     } catch (error) {
       if (isClosed || requestId != _requestId) return;
-      emit(SearchState(categories: state.categories, meals: state.meals, error: _errorMessage(error)));
+      emit(
+        SearchState(
+          categories: state.categories,
+          meals: state.meals,
+          error: _errorMessage(error),
+        ),
+      );
     }
   }
 
@@ -30,33 +42,67 @@ class SearchCubit extends Cubit<SearchState> {
       return;
     }
     final requestId = ++_requestId;
-    emit(SearchState(categories: state.categories, meals: state.meals, query: query, loading: true));
+    emit(
+      SearchState(
+        categories: state.categories,
+        meals: state.meals,
+        query: query,
+        loading: true,
+      ),
+    );
     try {
       final meals = await _repository.searchMeals(query);
       if (isClosed || requestId != _requestId) return;
-      emit(SearchState(categories: state.categories, meals: meals, query: query));
+      emit(
+        SearchState(categories: state.categories, meals: meals, query: query),
+      );
     } catch (error) {
       if (isClosed || requestId != _requestId) return;
-      emit(SearchState(categories: state.categories, query: query, error: _errorMessage(error)));
+      emit(
+        SearchState(
+          categories: state.categories,
+          query: query,
+          error: _errorMessage(error),
+        ),
+      );
     }
   }
 
   Future<void> selectCategory(String category) async {
     final requestId = ++_requestId;
-    emit(SearchState(categories: state.categories, selectedCategory: category, loading: true));
+    emit(
+      SearchState(
+        categories: state.categories,
+        selectedCategory: category,
+        loading: true,
+      ),
+    );
     try {
       final meals = await _repository.getMeals(category: category);
       if (isClosed || requestId != _requestId) return;
-      emit(SearchState(categories: state.categories, meals: meals, selectedCategory: category));
+      emit(
+        SearchState(
+          categories: state.categories,
+          meals: meals,
+          selectedCategory: category,
+        ),
+      );
     } catch (error) {
       if (isClosed || requestId != _requestId) return;
-      emit(SearchState(categories: state.categories, selectedCategory: category, error: _errorMessage(error)));
+      emit(
+        SearchState(
+          categories: state.categories,
+          selectedCategory: category,
+          error: _errorMessage(error),
+        ),
+      );
     }
   }
 
   String _errorMessage(Object error) {
     if (error is DioException) {
-      if (error.type == DioExceptionType.connectionError || error.type == DioExceptionType.connectionTimeout) {
+      if (error.type == DioExceptionType.connectionError ||
+          error.type == DioExceptionType.connectionTimeout) {
         return 'Check your internet connection and try again.';
       }
     }

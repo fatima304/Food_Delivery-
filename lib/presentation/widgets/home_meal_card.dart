@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_delivery/l10n/app_localizations.dart';
+
 import '../blocs/favourites_cubit.dart';
 
 import '../../data/models/meal_model.dart';
@@ -14,6 +16,7 @@ class HomeMealCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final dark = Theme.of(context).brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       decoration: BoxDecoration(
         color: scheme.surface,
@@ -29,38 +32,47 @@ class HomeMealCard extends StatelessWidget {
               width: double.infinity,
               child: Stack(
                 fit: StackFit.expand,
-                children: [Image.network(
-                meal.imageUrl,
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => ColoredBox(
-                  color: scheme.surfaceContainerLow,
-                  child: Center(
-                    child: Icon(
-                      Icons.restaurant_menu_rounded,
-                      color: scheme.primary,
-                      size: 36,
+                children: [
+                  Image.network(
+                    meal.imageUrl,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => ColoredBox(
+                      color: scheme.surfaceContainerLow,
+                      child: Center(
+                        child: Icon(
+                          Icons.restaurant_menu_rounded,
+                          color: scheme.primary,
+                          size: 36,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-              Positioned(top: 7, right: 7,
-                child: BlocBuilder<FavouritesCubit, FavouritesState>(
-                  builder: (context, state) => Material(
-                    color: scheme.surface.withValues(alpha: .9),
-                    shape: const CircleBorder(),
-                    child: IconButton(
-                      iconSize: 20,
-                      visualDensity: VisualDensity.compact,
-                      tooltip: 'Toggle favourite',
-                      onPressed: () => context.read<FavouritesCubit>().toggle(meal),
-                      icon: Icon(state.contains(meal.id)
-                          ? Icons.favorite_rounded : Icons.favorite_border_rounded,
-                          color: state.contains(meal.id) ? Colors.red : scheme.onSurface),
+                  Positioned(
+                    top: 7,
+                    right: 7,
+                    child: BlocBuilder<FavouritesCubit, FavouritesState>(
+                      builder: (context, state) => Material(
+                        color: scheme.surface.withValues(alpha: .9),
+                        shape: const CircleBorder(),
+                        child: IconButton(
+                          iconSize: 20,
+                          visualDensity: VisualDensity.compact,
+                          tooltip: l10n.toggleFavourite,
+                          onPressed: () =>
+                              context.read<FavouritesCubit>().toggle(meal),
+                          icon: Icon(
+                            state.contains(meal.id)
+                                ? Icons.favorite_rounded
+                                : Icons.favorite_border_rounded,
+                            color: state.contains(meal.id)
+                                ? Colors.red
+                                : scheme.onSurface,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-              ],
+                ],
               ),
             ),
           ),

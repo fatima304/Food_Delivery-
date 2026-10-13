@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery/l10n/app_localizations.dart';
 
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_images.dart';
@@ -9,26 +10,29 @@ class SectionHeading extends StatelessWidget {
   final String title;
   final VoidCallback? action;
   @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.symmetric(vertical: 12),
-    child: Row(
-      children: [
-        Expanded(
-          child: Text(
-            title,
-            style: AppTextStyles.heading24BlackBold.copyWith(
-              fontSize: 18,
-              color: Theme.of(context).brightness == Brightness.dark
-                  ? Theme.of(context).colorScheme.onSurface
-                  : AppColors.black,
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              title,
+              style: AppTextStyles.heading24BlackBold.copyWith(
+                fontSize: 18,
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? Theme.of(context).colorScheme.onSurface
+                    : AppColors.black,
+              ),
             ),
           ),
-        ),
-        if (action != null)
-          TextButton(onPressed: action, child: const Text('See all')),
-      ],
-    ),
-  );
+          if (action != null)
+            TextButton(onPressed: action, child: Text(l10n.seeAll)),
+        ],
+      ),
+    );
+  }
 }
 
 class FoodPhoto extends StatelessWidget {
@@ -73,9 +77,11 @@ class UiCard extends StatelessWidget {
   );
 }
 
-void showDemo(
-  BuildContext context, [
-  String message = 'UI preview only — connect your Bloc / Firebase',
-]) =>
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(message)));
+void showDemo(BuildContext context, [String? message]) =>
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message ?? AppLocalizations.of(context)!.demoPreviewMessage,
+        ),
+      ),
+    );

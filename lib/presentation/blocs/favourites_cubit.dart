@@ -1,11 +1,17 @@
 import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../data/models/meal_model.dart';
 import '../../data/repositories/favourites_repository.dart';
 
 class FavouritesState {
-  const FavouritesState({this.meals = const [], this.loading = true, this.error});
+  const FavouritesState({
+    this.meals = const [],
+    this.loading = true,
+    this.error,
+  });
   final List<MealModel> meals;
   final bool loading;
   final String? error;
@@ -13,7 +19,8 @@ class FavouritesState {
 }
 
 class FavouritesCubit extends Cubit<FavouritesState> {
-  FavouritesCubit(this._repository, this._auth) : super(const FavouritesState()) {
+  FavouritesCubit(this._repository, this._auth)
+    : super(const FavouritesState()) {
     _authSubscription = _auth.authStateChanges().listen(_onAuthChanged);
     _onAuthChanged(_auth.currentUser);
   }
@@ -38,19 +45,26 @@ class FavouritesCubit extends Cubit<FavouritesState> {
       return;
     }
     if (!isClosed) emit(const FavouritesState());
-    _subscription = _repository.watchFor(uid).listen(
-      (meals) {
-        if (!isClosed && generation == _generation) {
-          emit(FavouritesState(meals: meals, loading: false));
-        }
-      },
-      onError: (Object error) {
-        if (!isClosed && generation == _generation) {
-          emit(FavouritesState(meals: state.meals, loading: false,
-            error: 'Could not load favourites. Check your connection and Firestore rules.'));
-        }
-      },
-    );
+    _subscription = _repository
+        .watchFor(uid)
+        .listen(
+          (meals) {
+            if (!isClosed && generation == _generation) {
+              emit(FavouritesState(meals: meals, loading: false));
+            }
+          },
+          onError: (Object error) {
+            if (!isClosed && generation == _generation) {
+              emit(
+                FavouritesState(
+                  meals: state.meals,
+                  loading: false,
+                  error: 'Could not load favourites. Check your connection and Firestore rules.',
+                ),
+              );
+            }
+          },
+        );
   }
 
   Future<void> toggle(MealModel meal) async {
@@ -62,8 +76,14 @@ class FavouritesCubit extends Cubit<FavouritesState> {
         await _repository.save(meal);
       }
     } catch (_) {
-      if (!isClosed) emit(FavouritesState(meals: state.meals, loading: false,
-        error: 'Could not update favourites. Please try again.'));
+      if (!isClosed)
+        emit(
+          FavouritesState(
+            meals: state.meals,
+            loading: false,
+            error: 'Could not update favourites. Please try again.',
+          ),
+        );
     } finally {
       _pending.remove(meal.id);
     }

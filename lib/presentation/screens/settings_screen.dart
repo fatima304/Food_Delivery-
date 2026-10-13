@@ -1,6 +1,8 @@
+import 'package:food_delivery/core/helper/localized_state_error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/core/helper/app_settings.dart';
+import 'package:food_delivery/l10n/app_localizations.dart';
 
 import '../../injection.dart';
 import '../blocs/device_info_cubit.dart';
@@ -10,50 +12,60 @@ class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
   @override
-  Widget build(BuildContext context) => BlocProvider(
-    create: (_) => getIt<DeviceInfoCubit>()..getDeviceInfo(),
-    child: Scaffold(
-      appBar: AppBar(title: const Text('Settings')),
-      body: ListView(
-        children: [
-          ValueListenableBuilder<bool>(
-            valueListenable: AppSettings.darkMode,
-            builder: (_, dark, _) => SwitchListTile(
-              title: const Text('Dark Theme'),
-              value: dark,
-              onChanged: (value) => AppSettings.darkMode.value = value,
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return BlocProvider(
+      create: (_) => getIt<DeviceInfoCubit>()..getDeviceInfo(),
+      child: Scaffold(
+        appBar: AppBar(title: Text(l10n.settings)),
+        body: ListView(
+          children: [
+            ValueListenableBuilder<bool>(
+              valueListenable: AppSettings.darkMode,
+              builder: (_, dark, _) => SwitchListTile(
+                title: Text(l10n.darkTheme),
+                value: dark,
+                onChanged: (value) async {
+                  await AppSettings.setDarkMode(value);
+                  // Theme will update automatically via ValueListenableBuilder in main.dart
+                },
+              ),
             ),
-          ),
-          ValueListenableBuilder<bool>(
-            valueListenable: AppSettings.arabic,
-            builder: (_, arabic, _) => SwitchListTile(
-              title: const Text('Language: Arabic'),
-              value: arabic,
-              onChanged: (value) => AppSettings.arabic.value = value,
+            ValueListenableBuilder<bool>(
+              valueListenable: AppSettings.arabic,
+              builder: (_, arabic, _) => SwitchListTile(
+                title: Text(l10n.languageArabic),
+                value: arabic,
+                onChanged: (value) async {
+                  await AppSettings.setArabic(value);
+                },
+              ),
             ),
-          ),
-          BlocBuilder<DeviceInfoCubit, DeviceInfoState>(
-            builder: (context, state) {
-              String subtitle;
-              if (state.status == DeviceInfoStatus.initial ||
-                  state.status == DeviceInfoStatus.loading) {
-                subtitle = 'Loading device information...';
-              } else if (state.status == DeviceInfoStatus.success &&
-                  state.deviceInfo != null) {
-                final info = state.deviceInfo!;
-                subtitle = '${info.modelName} • OS ${info.osVersion}';
-              } else {
-                subtitle = state.errorMessage ?? 'Device details unavailable';
-              }
-              return ListTile(
-                // leading: const Icon(Icons.phone_android_outlined),
-                title: Text('About App'),
-                subtitle: Text(subtitle),
-              );
-            },
-          ),
-        ],
+            BlocBuilder<DeviceInfoCubit, DeviceInfoState>(
+              builder: (context, state) {
+                String subtitle;
+                if (state.status == DeviceInfoStatus.initial ||
+                    state.status == DeviceInfoStatus.loading) {
+                  subtitle = l10n.loadingDeviceInfo;
+                } else if (state.status == DeviceInfoStatus.success &&
+                    state.deviceInfo != null) {
+                  final info = state.deviceInfo!;
+                  subtitle = '${info.modelName} • OS ${info.osVersion}';
+                } else {
+                  subtitle = state.errorMessage == null
+                      ? l10n.deviceDetailsUnavailable
+                      : localizedStateError(context, state.errorMessage);
+                }
+                return ListTile(
+                  // leading: const Icon(Icons.phone_android_outlined),
+                  title: Text(l10n.aboutApp),
+                  subtitle: Text(subtitle),
+                );
+              },
+            ),
+          ],
+        ),
       ),
-    ),
-  );
+    );
+  }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/core/constants/app_colors.dart';
 import 'package:food_delivery/core/constants/app_images.dart';
+import 'package:food_delivery/l10n/app_localizations.dart';
 import 'package:food_delivery/presentation/widgets/custom_button.dart';
 
 /// Empty cart illustration and action; kept separate from cart business logic.
@@ -12,6 +13,7 @@ class EmptyCartView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
     return Center(
       child: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 24),
@@ -21,7 +23,7 @@ class EmptyCartView extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Image.asset(
-               AppImages.emptyCart,
+                AppImages.emptyCart,
                 width: 270,
                 height: 230,
                 fit: BoxFit.contain,
@@ -33,7 +35,7 @@ class EmptyCartView extends StatelessWidget {
               ),
               const SizedBox(height: 24),
               Text(
-                'Your cart is empty',
+                l10n.yourCartEmpty,
                 textAlign: TextAlign.center,
                 style: theme.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.w700,
@@ -41,7 +43,7 @@ class EmptyCartView extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               Text(
-                'Add some delicious meals\nand get started!',
+                l10n.addMealsToGetStarted,
                 textAlign: TextAlign.center,
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: AppColors.textGrey,
@@ -49,10 +51,7 @@ class EmptyCartView extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 30),
-              CustomButton(
-                text: 'Browse Meals',
-                onPressed: onBrowseMeals,
-              ),
+              CustomButton(text: l10n.browseMeals, onPressed: onBrowseMeals),
             ],
           ),
         ),

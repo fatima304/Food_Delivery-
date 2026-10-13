@@ -1,7 +1,12 @@
 import '../../domain/entities/cart_item.dart';
 
 class CartState {
-  const CartState({this.items = const [], this.revision = 0, this.loading = false, this.error});
+  const CartState({
+    this.items = const [],
+    this.revision = 0,
+    this.loading = false,
+    this.error,
+  });
   final List<CartItem> items;
   final int revision;
   final bool loading;

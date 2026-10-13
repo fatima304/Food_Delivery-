@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
 import '../../domain/entities/cart_item.dart';
 import '../../domain/repositories/payment_method.dart';
 import '../models/order_model.dart';
@@ -12,14 +13,23 @@ class OrdersRepository {
   Stream<List<OrderModel>> watchOrders() {
     final uid = auth.currentUser?.uid;
     if (uid == null) return Stream.value([]);
-    return db.collection('users').doc(uid).collection('orders')
-        .orderBy('createdAt', descending: true).snapshots()
-        .map((snapshot) => snapshot.docs.map(OrderModel.fromFirestore).toList());
+    return db
+        .collection('users')
+        .doc(uid)
+        .collection('orders')
+        .orderBy('createdAt', descending: true)
+        .snapshots()
+        .map(
+          (snapshot) => snapshot.docs.map(OrderModel.fromFirestore).toList(),
+        );
   }
 
-  Future<String> placeOrder({required List<CartItem> items,
-    required double subtotal, required double deliveryFee,
-    required PaymentMethod payment,}) async {
+  Future<String> placeOrder({
+    required List<CartItem> items,
+    required double subtotal,
+    required double deliveryFee,
+    required PaymentMethod payment,
+  }) async {
     final uid = auth.currentUser?.uid;
     if (uid == null) throw StateError('Please sign in to place an order.');
     if (items.isEmpty) throw StateError('Your cart is empty.');
@@ -31,14 +41,18 @@ class OrdersRepository {
     final batch = db.batch();
     batch.set(order, {
       'userId': uid,
-      'items': items.map((item) => {
-        'mealId': item.meal.id,
-        'name': item.meal.name,
-        'imageUrl': item.meal.imageUrl,
-        'quantity': item.quantity,
-        'unitPrice': item.meal.price,
-        'lineTotal': item.total,
-      }).toList(),
+      'items': items
+          .map(
+            (item) => {
+              'mealId': item.meal.id,
+              'name': item.meal.name,
+              'imageUrl': item.meal.imageUrl,
+              'quantity': item.quantity,
+              'unitPrice': item.meal.price,
+              'lineTotal': item.total,
+            },
+          )
+          .toList(),
       'subtotal': subtotal,
       'deliveryFee': deliveryFee,
       'total': total,

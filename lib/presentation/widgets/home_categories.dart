@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery/l10n/app_localizations.dart';
 
 import '../../data/models/meal_category_model.dart';
 
@@ -16,6 +17,7 @@ class HomeCategories extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
     return SizedBox(
       height: 43,
       child: ListView.separated(
@@ -38,7 +40,7 @@ class HomeCategories extends StatelessWidget {
                 borderRadius: BorderRadius.circular(18),
               ),
               child: Text(
-                name ?? 'All',
+                name ?? l10n.all,
                 style: TextStyle(
                   color: active ? colors.primary : colors.onSurface,
                   fontWeight: active ? FontWeight.w600 : FontWeight.w500,

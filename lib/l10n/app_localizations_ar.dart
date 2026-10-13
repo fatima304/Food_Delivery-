@@ -1,6 +1,5 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
-
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -73,8 +72,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get onboardingAccent => 'باب منزلك';
 
   @override
-  String get onboardingDescription =>
-      'اكتشف أفضل المطاعم القريبة منك واستمتع بوجباتك المفضلة في المنزل.';
+  String get onboardingDescription => 'اكتشف أفضل المطاعم القريبة منك واستمتع بوجباتك المفضلة في المنزل.';
 
   @override
   String get getStarted => 'ابدأ الآن  ←';
@@ -92,8 +90,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get dismiss => 'إغلاق';
 
   @override
-  String get sessionError =>
-      'تعذر التحقق من جلسة الدخول. يرجى إعادة تشغيل التطبيق.';
+  String get sessionError => 'تعذر التحقق من جلسة الدخول. يرجى إعادة تشغيل التطبيق.';
 
   @override
   String get fullNameRequired => 'الاسم الكامل مطلوب';
@@ -141,16 +138,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get tooManyAttempts => 'محاولات كثيرة جدًا. حاول مرة أخرى لاحقًا.';
 
   @override
-  String get incorrectCredentials =>
-      'البريد الإلكتروني أو كلمة المرور غير صحيحين. حاول مجددًا.';
+  String get incorrectCredentials => 'البريد الإلكتروني أو كلمة المرور غير صحيحين. حاول مجددًا.';
 
   @override
-  String get noInternet =>
-      'لا يوجد اتصال بالإنترنت. تحقق من الاتصال وحاول مجددًا.';
+  String get noInternet => 'لا يوجد اتصال بالإنترنت. تحقق من الاتصال وحاول مجددًا.';
 
   @override
-  String get emailUnavailable =>
-      'تسجيل الدخول بالبريد غير متاح حاليًا. تواصل مع الدعم.';
+  String get emailUnavailable => 'تسجيل الدخول بالبريد غير متاح حاليًا. تواصل مع الدعم.';
 
   @override
   String get unableRequest => 'تعذر إكمال طلبك. حاول مرة أخرى.';
@@ -160,4 +154,397 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get unexpectedError => 'حدث خطأ غير متوقع. حاول مرة أخرى.';
+
+  @override
+  String get nearbyVendors => 'المطاعم القريبة';
+
+  @override
+  String get nearbyVendorsSubtitle => 'اكتشف 5 أماكن طعام على الخريطة';
+
+  @override
+  String get searchHint => 'ابحث عن وجبات أو مطاعم';
+
+  @override
+  String get specialOffers => 'عروض خاصة • حتى 50% خصم';
+
+  @override
+  String get freshMeals => 'وجبات طازجة بالقرب منك';
+
+  @override
+  String get streetFoodFavourites => 'المأكولات الشعبية المفضلة';
+
+  @override
+  String get categories => 'الفئات';
+
+  @override
+  String get hotOffers => 'العروض الساخنة';
+
+  @override
+  String get popularMeals => 'الوجبات الشائعة';
+
+  @override
+  String get noMealsFound => 'لم يتم العثور على وجبات.';
+
+  @override
+  String get tryAgain => 'حاول مرة أخرى';
+
+  @override
+  String get addedToCart => 'تمت الإضافة إلى السلة:';
+
+  @override
+  String get myCart => 'سلة المشتريات';
+
+  @override
+  String get orderSummary => 'ملخص الطلب';
+
+  @override
+  String get subtotal => 'المجموع الفرعي';
+
+  @override
+  String get deliveryFee => 'رسوم التوصيل';
+
+  @override
+  String get total => 'الإجمالي';
+
+  @override
+  String get proceedToCheckout => 'المتابعة للدفع';
+
+  @override
+  String get noFavouritesYet => 'لا توجد مفضلات بعد';
+
+  @override
+  String get noFavouritesDescription => 'اضغط على القلب على الوجبات لحفظ مفضلاتك هنا.';
+
+  @override
+  String get exploreMeals => 'استكشف الوجبات';
+
+  @override
+  String get profile => 'الملف الشخصي';
+
+  @override
+  String get orderHistory => 'سجل الطلبات';
+
+  @override
+  String get settings => 'الإعدادات';
+
+  @override
+  String get photoSaved => 'تم حفظ الصورة على هذا الجهاز.';
+
+  @override
+  String get couldNotSavePhoto => 'تعذر حفظ الصورة:';
+
+  @override
+  String get couldNotUpdateName => 'تعذر تحديث الاسم:';
+
+  @override
+  String get comingSoon => 'قادم قريبًا';
+
+  @override
+  String get verifyingIdentity => 'جارٍ التحقق من هويتك...';
+
+  @override
+  String get unlockProfile => 'إلغاء قفل الملف الشخصي';
+
+  @override
+  String get biometricRequired => 'مطلوب المصادقة البيومترية.';
+
+  @override
+  String get backToHome => 'العودة للرئيسية';
+
+  @override
+  String get streetBiteUser => 'مستخدم StreetBite';
+
+  @override
+  String get editName => 'تعديل الاسم';
+
+  @override
+  String get cancel => 'إلغاء';
+
+  @override
+  String get save => 'حفظ';
+
+  @override
+  String get darkTheme => 'الوضع الداكن';
+
+  @override
+  String get languageArabic => 'اللغة: العربية';
+
+  @override
+  String get aboutApp => 'حول التطبيق';
+
+  @override
+  String get loadingDeviceInfo => 'جارٍ تحميل معلومات الجهاز...';
+
+  @override
+  String get deviceDetailsUnavailable => 'تفاصيل الجهاز غير متاحة';
+
+  @override
+  String get home => 'الرئيسية';
+
+  @override
+  String get explore => 'استكشاف';
+
+  @override
+  String get cart => 'السلة';
+
+  @override
+  String get orders => 'الطلبات';
+
+  @override
+  String get exploreMealsTitle => 'استكشف الوجبات';
+
+  @override
+  String get searchMealsHint => 'ابحث عن وجبات بالاسم';
+
+  @override
+  String get popularCategories => 'الفئات الشائعة';
+
+  @override
+  String get categoryMeals => 'وجبات';
+
+  @override
+  String get resultsFor => 'نتائج البحث عن';
+
+  @override
+  String get recommendedForYou => 'موصى به لك';
+
+  @override
+  String get noMealsSearch => 'لم يتم العثور على وجبات. جرب بحثًا آخر.';
+
+  @override
+  String get meal => 'وجبة';
+
+  @override
+  String get couldNotLoadOrders => 'تعذر تحميل طلباتك. حاول مرة أخرى.';
+
+  @override
+  String get noOrdersYet => 'لا توجد طلبات بعد';
+
+  @override
+  String get noOrdersDescription => 'ستظهر طلباتك المكتملة هنا.';
+
+  @override
+  String get ordersCount => 'طلب';
+
+  @override
+  String get mealDetails => 'تفاصيل الوجبة';
+
+  @override
+  String get mealNotFound => 'الوجبة غير موجودة';
+
+  @override
+  String get freshMeal => 'وجبة طازجة';
+
+  @override
+  String get fresh => 'طازج';
+
+  @override
+  String get category => 'الفئة';
+
+  @override
+  String get origin => 'المنشأ';
+
+  @override
+  String get description => 'الوصف';
+
+  @override
+  String get noDescription => 'لا يوجد وصف متاح.';
+
+  @override
+  String get seeLess => 'عرض أقل';
+
+  @override
+  String get seeMore => 'عرض المزيد';
+
+  @override
+  String get addToCart => 'أضف إلى السلة';
+
+  @override
+  String get addedToCartQuantity => 'تمت الإضافة إلى السلة';
+
+  @override
+  String get yourCartEmpty => 'سلة المشتريات فارغة';
+
+  @override
+  String get addMealsToGetStarted => 'أضف بعض الوجبات اللذيذة\nوابدأ الآن!';
+
+  @override
+  String get browseMeals => 'تصفح الوجبات';
+
+  @override
+  String get favourites => 'المفضلات';
+
+  @override
+  String get seeAll => 'عرض الكل';
+
+  @override
+  String get checkout => 'الدفع';
+
+  @override
+  String get placingOrder => 'جارٍ إرسال الطلب...';
+
+  @override
+  String get placeOrder => 'إرسال الطلب';
+
+  @override
+  String get orderPlacedSuccessfully => 'تم إرسال الطلب بنجاح!';
+
+  @override
+  String get couldNotPlaceOrder => 'تعذر إرسال طلبك. حاول مرة أخرى.';
+
+  @override
+  String get paymentMethod => 'طريقة الدفع';
+
+  @override
+  String get cashOnDelivery => 'الدفع عند الاستلام';
+
+  @override
+  String get creditDebitCard => 'بطاقة ائتمان/خصم';
+
+  @override
+  String get showAllVendors => 'عرض جميع المطاعم';
+
+  @override
+  String get exploreDemoVendors => 'استكشف 5 مطاعم تجريبية في مصر';
+
+  @override
+  String get processing => 'قيد المعالجة';
+
+  @override
+  String get orderPrefix => 'طلب #';
+
+  @override
+  String get closeDetails => 'إغلاق التفاصيل';
+
+  @override
+  String get showOnMap => 'عرض على الخريطة';
+
+  @override
+  String get demoVendor => 'مطعم تجريبي';
+
+  @override
+  String get all => 'الكل';
+
+  @override
+  String get freshAndDelicious => 'طازجة ولذيذة';
+
+  @override
+  String get toggleFavourite => 'تبديل المفضلة';
+
+  @override
+  String get goodFoodBrighterMood => 'طعام جيد. مزاج أفضل.';
+
+  @override
+  String get editNameTooltip => 'تعديل الاسم';
+
+  @override
+  String get demoPreviewMessage => 'معاينة للواجهة فقط — اربطها بـ Bloc أو Firebase';
+
+  @override
+  String get demoGrilledSalad => 'سلطة دجاج مشوي';
+
+  @override
+  String get demoMargheritaPizza => 'بيتزا مارغريتا';
+
+  @override
+  String get demoCheeseBurger => 'برجر بالجبن';
+
+  @override
+  String get demoChickenWrap => 'راب الدجاج';
+
+  @override
+  String get errorMealDetailsUnavailable => 'تفاصيل الوجبة غير متاحة.';
+
+  @override
+  String get errorCheckInternet => 'تحقق من اتصال الإنترنت وحاول مرة أخرى.';
+
+  @override
+  String get errorLoadMealDetails => 'تعذر تحميل تفاصيل الوجبة. حاول مرة أخرى.';
+
+  @override
+  String get errorSomethingWrong => 'حدث خطأ ما. حاول مرة أخرى.';
+
+  @override
+  String get errorLoadFavourites => 'تعذر تحميل المفضلة. تحقق من الاتصال وإعدادات Firestore.';
+
+  @override
+  String get errorUpdateFavourites => 'تعذر تحديث المفضلة. حاول مرة أخرى.';
+
+  @override
+  String get errorRequestTimedOut => 'انتهت مهلة الطلب. حاول مرة أخرى.';
+
+  @override
+  String get errorCouldNotConnect => 'تعذر الاتصال. تحقق من الإنترنت.';
+
+  @override
+  String get errorLoadMealsNow => 'تعذر تحميل الوجبات الآن. حاول مرة أخرى.';
+
+  @override
+  String get errorLoadingMeals => 'حدث خطأ أثناء تحميل الوجبات.';
+
+  @override
+  String get errorBiometricFailed => 'أُلغي التحقق البيومتري أو فشل.';
+
+  @override
+  String get errorAuthenticate => 'تعذر التحقق من الهوية. حاول مرة أخرى.';
+
+  @override
+  String get errorLoadMeals => 'تعذر تحميل الوجبات. حاول مرة أخرى.';
+
+  @override
+  String get errorLoadDeviceInfo => 'تعذر تحميل معلومات الجهاز.';
+
+  @override
+  String get errorLoadCart => 'تعذر تحميل السلة. حاول مرة أخرى.';
+
+  @override
+  String get errorSignInFirst => 'يرجى تسجيل الدخول أولًا.';
+
+  @override
+  String get vendorCityCairo => 'القاهرة';
+
+  @override
+  String get vendorCityGiza => 'الجيزة';
+
+  @override
+  String get vendorCityAlexandria => 'الإسكندرية';
+
+  @override
+  String get vendorCityMansoura => 'المنصورة';
+
+  @override
+  String get vendorCityTanta => 'طنطا';
+
+  @override
+  String get vendorCuisineEgyptian => 'مصري';
+
+  @override
+  String get vendorCuisineGrills => 'مشويات';
+
+  @override
+  String get vendorCuisineSeafood => 'مأكولات بحرية';
+
+  @override
+  String get vendorCuisineItalian => 'إيطالي';
+
+  @override
+  String get vendorCuisineFastFood => 'وجبات سريعة';
+
+  @override
+  String get orderStatusPending => 'قيد الانتظار';
+
+  @override
+  String get orderStatusPlaced => 'تم الطلب';
+
+  @override
+  String get orderStatusProcessing => 'قيد التجهيز';
+
+  @override
+  String get orderStatusCompleted => 'مكتمل';
+
+  @override
+  String get orderStatusDelivered => 'تم التوصيل';
+
+  @override
+  String get orderStatusCancelled => 'ملغي';
 }

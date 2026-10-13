@@ -1,7 +1,10 @@
+import 'package:food_delivery/core/helper/localized_state_error.dart';
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_delivery/l10n/app_localizations.dart';
 
 import '../../data/models/meal_model.dart';
 import '../../injection.dart';
@@ -63,8 +66,9 @@ class _SearchContentState extends State<_SearchContent> {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: const Text('Explore Meals')),
+      appBar: AppBar(title: Text(l10n.exploreMealsTitle)),
       bottomNavigationBar: const AppNav(index: 1),
       body: BlocBuilder<SearchCubit, SearchState>(
         builder: (context, state) => RefreshIndicator(
@@ -90,7 +94,7 @@ class _SearchContentState extends State<_SearchContent> {
                       },
                       decoration: InputDecoration(
                         prefixIcon: const Icon(Icons.search_rounded),
-                        hintText: 'Search meals by name',
+                        hintText: l10n.searchMealsHint,
                         filled: true,
                         fillColor: colors.surfaceContainerLow,
                         border: OutlineInputBorder(
@@ -112,7 +116,7 @@ class _SearchContentState extends State<_SearchContent> {
                     ),
                     const SizedBox(height: 22),
                     Text(
-                      'Popular Categories',
+                      l10n.popularCategories,
                       style: Theme.of(context).textTheme.titleLarge
                           ?.copyWith(fontWeight: FontWeight.bold),
                     ),
@@ -175,15 +179,14 @@ class _SearchContentState extends State<_SearchContent> {
                         Expanded(
                           child: Text(
                             state.selectedCategory != null
-                                ? '${state.selectedCategory} Meals'
+                                ? '${state.selectedCategory} ${l10n.categoryMeals}'
                                 : state.query.isNotEmpty
-                                ? 'Results for "${state.query}"'
-                                : 'Recommended for You',
+                                ? '${l10n.resultsFor} "${state.query}"'
+                                : l10n.recommendedForYou,
                             style: Theme.of(context).textTheme.titleLarge
                                 ?.copyWith(fontWeight: FontWeight.bold),
                           ),
                         ),
-                      
                       ],
                     ),
                     const SizedBox(height: 12),
@@ -200,7 +203,10 @@ class _SearchContentState extends State<_SearchContent> {
                           children: [
                             const Icon(Icons.wifi_off_rounded, size: 44),
                             const SizedBox(height: 8),
-                            Text(state.error!, textAlign: TextAlign.center),
+                            Text(
+                              localizedStateError(context, state.error),
+                              textAlign: TextAlign.center,
+                            ),
                             TextButton.icon(
                               onPressed: () {
                                 if (state.selectedCategory != null) {
@@ -216,7 +222,7 @@ class _SearchContentState extends State<_SearchContent> {
                                 }
                               },
                               icon: const Icon(Icons.refresh),
-                              label: const Text('Try again'),
+                              label: Text(l10n.tryAgain),
                             ),
                           ],
                         ),
@@ -224,14 +230,14 @@ class _SearchContentState extends State<_SearchContent> {
                     if (!state.loading &&
                         state.error == null &&
                         state.meals.isEmpty)
-                      const Center(
+                      Center(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 30),
+                          padding: const EdgeInsets.symmetric(vertical: 30),
                           child: Column(
                             children: [
-                              Icon(Icons.search_off_rounded, size: 56),
-                              SizedBox(height: 8),
-                              Text('No meals found. Try another search.'),
+                              const Icon(Icons.search_off_rounded, size: 56),
+                              const SizedBox(height: 8),
+                              Text(l10n.noMealsSearch),
                             ],
                           ),
                         ),
@@ -281,6 +287,7 @@ class _SearchMealCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
     return Card(
       clipBehavior: Clip.antiAlias,
       elevation: 0,
@@ -315,7 +322,7 @@ class _SearchMealCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    meal.category ?? 'Meal',
+                    meal.category ?? l10n.meal,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(

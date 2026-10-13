@@ -1,8 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class OrderModel {
-  const OrderModel({required this.id, required this.items, required this.total,
-    required this.paymentMethod, required this.status, this.createdAt});
+  const OrderModel({
+    required this.id,
+    required this.items,
+    required this.total,
+    required this.paymentMethod,
+    required this.status,
+    this.createdAt,
+  });
   final String id;
   final List<Map<String, dynamic>> items;
   final double total;
@@ -19,8 +25,13 @@ class OrderModel {
     final data = doc.data() ?? <String, dynamic>{};
     final rawItems = data['items'];
     final items = rawItems is List
-        ? rawItems.whereType<Map>().map((item) =>
-            item.map((key, value) => MapEntry(key.toString(), value))).toList()
+        ? rawItems
+              .whereType<Map>()
+              .map(
+                (item) =>
+                    item.map((key, value) => MapEntry(key.toString(), value)),
+              )
+              .toList()
         : <Map<String, dynamic>>[];
     final rawDate = data['createdAt'];
     DateTime? createdAt;

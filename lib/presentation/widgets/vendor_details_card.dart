@@ -1,4 +1,6 @@
+import 'package:food_delivery/core/helper/localized_vendor.dart';
 import 'package:flutter/material.dart';
+import 'package:food_delivery/l10n/app_localizations.dart';
 
 import '../../domain/entities/vendor.dart';
 
@@ -17,6 +19,7 @@ class VendorDetailsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
     return Material(
       color: scheme.surface,
       elevation: 5,
@@ -32,7 +35,11 @@ class VendorDetailsCard extends StatelessWidget {
                 color: scheme.primaryContainer,
                 borderRadius: BorderRadius.circular(16),
               ),
-              child: Icon(Icons.restaurant_rounded, color: scheme.primary, size: 28),
+              child: Icon(
+                Icons.restaurant_rounded,
+                color: scheme.primary,
+                size: 28,
+              ),
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -40,29 +47,59 @@ class VendorDetailsCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(vendor.name, maxLines: 1, overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700)),
+                  Text(
+                    localizedVendorName(context, vendor),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.titleMedium
+                        ?.copyWith(fontWeight: FontWeight.w700),
+                  ),
                   const SizedBox(height: 4),
-                  Text('${vendor.city} • ${vendor.cuisine}',
-                      maxLines: 1, overflow: TextOverflow.ellipsis,
-                      style: TextStyle(color: scheme.onSurfaceVariant)),
+                  Text(
+                    '${localizedVendorCity(context, vendor)} • ${localizedVendorCuisine(context, vendor)}',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(color: scheme.onSurfaceVariant),
+                  ),
                   const SizedBox(height: 5),
-                  Row(children: [
-                    const Icon(Icons.star_rounded, color: Color(0xFFFFB020), size: 18),
-                    const SizedBox(width: 3),
-                    Text(vendor.rating.toStringAsFixed(1),
-                        style: const TextStyle(fontWeight: FontWeight.w600)),
-                    const SizedBox(width: 12),
-                    Text('Demo vendor', style: TextStyle(fontSize: 11, color: scheme.onSurfaceVariant)),
-                  ]),
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.star_rounded,
+                        color: Color(0xFFFFB020),
+                        size: 18,
+                      ),
+                      const SizedBox(width: 3),
+                      Text(
+                        vendor.rating.toStringAsFixed(1),
+                        style: const TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                      const SizedBox(width: 12),
+                      Text(
+                        l10n.demoVendor,
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: scheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
             Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                IconButton(onPressed: onClose, icon: const Icon(Icons.close), tooltip: 'Close details'),
-                IconButton.filledTonal(onPressed: onLocate, icon: const Icon(Icons.my_location), tooltip: 'Show on map'),
+                IconButton(
+                  onPressed: onClose,
+                  icon: const Icon(Icons.close),
+                  tooltip: l10n.closeDetails,
+                ),
+                IconButton.filledTonal(
+                  onPressed: onLocate,
+                  icon: const Icon(Icons.my_location),
+                  tooltip: l10n.showOnMap,
+                ),
               ],
             ),
           ],

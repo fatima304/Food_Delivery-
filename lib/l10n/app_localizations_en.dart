@@ -1,6 +1,5 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
-
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -58,8 +57,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get creatingAccount => 'Creating account...';
 
   @override
-  String get termsAgreement =>
-      'I agree to the Terms of Service and Privacy Policy';
+  String get termsAgreement => 'I agree to the Terms of Service and Privacy Policy';
 
   @override
   String get acceptTerms => 'Please accept the terms first';
@@ -74,8 +72,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingAccent => 'your doorstep';
 
   @override
-  String get onboardingDescription =>
-      'Discover the best restaurants near you and enjoy your favorite meals at home.';
+  String get onboardingDescription => 'Discover the best restaurants near you and enjoy your favorite meals at home.';
 
   @override
   String get getStarted => 'Get Started  →';
@@ -93,8 +90,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dismiss => 'Dismiss';
 
   @override
-  String get sessionError =>
-      'Unable to check your session. Please restart the app.';
+  String get sessionError => 'Unable to check your session. Please restart the app.';
 
   @override
   String get fullNameRequired => 'Full name is required';
@@ -142,26 +138,413 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tooManyAttempts => 'Too many attempts. Please try again later.';
 
   @override
-  String get incorrectCredentials =>
-      'Incorrect email or password. Please try again.';
+  String get incorrectCredentials => 'Incorrect email or password. Please try again.';
 
   @override
-  String get noInternet =>
-      'No internet connection. Check your connection and try again.';
+  String get noInternet => 'No internet connection. Check your connection and try again.';
 
   @override
-  String get emailUnavailable =>
-      'Email sign-in is unavailable right now. Please contact support.';
+  String get emailUnavailable => 'Email sign-in is unavailable right now. Please contact support.';
 
   @override
-  String get unableRequest =>
-      'Unable to complete your request. Please try again.';
+  String get unableRequest => 'Unable to complete your request. Please try again.';
 
   @override
-  String get networkError =>
-      'Network error. Please check your internet connection.';
+  String get networkError => 'Network error. Please check your internet connection.';
 
   @override
-  String get unexpectedError =>
-      'An unexpected error occurred. Please try again.';
+  String get unexpectedError => 'An unexpected error occurred. Please try again.';
+
+  @override
+  String get nearbyVendors => 'Nearby Vendors';
+
+  @override
+  String get nearbyVendorsSubtitle => 'Explore 5 food spots on the map';
+
+  @override
+  String get searchHint => 'Search for meals or vendors';
+
+  @override
+  String get specialOffers => 'Special Offers • Up to 50% OFF';
+
+  @override
+  String get freshMeals => 'Fresh meals near you';
+
+  @override
+  String get streetFoodFavourites => 'Street food favourites';
+
+  @override
+  String get categories => 'Categories';
+
+  @override
+  String get hotOffers => 'Hot Offers';
+
+  @override
+  String get popularMeals => 'Popular Meals';
+
+  @override
+  String get noMealsFound => 'No meals found.';
+
+  @override
+  String get tryAgain => 'Try again';
+
+  @override
+  String get addedToCart => 'Added to cart:';
+
+  @override
+  String get myCart => 'My Cart';
+
+  @override
+  String get orderSummary => 'Order Summary';
+
+  @override
+  String get subtotal => 'Subtotal';
+
+  @override
+  String get deliveryFee => 'Delivery Fee';
+
+  @override
+  String get total => 'Total';
+
+  @override
+  String get proceedToCheckout => 'Proceed to Checkout';
+
+  @override
+  String get noFavouritesYet => 'No favourites yet';
+
+  @override
+  String get noFavouritesDescription => 'Tap the heart on meals to save your favourites here.';
+
+  @override
+  String get exploreMeals => 'Explore Meals';
+
+  @override
+  String get profile => 'Profile';
+
+  @override
+  String get orderHistory => 'Order History';
+
+  @override
+  String get settings => 'Settings';
+
+  @override
+  String get photoSaved => 'Photo saved on this device.';
+
+  @override
+  String get couldNotSavePhoto => 'Could not save photo:';
+
+  @override
+  String get couldNotUpdateName => 'Could not update name:';
+
+  @override
+  String get comingSoon => 'is coming soon';
+
+  @override
+  String get verifyingIdentity => 'Verifying your identity...';
+
+  @override
+  String get unlockProfile => 'Unlock your profile';
+
+  @override
+  String get biometricRequired => 'Biometric authentication is required.';
+
+  @override
+  String get backToHome => 'Back to Home';
+
+  @override
+  String get streetBiteUser => 'StreetBite User';
+
+  @override
+  String get editName => 'Edit name';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get darkTheme => 'Dark Theme';
+
+  @override
+  String get languageArabic => 'Language: Arabic';
+
+  @override
+  String get aboutApp => 'About App';
+
+  @override
+  String get loadingDeviceInfo => 'Loading device information...';
+
+  @override
+  String get deviceDetailsUnavailable => 'Device details unavailable';
+
+  @override
+  String get home => 'Home';
+
+  @override
+  String get explore => 'Explore';
+
+  @override
+  String get cart => 'Cart';
+
+  @override
+  String get orders => 'Orders';
+
+  @override
+  String get exploreMealsTitle => 'Explore Meals';
+
+  @override
+  String get searchMealsHint => 'Search meals by name';
+
+  @override
+  String get popularCategories => 'Popular Categories';
+
+  @override
+  String get categoryMeals => 'Meals';
+
+  @override
+  String get resultsFor => 'Results for';
+
+  @override
+  String get recommendedForYou => 'Recommended for You';
+
+  @override
+  String get noMealsSearch => 'No meals found. Try another search.';
+
+  @override
+  String get meal => 'Meal';
+
+  @override
+  String get couldNotLoadOrders => 'Could not load your orders. Please try again.';
+
+  @override
+  String get noOrdersYet => 'No orders yet';
+
+  @override
+  String get noOrdersDescription => 'Your completed orders will appear here.';
+
+  @override
+  String get ordersCount => 'orders';
+
+  @override
+  String get mealDetails => 'Meal Details';
+
+  @override
+  String get mealNotFound => 'Meal not found';
+
+  @override
+  String get freshMeal => 'Fresh meal';
+
+  @override
+  String get fresh => 'Fresh';
+
+  @override
+  String get category => 'Category';
+
+  @override
+  String get origin => 'Origin';
+
+  @override
+  String get description => 'Description';
+
+  @override
+  String get noDescription => 'No description available.';
+
+  @override
+  String get seeLess => 'See Less';
+
+  @override
+  String get seeMore => 'See More';
+
+  @override
+  String get addToCart => 'Add to Cart';
+
+  @override
+  String get addedToCartQuantity => 'added to cart';
+
+  @override
+  String get yourCartEmpty => 'Your cart is empty';
+
+  @override
+  String get addMealsToGetStarted => 'Add some delicious meals\nand get started!';
+
+  @override
+  String get browseMeals => 'Browse Meals';
+
+  @override
+  String get favourites => 'Favourites';
+
+  @override
+  String get seeAll => 'See all';
+
+  @override
+  String get checkout => 'Checkout';
+
+  @override
+  String get placingOrder => 'Placing Order...';
+
+  @override
+  String get placeOrder => 'Place Order';
+
+  @override
+  String get orderPlacedSuccessfully => 'Order placed successfully!';
+
+  @override
+  String get couldNotPlaceOrder => 'Could not place your order. Please try again.';
+
+  @override
+  String get paymentMethod => 'Payment Method';
+
+  @override
+  String get cashOnDelivery => 'Cash on Delivery';
+
+  @override
+  String get creditDebitCard => 'Credit / Debit Card';
+
+  @override
+  String get showAllVendors => 'Show all vendors';
+
+  @override
+  String get exploreDemoVendors => 'Explore 5 demo vendors across Egypt';
+
+  @override
+  String get processing => 'Processing';
+
+  @override
+  String get orderPrefix => 'Order #';
+
+  @override
+  String get closeDetails => 'Close details';
+
+  @override
+  String get showOnMap => 'Show on map';
+
+  @override
+  String get demoVendor => 'Demo vendor';
+
+  @override
+  String get all => 'All';
+
+  @override
+  String get freshAndDelicious => 'Fresh & delicious';
+
+  @override
+  String get toggleFavourite => 'Toggle favourite';
+
+  @override
+  String get goodFoodBrighterMood => 'Good Food. Brighter Mood.';
+
+  @override
+  String get editNameTooltip => 'Edit name';
+
+  @override
+  String get demoPreviewMessage => 'UI preview only — connect your Bloc / Firebase';
+
+  @override
+  String get demoGrilledSalad => 'Grilled Chicken Salad';
+
+  @override
+  String get demoMargheritaPizza => 'Margherita Pizza';
+
+  @override
+  String get demoCheeseBurger => 'Cheese Burger';
+
+  @override
+  String get demoChickenWrap => 'Chicken Wrap';
+
+  @override
+  String get errorMealDetailsUnavailable => 'Meal details are unavailable.';
+
+  @override
+  String get errorCheckInternet => 'Check your internet connection and try again.';
+
+  @override
+  String get errorLoadMealDetails => 'Unable to load meal details. Please try again.';
+
+  @override
+  String get errorSomethingWrong => 'Something went wrong. Please try again.';
+
+  @override
+  String get errorLoadFavourites => 'Could not load favourites. Check your connection and Firestore rules.';
+
+  @override
+  String get errorUpdateFavourites => 'Could not update favourites. Please try again.';
+
+  @override
+  String get errorRequestTimedOut => 'The request timed out. Please try again.';
+
+  @override
+  String get errorCouldNotConnect => 'Could not connect. Check your internet connection.';
+
+  @override
+  String get errorLoadMealsNow => 'Unable to load meals right now. Please try again.';
+
+  @override
+  String get errorLoadingMeals => 'Something went wrong while loading meals.';
+
+  @override
+  String get errorBiometricFailed => 'Biometric authentication was cancelled or failed.';
+
+  @override
+  String get errorAuthenticate => 'Unable to authenticate. Please try again.';
+
+  @override
+  String get errorLoadMeals => 'Could not load meals. Please try again.';
+
+  @override
+  String get errorLoadDeviceInfo => 'Unable to load device information.';
+
+  @override
+  String get errorLoadCart => 'Could not load your cart. Please try again.';
+
+  @override
+  String get errorSignInFirst => 'Please sign in first.';
+
+  @override
+  String get vendorCityCairo => 'Cairo';
+
+  @override
+  String get vendorCityGiza => 'Giza';
+
+  @override
+  String get vendorCityAlexandria => 'Alexandria';
+
+  @override
+  String get vendorCityMansoura => 'Mansoura';
+
+  @override
+  String get vendorCityTanta => 'Tanta';
+
+  @override
+  String get vendorCuisineEgyptian => 'Egyptian';
+
+  @override
+  String get vendorCuisineGrills => 'Grills';
+
+  @override
+  String get vendorCuisineSeafood => 'Seafood';
+
+  @override
+  String get vendorCuisineItalian => 'Italian';
+
+  @override
+  String get vendorCuisineFastFood => 'Fast Food';
+
+  @override
+  String get orderStatusPending => 'Pending';
+
+  @override
+  String get orderStatusPlaced => 'Placed';
+
+  @override
+  String get orderStatusProcessing => 'Processing';
+
+  @override
+  String get orderStatusCompleted => 'Completed';
+
+  @override
+  String get orderStatusDelivered => 'Delivered';
+
+  @override
+  String get orderStatusCancelled => 'Cancelled';
 }

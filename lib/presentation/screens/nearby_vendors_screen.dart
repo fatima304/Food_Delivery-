@@ -1,5 +1,7 @@
+import 'package:food_delivery/core/helper/localized_vendor.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:food_delivery/l10n/app_localizations.dart';
 
 import '../../data/datasources/vendor_local_data_source.dart';
 import '../../domain/entities/vendor.dart';
@@ -22,20 +24,25 @@ class _NearbyVendorsScreenState extends State<NearbyVendorsScreen> {
   GoogleMapController? _mapController;
   Vendor? _selectedVendor;
 
-  Set<Marker> get _markers => _vendors.map((vendor) {
-        return Marker(
-          markerId: MarkerId(vendor.id),
-          position: vendor.location,
-          infoWindow: InfoWindow(title: vendor.name, snippet: vendor.cuisine),
-          onTap: () => _selectVendor(vendor),
-        );
-      }).toSet();
+  Set<Marker> _markersFor(BuildContext context) => _vendors.map((vendor) {
+    return Marker(
+      markerId: MarkerId(vendor.id),
+      position: vendor.location,
+      infoWindow: InfoWindow(
+        title: localizedVendorName(context, vendor),
+        snippet: localizedVendorCuisine(context, vendor),
+      ),
+      onTap: () => _selectVendor(vendor),
+    );
+  }).toSet();
 
   Future<void> _selectVendor(Vendor vendor) async {
     if (!mounted) return;
     setState(() => _selectedVendor = vendor);
     await _mapController?.animateCamera(
-      CameraUpdate.newCameraPosition(CameraPosition(target: vendor.location, zoom: 12.5)),
+      CameraUpdate.newCameraPosition(
+        CameraPosition(target: vendor.location, zoom: 12.5),
+      ),
     );
   }
 
@@ -48,17 +55,20 @@ class _NearbyVendorsScreenState extends State<NearbyVendorsScreen> {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Nearby Vendors'),
+        title: Text(l10n.nearbyVendors),
         centerTitle: true,
         actions: [
           IconButton(
             onPressed: () {
               setState(() => _selectedVendor = null);
-              _mapController?.animateCamera(CameraUpdate.newCameraPosition(_initialCamera));
+              _mapController?.animateCamera(
+                CameraUpdate.newCameraPosition(_initialCamera),
+              );
             },
-            tooltip: 'Show all vendors',
+            tooltip: l10n.showAllVendors,
             icon: const Icon(Icons.zoom_out_map_rounded),
           ),
         ],
@@ -67,7 +77,7 @@ class _NearbyVendorsScreenState extends State<NearbyVendorsScreen> {
         children: [
           GoogleMap(
             initialCameraPosition: _initialCamera,
-            markers: _markers,
+            markers: _markersFor(context),
             mapType: MapType.normal,
             compassEnabled: true,
             zoomControlsEnabled: false,
@@ -85,13 +95,22 @@ class _NearbyVendorsScreenState extends State<NearbyVendorsScreen> {
               elevation: 2,
               borderRadius: BorderRadius.circular(18),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-                child: Row(children: [
-                  Icon(Icons.storefront_rounded, color: scheme.primary),
-                  const SizedBox(width: 10),
-                  const Expanded(child: Text('Explore 5 demo vendors across Egypt',
-                      style: TextStyle(fontWeight: FontWeight.w600))),
-                ]),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 12,
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.storefront_rounded, color: scheme.primary),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        l10n.exploreDemoVendors,
+                        style: const TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -116,8 +135,12 @@ class _NearbyVendorsScreenState extends State<NearbyVendorsScreen> {
                         itemBuilder: (context, index) {
                           final vendor = _vendors[index];
                           return ActionChip(
-                            avatar: Icon(Icons.location_on, size: 17, color: scheme.primary),
-                            label: Text(vendor.city),
+                            avatar: Icon(
+                              Icons.location_on,
+                              size: 17,
+                              color: scheme.primary,
+                            ),
+                            label: Text(localizedVendorCity(context, vendor)),
                             backgroundColor: scheme.surface,
                             onPressed: () => _selectVendor(vendor),
                           );

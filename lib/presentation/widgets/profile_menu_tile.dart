@@ -25,11 +25,26 @@ class ProfileMenuTile extends StatelessWidget {
           contentPadding: const EdgeInsets.symmetric(horizontal: 20),
           minLeadingWidth: 20,
           leading: Icon(icon, size: 21, color: scheme.onSurface),
-          title: Text(title,
-              style: TextStyle(fontSize: 14, color: scheme.onSurface)),
-          subtitle: subtitle == null ? null : Text(subtitle!, style: TextStyle(fontSize: 12, color: scheme.onSurfaceVariant)),
-          trailing: onTap == null ? null : Icon(Icons.chevron_right,
-              size: 20, color: scheme.onSurfaceVariant),
+          title: Text(
+            title,
+            style: TextStyle(fontSize: 14, color: scheme.onSurface),
+          ),
+          subtitle: subtitle == null
+              ? null
+              : Text(
+                  subtitle!,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: scheme.onSurfaceVariant,
+                  ),
+                ),
+          trailing: onTap == null
+              ? null
+              : Icon(
+                  Icons.chevron_right,
+                  size: 20,
+                  color: scheme.onSurfaceVariant,
+                ),
           onTap: onTap,
         ),
         if (showDivider)

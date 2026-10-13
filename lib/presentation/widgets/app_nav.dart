@@ -5,6 +5,7 @@ import '../blocs/cart_state.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:food_delivery/l10n/app_localizations.dart';
 
 import '../screens/home_screen.dart';
 import '../screens/search_screen.dart';
@@ -19,6 +20,7 @@ class AppNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
     return BottomNavigationBar(
       currentIndex: index,
       type: BottomNavigationBarType.fixed,
@@ -41,30 +43,30 @@ class AppNav extends StatelessWidget {
         Navigator.of(context)
             .pushReplacement(MaterialPageRoute(builder: (_) => screens[i]));
       },
-      items: const [
+      items: [
         BottomNavigationBarItem(
-          icon: Icon(CupertinoIcons.house),
-          activeIcon: Icon(CupertinoIcons.house_fill),
-          label: 'Home',
+          icon: const Icon(CupertinoIcons.house),
+          activeIcon: const Icon(CupertinoIcons.house_fill),
+          label: l10n.home,
         ),
         BottomNavigationBarItem(
-          icon: Icon(CupertinoIcons.search),
-          label: 'Explore',
+          icon: const Icon(CupertinoIcons.search),
+          label: l10n.explore,
         ),
         BottomNavigationBarItem(
-          icon: _CartBadge(icon: CupertinoIcons.cart),
-          activeIcon: _CartBadge(icon: CupertinoIcons.cart_fill),
-          label: 'Cart',
+          icon: const _CartBadge(icon: CupertinoIcons.cart),
+          activeIcon: const _CartBadge(icon: CupertinoIcons.cart_fill),
+          label: l10n.cart,
         ),
         BottomNavigationBarItem(
-          icon: Icon(CupertinoIcons.doc_text),
-          activeIcon: Icon(CupertinoIcons.doc_text_fill),
-          label: 'Orders',
+          icon: const Icon(CupertinoIcons.doc_text),
+          activeIcon: const Icon(CupertinoIcons.doc_text_fill),
+          label: l10n.orders,
         ),
         BottomNavigationBarItem(
-          icon: Icon(CupertinoIcons.person),
-          activeIcon: Icon(CupertinoIcons.person_fill),
-          label: 'Profile',
+          icon: const Icon(CupertinoIcons.person),
+          activeIcon: const Icon(CupertinoIcons.person_fill),
+          label: l10n.profile,
         ),
       ],
     );

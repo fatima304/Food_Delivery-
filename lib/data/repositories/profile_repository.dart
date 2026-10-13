@@ -25,14 +25,11 @@ class ProfileRepository {
     final value = name.trim();
     if (value.isEmpty) throw ArgumentError('Name cannot be empty.');
     final current = user;
-    await firestore.collection('users').doc(current.uid).set(
-      {
-        'name': value,
-        'email': current.email,
-        'updatedAt': FieldValue.serverTimestamp(),
-      },
-      SetOptions(merge: true),
-    );
+    await firestore.collection('users').doc(current.uid).set({
+      'name': value,
+      'email': current.email,
+      'updatedAt': FieldValue.serverTimestamp(),
+    }, SetOptions(merge: true));
     await current.updateDisplayName(value);
   }
 
