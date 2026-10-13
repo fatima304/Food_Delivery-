@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/firebase_options.dart';
 import 'package:food_delivery/injection.dart';
 import 'package:food_delivery/presentation/blocs/auth_cubit.dart';
+import 'package:food_delivery/presentation/blocs/cart_bloc.dart';
 import 'package:food_delivery/presentation/screens/auth_gate.dart';
 
 Future<void> main() async {
@@ -20,15 +21,18 @@ class FoodDeliveryApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => BlocProvider(
     create: (_) => getIt<AuthCubit>(),
-    child: MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'StreetBite',
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      theme: AppTheme.light,
-      darkTheme: AppTheme.dark,
-      themeMode: ThemeMode.system,
-      home: const AuthGate(),
+    child: BlocProvider(
+      create: (_) => getIt<CartBloc>(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'StreetBite',
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        theme: AppTheme.light,
+        darkTheme: AppTheme.dark,
+        themeMode: ThemeMode.system,
+        home: const AuthGate(),
+      ),
     ),
   );
 }
