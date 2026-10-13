@@ -21,38 +21,57 @@ class FavouritesCubit extends Cubit<FavouritesState> {
   final FirebaseAuth _auth;
   StreamSubscription<User?>? _authSubscription;
   StreamSubscription<List<MealModel>>? _subscription;
+  String? _activeUid;
+  int _generation = 0;
+  final Set<String> _pending = {};
 
   void _onAuthChanged(User? user) {
+    final uid = user?.uid;
+    if (_activeUid == uid && _subscription != null) return;
+    _activeUid = uid;
+    final generation = ++_generation;
     _subscription?.cancel();
     _subscription = null;
-    if (user == null) {
-      emit(const FavouritesState(meals: [], loading: false));
+    _pending.clear();
+    if (uid == null) {
+      if (!isClosed) emit(const FavouritesState(meals: [], loading: false));
       return;
     }
-    emit(const FavouritesState());
-    _subscription = _repository.watch().listen(
-      (meals) => emit(FavouritesState(meals: meals, loading: false)),
-      onError: (Object error) => emit(FavouritesState(
-        meals: state.meals, loading: false, error: error.toString(),
-      )),
+    if (!isClosed) emit(const FavouritesState());
+    _subscription = _repository.watchFor(uid).listen(
+      (meals) {
+        if (!isClosed && generation == _generation) {
+          emit(FavouritesState(meals: meals, loading: false));
+        }
+      },
+      onError: (Object error) {
+        if (!isClosed && generation == _generation) {
+          emit(FavouritesState(meals: state.meals, loading: false,
+            error: 'Could not load favourites. Check your connection and Firestore rules.'));
+        }
+      },
     );
   }
 
   Future<void> toggle(MealModel meal) async {
+    if (_activeUid == null || state.loading || !_pending.add(meal.id)) return;
     try {
       if (state.contains(meal.id)) {
         await _repository.remove(meal.id);
       } else {
         await _repository.save(meal);
       }
-    } catch (error) {
-      emit(FavouritesState(meals: state.meals, loading: false,
-          error: 'Could not update favourites: $error'));
+    } catch (_) {
+      if (!isClosed) emit(FavouritesState(meals: state.meals, loading: false,
+        error: 'Could not update favourites. Please try again.'));
+    } finally {
+      _pending.remove(meal.id);
     }
   }
 
   @override
   Future<void> close() async {
+    ++_generation;
     await _authSubscription?.cancel();
     await _subscription?.cancel();
     return super.close();

@@ -13,16 +13,25 @@ class FavouritesRepository {
     return uid;
   }
 
-  CollectionReference<Map<String, dynamic>> get _collection =>
-      _firestore.collection('users').doc(_uid).collection('favourites');
+  CollectionReference<Map<String, dynamic>> collectionFor(String uid) =>
+      _firestore.collection('users').doc(uid).collection('favourites');
 
-  Stream<List<MealModel>> watch() => _collection.snapshots().map((snapshot) =>
-      snapshot.docs.map((doc) => MealModel.fromJson(doc.data())).toList());
+  Stream<List<MealModel>> watchFor(String uid) =>
+      collectionFor(uid).snapshots().map((snapshot) => snapshot.docs.map((doc) {
+        final data = doc.data();
+        // Older documents may use an ID field rather than TheMealDB's idMeal.
+        return MealModel.fromJson({
+          ...data,
+          'idMeal': data['idMeal'] ?? data['mealId'] ?? doc.id,
+          'strMeal': data['strMeal'] ?? data['name'] ?? '',
+          'strMealThumb': data['strMealThumb'] ?? data['imageUrl'] ?? '',
+        });
+      }).where((meal) => meal.id.isNotEmpty).toList());
 
-  Future<void> save(MealModel meal) => _collection.doc(meal.id).set({
+  Future<void> save(MealModel meal) => collectionFor(_uid).doc(meal.id).set({
         ...meal.toJson(),
         'savedAt': FieldValue.serverTimestamp(),
       });
 
-  Future<void> remove(String mealId) => _collection.doc(mealId).delete();
+  Future<void> remove(String mealId) => collectionFor(_uid).doc(mealId).delete();
 }

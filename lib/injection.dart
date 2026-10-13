@@ -1,3 +1,4 @@
+import 'data/repositories/profile_repository.dart';
 import 'data/repositories/cart_repository.dart';
 import 'data/repositories/orders_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -27,6 +28,8 @@ import 'package:food_delivery/services/firestore_service.dart';
 final getIt = GetIt.instance;
 
 void setupDependencies() {
+  getIt.registerLazySingleton<ProfileRepository>(() => ProfileRepository(
+    FirebaseAuth.instance, FirebaseFirestore.instance));
   getIt.registerLazySingleton<CartRepository>(() =>
     CartRepository(FirebaseFirestore.instance, FirebaseAuth.instance));
   getIt.registerLazySingleton<OrdersRepository>(() =>

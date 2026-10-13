@@ -1,4 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
+
+import '../../data/repositories/profile_repository.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../injection.dart';
@@ -24,8 +32,90 @@ class ProfileScreen extends StatelessWidget {
   );
 }
 
-class _ProfileContent extends StatelessWidget {
+class _ProfileContent extends StatefulWidget {
   const _ProfileContent();
+  @override
+  State<_ProfileContent> createState() => _ProfileContentState();
+}
+
+class _ProfileContentState extends State<_ProfileContent> {
+  bool uploading = false;
+  File? localPhoto;
+  String? localPhotoUserId;
+  final repository = getIt<ProfileRepository>();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadLocalPhoto();
+  }
+
+  Future<void> _loadLocalPhoto() async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) return;
+    try {
+      final file = await repository.localPhoto();
+      if (mounted && FirebaseAuth.instance.currentUser?.uid == uid) {
+        setState(() {
+          localPhoto = file;
+          localPhotoUserId = uid;
+        });
+      }
+    } catch (_) {
+      // A missing local image should not prevent opening the profile.
+    }
+  }
+
+  Future<void> _pickPhoto() async {
+    if (uploading) return;
+    try {
+      final image = await ImagePicker().pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 75,
+        maxWidth: 1024,
+      );
+      if (image == null || !mounted) return;
+      final uid = FirebaseAuth.instance.currentUser?.uid;
+      if (uid == null) throw StateError('Please sign in first.');
+      setState(() => uploading = true);
+      final saved = await repository.saveLocalPhoto(File(image.path));
+      await FileImage(saved).evict();
+      if (!mounted || FirebaseAuth.instance.currentUser?.uid != uid) return;
+      setState(() {
+        localPhoto = saved;
+        localPhotoUserId = uid;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Photo saved on this device.')),
+      );
+    } catch (error) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Could not save photo: $error')),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => uploading = false);
+    }
+  }
+
+  Future<void> _editName(String current) async {
+    final name = await showDialog<String>(
+      context: context,
+      builder: (_) => _EditNameDialog(initialName: current),
+    );
+    if (!mounted) return;
+    if (name == null || name.trim().isEmpty) return;
+    try {
+      await repository.updateName(name);
+    } catch (error) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Could not update name: $error')),
+        );
+      }
+    }
+  }
 
   void _comingSoon(BuildContext context, String feature) {
     ScaffoldMessenger.of(context)
@@ -112,8 +202,28 @@ class _ProfileContent extends StatelessWidget {
 
   Widget _buildProfile(BuildContext context) => ListView(
     children: [
-      ProfileHeader(
-        onPhotoTap: () => _comingSoon(context, 'Gallery photo upload'),
+      StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+        stream: repository.watchProfile(),
+        builder: (context, snapshot) {
+          final data = snapshot.data?.data() ?? {};
+          final user = FirebaseAuth.instance.currentUser;
+          final storedName = data['name'] as String?;
+          final name = storedName?.trim().isNotEmpty == true
+              ? storedName!
+              : (user?.displayName?.trim().isNotEmpty == true
+                    ? user!.displayName!
+                    : 'StreetBite User');
+          final uid = user?.uid;
+          final photo = localPhotoUserId == uid ? localPhoto : null;
+          return ProfileHeader(
+            name: name,
+            email: user?.email ?? '',
+            localPhoto: photo,
+            uploading: uploading,
+            onPhotoTap: _pickPhoto,
+            onNameTap: () => _editName(name),
+          );
+        },
       ),
       const SizedBox(height: 8),
       ProfileMenuTile(
@@ -140,7 +250,51 @@ class _ProfileContent extends StatelessWidget {
           MaterialPageRoute(builder: (_) => const SettingsScreen()),
         ),
       ),
+    ],
+  );
+}
 
+class _EditNameDialog extends StatefulWidget {
+  const _EditNameDialog({required this.initialName});
+  final String initialName;
+
+  @override
+  State<_EditNameDialog> createState() => _EditNameDialogState();
+}
+
+class _EditNameDialogState extends State<_EditNameDialog> {
+  late final TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: widget.initialName);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => AlertDialog(
+    title: const Text('Edit name'),
+    content: TextField(
+      controller: _controller,
+      autofocus: true,
+      textCapitalization: TextCapitalization.words,
+      decoration: const InputDecoration(labelText: 'Full name'),
+    ),
+    actions: [
+      TextButton(
+        onPressed: () => Navigator.pop(context),
+        child: const Text('Cancel'),
+      ),
+      FilledButton(
+        onPressed: () => Navigator.pop(context, _controller.text.trim()),
+        child: const Text('Save'),
+      ),
     ],
   );
 }

@@ -1,79 +1,49 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
-
 import '../../core/constants/app_colors.dart';
 
 class ProfileHeader extends StatelessWidget {
-  const ProfileHeader({super.key, this.onPhotoTap});
-
+  const ProfileHeader({super.key, required this.name, required this.email,
+    this.localPhoto, this.onPhotoTap, this.onNameTap, this.uploading = false});
+  final String name;
+  final String email;
+  final File? localPhoto;
   final VoidCallback? onPhotoTap;
+  final VoidCallback? onNameTap;
+  final bool uploading;
 
   @override
-  Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser;
-    final name = user?.displayName?.trim().isNotEmpty == true
-        ? user!.displayName!
-        : 'StreetBite User';
-    final email = user?.email ?? '';
-    final photoUrl = user?.photoURL;
-
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(20, 18, 20, 22),
-      decoration: const BoxDecoration(
-        color: AppColors.primaryGreen,
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
-      ),
-      child: Row(
-        children: [
-          CircleAvatar(
-            radius: 29,
-            backgroundColor: Colors.white,
-            child: CircleAvatar(
-              radius: 26,
-              backgroundColor: AppColors.lightGreen,
-              backgroundImage: photoUrl != null && photoUrl.isNotEmpty
-                  ? NetworkImage(photoUrl)
-                  : null,
-              child: photoUrl == null || photoUrl.isEmpty
-                  ? const Icon(Icons.person, size: 31, color: AppColors.primaryGreen)
-                  : null,
-            ),
-          ),
-          const SizedBox(width: 13),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(name,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                    )),
-                const SizedBox(height: 4),
-                Text(email,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(color: Colors.white70, fontSize: 12)),
-              ],
-            ),
-          ),
-          const SizedBox(width: 8),
-          Material(
-            color: Colors.white,
-            shape: const CircleBorder(),
-            child: IconButton(
-              onPressed: onPhotoTap,
-              icon: const Icon(Icons.camera_alt_outlined, size: 18),
-              color: AppColors.primaryGreen,
-              tooltip: 'Change profile photo',
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Container(
+    width: double.infinity,
+    padding: const EdgeInsets.fromLTRB(20, 18, 20, 22),
+    decoration: const BoxDecoration(color: AppColors.primaryGreen,
+      borderRadius: BorderRadius.vertical(bottom: Radius.circular(24))),
+    child: Row(children: [
+      Stack(clipBehavior: Clip.none, children: [
+        CircleAvatar(radius: 31, backgroundColor: Colors.white,
+          child: CircleAvatar(radius: 28, backgroundColor: AppColors.lightGreen,
+            backgroundImage: localPhoto != null
+              ? FileImage(localPhoto!) : null,
+            child: localPhoto == null
+              ? const Icon(Icons.person, color: AppColors.primaryGreen, size: 32) : null)),
+        Positioned(right: -5, bottom: -4,
+          child: Material(color: Colors.white, shape: const CircleBorder(),
+            child: InkWell(customBorder: const CircleBorder(), onTap: uploading ? null : onPhotoTap,
+              child: Padding(padding: const EdgeInsets.all(7),
+                child: uploading ? const SizedBox(width: 16, height: 16,
+                  child: CircularProgressIndicator(strokeWidth: 2))
+                  : const Icon(Icons.camera_alt, color: AppColors.primaryGreen, size: 17))))),
+      ]),
+      const SizedBox(width: 16),
+      Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Row(children: [Expanded(child: Text(name, maxLines: 1,
+          overflow: TextOverflow.ellipsis, style: const TextStyle(color: Colors.white,
+          fontSize: 16, fontWeight: FontWeight.w700))),
+          IconButton(onPressed: onNameTap, tooltip: 'Edit name',
+            icon: const Icon(Icons.edit_outlined, color: Colors.white, size: 19))]),
+        Text(email, maxLines: 1, overflow: TextOverflow.ellipsis,
+          style: const TextStyle(color: Colors.white70, fontSize: 12)),
+      ])),
+    ]),
+  );
 }

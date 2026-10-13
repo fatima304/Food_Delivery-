@@ -10,16 +10,29 @@ class OrderModel {
   final String status;
   final DateTime? createdAt;
 
+  static double amount(Object? value) {
+    if (value is num) return value.toDouble();
+    return double.tryParse(value?.toString() ?? '') ?? 0;
+  }
+
   factory OrderModel.fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
-    final data = doc.data() ?? {};
+    final data = doc.data() ?? <String, dynamic>{};
+    final rawItems = data['items'];
+    final items = rawItems is List
+        ? rawItems.whereType<Map>().map((item) =>
+            item.map((key, value) => MapEntry(key.toString(), value))).toList()
+        : <Map<String, dynamic>>[];
+    final rawDate = data['createdAt'];
+    DateTime? createdAt;
+    if (rawDate is Timestamp) createdAt = rawDate.toDate();
+    if (rawDate is DateTime) createdAt = rawDate;
     return OrderModel(
       id: doc.id,
-      items: (data['items'] as List<dynamic>? ?? [])
-          .whereType<Map>().map((e) => Map<String, dynamic>.from(e)).toList(),
-      total: (data['total'] as num? ?? 0).toDouble(),
-      paymentMethod: data['paymentMethod'] as String? ?? '',
-      status: data['status'] as String? ?? 'pending',
-      createdAt: (data['createdAt'] as Timestamp?)?.toDate(),
+      items: items,
+      total: amount(data['total']),
+      paymentMethod: data['paymentMethod']?.toString() ?? 'Cash',
+      status: data['status']?.toString() ?? 'pending',
+      createdAt: createdAt,
     );
   }
 }
