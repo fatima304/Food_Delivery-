@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import '../../core/constants/app_colors.dart';
 
 class ProfileHeader extends StatelessWidget {
-  const ProfileHeader({super.key, this.onEdit});
+  const ProfileHeader({super.key, this.onPhotoTap});
 
-  final VoidCallback? onEdit;
+  final VoidCallback? onPhotoTap;
 
   @override
   Widget build(BuildContext context) {
@@ -66,10 +66,10 @@ class ProfileHeader extends StatelessWidget {
             color: Colors.white,
             shape: const CircleBorder(),
             child: IconButton(
-              onPressed: onEdit,
-              icon: const Icon(Icons.edit_outlined, size: 18),
+              onPressed: onPhotoTap,
+              icon: const Icon(Icons.camera_alt_outlined, size: 18),
               color: AppColors.primaryGreen,
-              tooltip: 'Edit profile',
+              tooltip: 'Change profile photo',
             ),
           ),
         ],

@@ -6,12 +6,14 @@ class ProfileMenuTile extends StatelessWidget {
     required this.icon,
     required this.title,
     this.onTap,
+    this.subtitle,
     this.showDivider = true,
   });
 
   final IconData icon;
   final String title;
   final VoidCallback? onTap;
+  final String? subtitle;
   final bool showDivider;
 
   @override
@@ -25,7 +27,8 @@ class ProfileMenuTile extends StatelessWidget {
           leading: Icon(icon, size: 21, color: scheme.onSurface),
           title: Text(title,
               style: TextStyle(fontSize: 14, color: scheme.onSurface)),
-          trailing: Icon(Icons.chevron_right,
+          subtitle: subtitle == null ? null : Text(subtitle!, style: TextStyle(fontSize: 12, color: scheme.onSurfaceVariant)),
+          trailing: onTap == null ? null : Icon(Icons.chevron_right,
               size: 20, color: scheme.onSurfaceVariant),
           onTap: onTap,
         ),
