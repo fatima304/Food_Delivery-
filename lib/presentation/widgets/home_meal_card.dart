@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../blocs/favourites_cubit.dart';
 
 import '../../data/models/meal_model.dart';
 import '../../core/style/app_text_styles.dart';
@@ -25,7 +27,9 @@ class HomeMealCard extends StatelessWidget {
           Expanded(
             child: SizedBox(
               width: double.infinity,
-              child: Image.network(
+              child: Stack(
+                fit: StackFit.expand,
+                children: [Image.network(
                 meal.imageUrl,
                 fit: BoxFit.cover,
                 errorBuilder: (_, __, ___) => ColoredBox(
@@ -38,6 +42,25 @@ class HomeMealCard extends StatelessWidget {
                     ),
                   ),
                 ),
+              ),
+              Positioned(top: 7, right: 7,
+                child: BlocBuilder<FavouritesCubit, FavouritesState>(
+                  builder: (context, state) => Material(
+                    color: scheme.surface.withValues(alpha: .9),
+                    shape: const CircleBorder(),
+                    child: IconButton(
+                      iconSize: 20,
+                      visualDensity: VisualDensity.compact,
+                      tooltip: 'Toggle favourite',
+                      onPressed: () => context.read<FavouritesCubit>().toggle(meal),
+                      icon: Icon(state.contains(meal.id)
+                          ? Icons.favorite_rounded : Icons.favorite_border_rounded,
+                          color: state.contains(meal.id) ? Colors.red : scheme.onSurface),
+                    ),
+                  ),
+                ),
+              ),
+              ],
               ),
             ),
           ),

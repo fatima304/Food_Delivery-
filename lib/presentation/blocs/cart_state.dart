@@ -1,9 +1,11 @@
 import '../../domain/entities/cart_item.dart';
 
 class CartState {
-  const CartState({this.items = const [], this.revision = 0});
+  const CartState({this.items = const [], this.revision = 0, this.loading = false, this.error});
   final List<CartItem> items;
   final int revision;
+  final bool loading;
+  final String? error;
 
   bool get isEmpty => items.isEmpty;
   int get count => items.fold(0, (sum, item) => sum + item.quantity);

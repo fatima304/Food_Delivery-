@@ -14,6 +14,10 @@ class HomeRepositoryImpl implements HomeRepository {
   }
 
   @override
+  Future<List<MealModel>> searchMeals(String query) async =>
+      (await api.searchMeals(query)).meals ?? [];
+
+  @override
   Future<List<MealCategoryModel>> getCategories() async =>
       (await api.fetchCategories()).categories ?? [];
 
