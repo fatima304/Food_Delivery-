@@ -1,3 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'data/repositories/favourites_repository.dart';
+import 'presentation/blocs/favourites_cubit.dart';
 import 'data/datasources/biometric_datasource.dart';
 import 'data/datasources/device_info_datasource.dart';
 import 'presentation/blocs/biometric_cubit.dart';
@@ -21,6 +25,12 @@ import 'package:food_delivery/services/firestore_service.dart';
 final getIt = GetIt.instance;
 
 void setupDependencies() {
+  getIt.registerLazySingleton<FavouritesRepository>(() => FavouritesRepository(
+    FirebaseFirestore.instance, FirebaseAuth.instance,
+  ));
+  getIt.registerLazySingleton<FavouritesCubit>(() => FavouritesCubit(
+    getIt<FavouritesRepository>(), FirebaseAuth.instance,
+  ));
   getIt.registerLazySingleton<BiometricDataSource>(() => BiometricDataSource());
   getIt.registerLazySingleton<DeviceInfoDataSource>(() => DeviceInfoDataSource());
   getIt.registerFactory<BiometricCubit>(() => BiometricCubit(getIt<BiometricDataSource>()));

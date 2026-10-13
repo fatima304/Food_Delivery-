@@ -1,3 +1,4 @@
+import '../blocs/favourites_cubit.dart';
 import '../blocs/cart_bloc.dart';
 import '../blocs/cart_event.dart';
 
@@ -35,7 +36,6 @@ class _MealDetailsContent extends StatefulWidget {
 
 class _MealDetailsContentState extends State<_MealDetailsContent> {
   int quantity = 1;
-  bool favorite = false;
   bool isDescriptionExpanded = false;
 
   @override
@@ -51,9 +51,11 @@ class _MealDetailsContentState extends State<_MealDetailsContent> {
       height: 1.2,
     );
 
-    return BlocBuilder<MealDetailsCubit, MealDetailsState>(
+    return BlocBuilder<FavouritesCubit, FavouritesState>(
+      builder: (context, favourites) => BlocBuilder<MealDetailsCubit, MealDetailsState>(
       builder: (context, state) {
         final meal = state.meal ?? widget.initialMeal;
+        final favorite = favourites.contains(widget.mealId);
 
         return Scaffold(
           backgroundColor: colors.surface,
@@ -148,9 +150,7 @@ class _MealDetailsContentState extends State<_MealDetailsContent> {
                                           favorite
                                               ? Icons.favorite_rounded
                                               : Icons.favorite_border_rounded,
-                                          () => setState(
-                                            () => favorite = !favorite,
-                                          ),
+                                          () => context.read<FavouritesCubit>().toggle(meal),
                                           iconColor: favorite
                                               ? colors.error
                                               : colors.onSurface,
@@ -204,9 +204,7 @@ class _MealDetailsContentState extends State<_MealDetailsContent> {
                                                       minWidth: 36,
                                                       minHeight: 36,
                                                     ),
-                                                onPressed: () => setState(
-                                                  () => favorite = !favorite,
-                                                ),
+                                                onPressed: () => context.read<FavouritesCubit>().toggle(meal),
                                                 icon: Icon(
                                                   favorite
                                                       ? Icons.favorite_rounded
@@ -472,6 +470,7 @@ class _MealDetailsContentState extends State<_MealDetailsContent> {
                 ),
         );
       },
+      ),
     );
   }
 

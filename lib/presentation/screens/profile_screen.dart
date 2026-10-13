@@ -1,3 +1,4 @@
+import 'favourites_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -121,7 +122,7 @@ class _ProfileContent extends StatelessWidget {
       ProfileMenuTile(
         icon: Icons.favorite_border,
         title: 'Favourites',
-        onTap: () => _comingSoon(context, 'Favourites'),
+        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const FavouritesScreen())),
       ),
       ProfileMenuTile(
         icon: Icons.receipt_long_outlined,
