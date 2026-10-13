@@ -1,3 +1,4 @@
+import '../../domain/entities/cart_item.dart';
 import '../../data/models/meal_model.dart';
 
 abstract class CartEvent {
@@ -27,4 +28,15 @@ class CartRemove extends CartEvent {
 
 class CartClear extends CartEvent {
   const CartClear();
+}
+
+class CartAccountChanged extends CartEvent {
+  const CartAccountChanged(this.uid);
+  final String? uid;
+}
+
+class CartLoaded extends CartEvent {
+  const CartLoaded(this.uid, this.items);
+  final String uid;
+  final List<CartItem> items;
 }

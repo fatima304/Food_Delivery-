@@ -7,6 +7,8 @@ import '../blocs/cart_bloc.dart';
 import '../blocs/cart_event.dart';
 import '../blocs/cart_state.dart';
 import '../widgets/app_nav.dart';
+import '../widgets/empty_cart_view.dart';
+import 'home_screen.dart';
 import '../widgets/ui_parts.dart';
 
 class CartScreen extends StatelessWidget {
@@ -21,21 +23,19 @@ class CartScreen extends StatelessWidget {
       appBar: AppBar(title: const Text('My Cart')),
       bottomNavigationBar: const AppNav(index: 2),
       body: BlocBuilder<CartBloc, CartState>(
-        builder: (context, state) => ListView(
+        builder: (context, state) {
+          if (!state.loading && state.items.isEmpty) {
+            return EmptyCartView(
+              onBrowseMeals: () => Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (_) => const HomeScreen()),
+              ),
+            );
+          }
+          return ListView(
           padding: const EdgeInsets.all(18),
           children: [
-            if (state.items.isEmpty)
-              const Center(
-                child: Padding(
-                  padding: EdgeInsets.all(60),
-                  child: Column(
-                    children: [
-                      Icon(Icons.remove_shopping_cart_outlined, size: 64),
-                      Text('Your cart is empty'),
-                    ],
-                  ),
-                ),
-              ),
+            if (state.loading)
+              const Center(child: CircularProgressIndicator()),
             for (final item in state.items)
               UiCard(
                 child: Row(
@@ -96,7 +96,7 @@ class CartScreen extends StatelessWidget {
             const SizedBox(height: 20),
             CustomButton(
               text: 'Proceed to Checkout',
-              onPressed: state.items.isEmpty
+              onPressed: state.loading || state.items.isEmpty
                   ? null
                   : () => Navigator.push(
                       context,
@@ -104,7 +104,8 @@ class CartScreen extends StatelessWidget {
                     ),
             ),
           ],
-        ),
+        );
+        },
       ),
     ),
   );

@@ -1,3 +1,5 @@
+import 'data/repositories/cart_repository.dart';
+import 'data/repositories/orders_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'data/repositories/favourites_repository.dart';
@@ -25,6 +27,10 @@ import 'package:food_delivery/services/firestore_service.dart';
 final getIt = GetIt.instance;
 
 void setupDependencies() {
+  getIt.registerLazySingleton<CartRepository>(() =>
+    CartRepository(FirebaseFirestore.instance, FirebaseAuth.instance));
+  getIt.registerLazySingleton<OrdersRepository>(() =>
+    OrdersRepository(FirebaseFirestore.instance, FirebaseAuth.instance));
   getIt.registerLazySingleton<FavouritesRepository>(() => FavouritesRepository(
     FirebaseFirestore.instance, FirebaseAuth.instance,
   ));
@@ -36,7 +42,7 @@ void setupDependencies() {
   getIt.registerFactory<BiometricCubit>(() => BiometricCubit(getIt<BiometricDataSource>()));
   getIt.registerFactory<DeviceInfoCubit>(() => DeviceInfoCubit(getIt<DeviceInfoDataSource>()));
   // Singleton: one cart instance for the whole authenticated app.
-  getIt.registerLazySingleton<CartBloc>(() => CartBloc());
+  getIt.registerLazySingleton<CartBloc>(() => CartBloc(getIt<CartRepository>(), FirebaseAuth.instance));
   // Home (TheMealDB)
   getIt.registerLazySingleton<Dio>(
     () => Dio(

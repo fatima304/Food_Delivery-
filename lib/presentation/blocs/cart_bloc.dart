@@ -1,59 +1,83 @@
+import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import '../../data/repositories/cart_repository.dart';
 import '../../domain/entities/cart_item.dart';
 import 'cart_event.dart';
 import 'cart_state.dart';
 
-/// Shared cart state across Home, Details and Cart screens.
 class CartBloc extends Bloc<CartEvent, CartState> {
-  CartBloc() : super(const CartState()) {
+  CartBloc(this.repository, FirebaseAuth auth) : super(const CartState(loading: true)) {
+    on<CartAccountChanged>(_onAccountChanged);
+    on<CartLoaded>((event, emit) {
+      if (event.uid != _uid) return;
+      emit(CartState(items: List.unmodifiable(event.items), revision: state.revision + 1));
+    });
     on<CartAdd>((event, emit) {
-      if (event.quantity < 1) return;
-      final updated = [...state.items];
-      final index = updated.indexWhere((e) => e.meal.id == event.meal.id);
-      if (index == -1) {
-        updated.add(CartItem(meal: event.meal, quantity: event.quantity));
+      if (event.quantity < 1 || state.loading) return;
+      final items = [...state.items];
+      final index = items.indexWhere((e) => e.meal.id == event.meal.id);
+      if (index < 0) {
+        items.add(CartItem(meal: event.meal, quantity: event.quantity));
       } else {
-        updated[index] = updated[index].copyWith(
-          quantity: updated[index].quantity + event.quantity,
-        );
+        items[index] = items[index].copyWith(quantity: items[index].quantity + event.quantity);
       }
-      _update(updated, emit);
+      _update(items, emit);
     });
-    on<CartIncrease>((event, emit) {
-      final updated = [...state.items];
-      final index = updated.indexWhere((e) => e.meal.id == event.mealId);
-      if (index < 0) return;
-      updated[index] = updated[index].copyWith(
-        quantity: updated[index].quantity + 1,
-      );
-      _update(updated, emit);
-    });
-    on<CartDecrease>((event, emit) {
-      final updated = [...state.items];
-      final index = updated.indexWhere((e) => e.meal.id == event.mealId);
-      if (index < 0) return;
-      if (updated[index].quantity <= 1) {
-        updated.removeAt(index);
-      } else {
-        updated[index] = updated[index].copyWith(
-          quantity: updated[index].quantity - 1,
-        );
-      }
-      _update(updated, emit);
-    });
-    on<CartRemove>((event, emit) {
-      final updated = state.items
-          .where((e) => e.meal.id != event.mealId)
-          .toList();
-      if (updated.length != state.items.length) _update(updated, emit);
-    });
-    on<CartClear>((event, emit) => _update([], emit));
+    on<CartIncrease>((event, emit) => _change(event.mealId, 1, emit));
+    on<CartDecrease>((event, emit) => _change(event.mealId, -1, emit));
+    on<CartRemove>((event, emit) => _update(
+      state.items.where((e) => e.meal.id != event.mealId).toList(), emit));
+    on<CartClear>((event, emit) => _update([], emit, persist: false));
+    _authSub = auth.authStateChanges().listen((user) => add(CartAccountChanged(user?.uid)));
   }
 
-  void _update(List<CartItem> items, Emitter<CartState> emit) {
-    emit(
-      CartState(items: List.unmodifiable(items), revision: state.revision + 1),
-    );
+  final CartRepository repository;
+  late final StreamSubscription<User?> _authSub;
+  String? _uid;
+  Future<void> _writeQueue = Future.value();
+
+  Future<void> _onAccountChanged(CartAccountChanged event, Emitter<CartState> emit) async {
+    if (_uid == event.uid && !state.loading) return;
+    _uid = event.uid;
+    emit(CartState(revision: state.revision + 1, loading: event.uid != null));
+    if (event.uid == null) return;
+    try {
+      final items = await repository.load(event.uid!);
+      if (event.uid == _uid) add(CartLoaded(event.uid!, items));
+    } catch (e) {
+      if (event.uid == _uid) emit(CartState(error: 'Could not load your cart. Please try again.'));
+    }
+  }
+
+  void _change(String id, int amount, Emitter<CartState> emit) {
+    if (state.loading) return;
+    final items = [...state.items];
+    final i = items.indexWhere((e) => e.meal.id == id);
+    if (i < 0) return;
+    final next = items[i].quantity + amount;
+    if (next <= 0) { items.removeAt(i); }
+    else { items[i] = items[i].copyWith(quantity: next); }
+    _update(items, emit);
+  }
+
+  void _update(List<CartItem> items, Emitter<CartState> emit, {bool persist = true}) {
+    if (state.loading) return;
+    final uid = _uid;
+    emit(CartState(items: List.unmodifiable(items), revision: state.revision + 1));
+    if (!persist || uid == null) return;
+    final snapshot = List<CartItem>.from(items);
+    _writeQueue = _writeQueue.catchError((Object _) {}).then((_) async {
+      if (_uid == uid) await repository.save(uid, snapshot);
+    });
+  }
+
+  /// Wait for queued cart writes before committing an order.
+  Future<void> waitForWrites() => _writeQueue;
+
+  @override Future<void> close() async {
+    await _authSub.cancel();
+    await _writeQueue.catchError((Object _) {});
+    return super.close();
   }
 }
