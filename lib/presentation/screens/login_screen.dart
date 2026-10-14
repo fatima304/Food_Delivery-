@@ -1,3 +1,4 @@
+import 'package:food_delivery/core/routing/routes.dart';
 import 'package:food_delivery/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,7 +11,6 @@ import '../widgets/login_form.dart';
 import '../widgets/social_login_section.dart';
 import '../widgets/auth_footer.dart';
 import '../widgets/auth_feedback.dart';
-import 'signup_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -43,10 +43,7 @@ class LoginScreen extends StatelessWidget {
           AuthFooter(
             message: AppLocalizations.of(context)!.noAccount,
             action: AppLocalizations.of(context)!.signUp,
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const SignupScreen()),
-            ),
+            onTap: () => Navigator.pushNamed(context, Routes.signup),
           ),
         ],
       ),

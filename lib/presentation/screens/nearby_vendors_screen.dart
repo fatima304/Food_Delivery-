@@ -1,3 +1,5 @@
+import '../widgets/app_back_button.dart';
+
 import 'package:food_delivery/core/helper/localized_vendor.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -58,6 +60,7 @@ class _NearbyVendorsScreenState extends State<NearbyVendorsScreen> {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
+        leading: const AppBackButton(),
         title: Text(l10n.nearbyVendors),
         centerTitle: true,
         actions: [

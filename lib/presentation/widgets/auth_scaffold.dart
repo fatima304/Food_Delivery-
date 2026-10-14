@@ -21,7 +21,7 @@ class AuthScaffold extends StatelessWidget {
                   IconButton(
                     onPressed: () => Navigator.maybePop(context),
                     icon: Icon(
-                      Icons.arrow_back_ios_new,
+                      Icons.arrow_back_ios_new_rounded,
                       color: Theme.of(context).colorScheme.onSurface,
                     ),
                     padding: EdgeInsets.zero,

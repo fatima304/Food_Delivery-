@@ -166,6 +166,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'An unexpected error occurred. Please try again.';
 
   @override
+  String get homeScreen => 'Home Screen';
+
+  @override
   String get nearbyVendors => 'Nearby Vendors';
 
   @override

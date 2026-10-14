@@ -1,5 +1,6 @@
+import 'package:food_delivery/core/routing/routes.dart';
+import 'package:food_delivery/core/routing/app_router.dart';
 import 'package:food_delivery/core/helper/localized_state_error.dart';
-import 'package:food_delivery/core/helper/app_settings.dart';
 
 import '../blocs/cart_bloc.dart';
 import '../blocs/cart_event.dart';
@@ -8,25 +9,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/l10n/app_localizations.dart';
 
-import '../../injection.dart';
 import '../blocs/home_cubit.dart';
 import '../blocs/home_state.dart';
 import '../widgets/app_nav.dart';
 import '../widgets/home_categories.dart';
 import '../widgets/home_meal_card.dart';
 import '../widgets/ui_parts.dart';
-import 'search_screen.dart';
-import 'meal_details_screen.dart';
-import 'nearby_vendors_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) => BlocProvider(
-    create: (_) => getIt<HomeCubit>()..load(),
-    child: const _HomeContent(),
-  );
+  Widget build(BuildContext context) => const _HomeContent();
 }
 
 class _HomeContent extends StatelessWidget {
@@ -37,6 +31,11 @@ class _HomeContent extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+        title: Text(l10n.homeScreen),
+      ),
       bottomNavigationBar: const AppNav(index: 0),
       body: SafeArea(
         child: BlocBuilder<HomeCubit, HomeState>(
@@ -46,25 +45,6 @@ class _HomeContent extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 18),
               children: [
                 const SizedBox(height: 12),
-                Row(
-                  children: [
-                    const Spacer(),
-                    ValueListenableBuilder<bool>(
-                      valueListenable: AppSettings.darkMode,
-                      builder: (context, dark, _) => IconButton(
-                        tooltip: l10n.darkTheme,
-                        onPressed: () => AppSettings.setDarkMode(!dark),
-                        icon: Icon(
-                          dark
-                              ? Icons.light_mode_rounded
-                              : Icons.dark_mode_rounded,
-                          color: colors.primary,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
                 Material(
                   color: colors.primaryContainer,
                   borderRadius: BorderRadius.circular(18),
@@ -88,21 +68,14 @@ class _HomeContent extends StatelessWidget {
                       color: colors.primary,
                       size: 18,
                     ),
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const NearbyVendorsScreen(),
-                      ),
-                    ),
+                    onTap: () =>
+                        Navigator.pushNamed(context, Routes.nearbyVendors),
                   ),
                 ),
                 const SizedBox(height: 16),
                 TextField(
                   readOnly: true,
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => const SearchScreen()),
-                  ),
+                  onTap: () => Navigator.pushNamed(context, Routes.search),
                   decoration: InputDecoration(
                     prefixIcon: const Icon(Icons.search),
                     hintText: l10n.searchHint,
@@ -234,13 +207,12 @@ class _HomeContent extends StatelessWidget {
                           mainAxisSpacing: 12,
                         ),
                     itemBuilder: (context, i) => GestureDetector(
-                      onTap: () => Navigator.push(
+                      onTap: () => Navigator.pushNamed(
                         context,
-                        MaterialPageRoute(
-                          builder: (_) => MealDetailsScreen(
-                            mealId: state.meals[i].id,
-                            initialMeal: state.meals[i],
-                          ),
+                        Routes.mealDetails,
+                        arguments: MealDetailsArgs(
+                          mealId: state.meals[i].id,
+                          initialMeal: state.meals[i],
                         ),
                       ),
                       child: HomeMealCard(

@@ -162,6 +162,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get unexpectedError => 'حدث خطأ غير متوقع. حاول مرة أخرى.';
 
   @override
+  String get homeScreen => 'الشاشة الرئيسية';
+
+  @override
   String get nearbyVendors => 'المطاعم القريبة';
 
   @override

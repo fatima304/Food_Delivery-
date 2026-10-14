@@ -5,39 +5,39 @@ import 'package:food_delivery/l10n/app_localizations.dart';
 String localizedStateError(BuildContext context, String? message) {
   final l = AppLocalizations.of(context)!;
   switch (message) {
-    case "Meal details are unavailable.":
+    case "mealUnavailable":
       return l.errorMealDetailsUnavailable;
-    case "Check your internet connection and try again.":
+    case "checkInternet":
       return l.errorCheckInternet;
-    case "Unable to load meal details. Please try again.":
+    case "loadMealDetails":
       return l.errorLoadMealDetails;
-    case "Something went wrong. Please try again.":
+    case "somethingWrong":
       return l.errorSomethingWrong;
-    case "Could not load favourites. Check your connection and Firestore rules.":
+    case "loadFavourites":
       return l.errorLoadFavourites;
-    case "Could not update favourites. Please try again.":
+    case "updateFavourites":
       return l.errorUpdateFavourites;
-    case "The request timed out. Please try again.":
+    case "requestTimedOut":
       return l.errorRequestTimedOut;
-    case "Could not connect. Check your internet connection.":
+    case "couldNotConnect":
       return l.errorCouldNotConnect;
-    case "Unable to load meals right now. Please try again.":
+    case "loadMealsNow":
       return l.errorLoadMealsNow;
-    case "Something went wrong while loading meals.":
+    case "loadingMeals":
       return l.errorLoadingMeals;
-    case "Biometric authentication was cancelled or failed.":
+    case "biometricFailed":
       return l.errorBiometricFailed;
-    case "Unable to authenticate. Please try again.":
+    case "authenticate":
       return l.errorAuthenticate;
-    case "Could not load meals. Please try again.":
+    case "loadMeals":
       return l.errorLoadMeals;
-    case "Unable to load device information.":
+    case "loadDeviceInfo":
       return l.errorLoadDeviceInfo;
-    case "Could not load your cart. Please try again.":
+    case "loadCart":
       return l.errorLoadCart;
-    case "Please sign in first.":
+    case "signInFirst":
       return l.errorSignInFirst;
     default:
-      return message ?? l.errorSomethingWrong;
+      return l.errorSomethingWrong;
   }
 }

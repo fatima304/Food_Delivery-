@@ -392,6 +392,12 @@ abstract class AppLocalizations {
   /// **'An unexpected error occurred. Please try again.'**
   String get unexpectedError;
 
+  /// No description provided for @homeScreen.
+  ///
+  /// In en, this message translates to:
+  /// **'Home Screen'**
+  String get homeScreen;
+
   /// No description provided for @nearbyVendors.
   ///
   /// In en, this message translates to:

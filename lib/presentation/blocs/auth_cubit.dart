@@ -17,37 +17,37 @@ class AuthCubit extends Cubit<AuthState> {
     if (error is firebase_auth.FirebaseAuthException) {
       switch (error.code) {
         case 'user-not-found':
-          return 'No user found with this email.';
+          return 'noUser';
         case 'wrong-password':
-          return 'Incorrect password provided.';
+          return 'wrongPassword';
         case 'email-already-in-use':
-          return 'An account already exists with this email.';
+          return 'emailInUse';
         case 'invalid-email':
-          return 'The email address is not valid.';
+          return 'firebaseInvalidEmail';
         case 'weak-password':
-          return 'The password is too weak.';
+          return 'weakPassword';
         case 'user-disabled':
-          return 'This user account has been disabled.';
+          return 'userDisabled';
         case 'too-many-requests':
-          return 'Too many attempts. Please try again later.';
+          return 'tooManyAttempts';
         case 'invalid-credential':
         case 'invalid-login-credentials':
-          return 'Incorrect email or password. Please try again.';
+          return 'incorrectCredentials';
         case 'network-request-failed':
-          return 'No internet connection. Check your connection and try again.';
+          return 'noInternet';
         case 'operation-not-allowed':
-          return 'Email sign-in is unavailable right now. Please contact support.';
+          return 'emailUnavailable';
         default:
-          return 'Unable to complete your request. Please try again.';
+          return 'unableRequest';
       }
     }
 
     if (error.toString().contains('network') ||
         error.toString().contains('connection')) {
-      return 'Network error. Please check your internet connection.';
+      return 'networkError';
     }
 
-    return 'An unexpected error occurred. Please try again.';
+    return 'unexpectedError';
   }
 
   Future<void> login({required String email, required String password}) async {

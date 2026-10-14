@@ -1,3 +1,5 @@
+import 'package:food_delivery/core/routing/routes.dart';
+import 'package:food_delivery/core/routing/app_router.dart';
 import 'package:food_delivery/core/helper/localized_state_error.dart';
 
 import 'dart:async';
@@ -7,20 +9,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/l10n/app_localizations.dart';
 
 import '../../data/models/meal_model.dart';
-import '../../injection.dart';
 import '../blocs/search_cubit.dart';
 import '../blocs/search_state.dart';
 import '../widgets/app_nav.dart';
-import 'meal_details_screen.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
 
   @override
-  Widget build(BuildContext context) => BlocProvider(
-    create: (_) => getIt<SearchCubit>()..load(),
-    child: const _SearchContent(),
-  );
+  Widget build(BuildContext context) => const _SearchContent();
 }
 
 class _SearchContent extends StatefulWidget {
@@ -56,10 +53,10 @@ class _SearchContentState extends State<_SearchContent> {
   }
 
   void _openMeal(MealModel meal) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (_) => MealDetailsScreen(mealId: meal.id, initialMeal: meal),
-      ),
+    Navigator.pushNamed(
+      context,
+      Routes.mealDetails,
+      arguments: MealDetailsArgs(mealId: meal.id, initialMeal: meal),
     );
   }
 
@@ -68,7 +65,11 @@ class _SearchContentState extends State<_SearchContent> {
     final colors = Theme.of(context).colorScheme;
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.exploreMealsTitle)),
+      appBar: AppBar(
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+        title: Text(l10n.exploreMealsTitle),
+      ),
       bottomNavigationBar: const AppNav(index: 1),
       body: BlocBuilder<SearchCubit, SearchState>(
         builder: (context, state) => RefreshIndicator(

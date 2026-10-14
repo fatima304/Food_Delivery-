@@ -1,8 +1,9 @@
+import '../widgets/app_back_button.dart';
+
+import 'package:food_delivery/core/routing/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery/l10n/app_localizations.dart';
 import 'package:food_delivery/presentation/widgets/custom_button.dart';
-
-import 'home_screen.dart';
 
 class EmptyCartScreen extends StatelessWidget {
   const EmptyCartScreen({super.key});
@@ -10,7 +11,7 @@ class EmptyCartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.myCart)),
+      appBar: AppBar(leading: const AppBackButton(), title: Text(l10n.myCart)),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(24),
@@ -24,10 +25,8 @@ class EmptyCartScreen extends StatelessWidget {
               const SizedBox(height: 25),
               CustomButton(
                 text: l10n.browseMeals,
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const HomeScreen()),
-                ),
+                onPressed: () =>
+                    Navigator.pushReplacementNamed(context, Routes.home),
               ),
             ],
           ),

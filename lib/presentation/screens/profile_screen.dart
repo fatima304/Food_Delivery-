@@ -1,3 +1,4 @@
+import 'package:food_delivery/core/routing/routes.dart';
 import 'package:food_delivery/core/helper/localized_state_error.dart';
 
 import 'dart:io';
@@ -18,21 +19,12 @@ import '../blocs/biometric_state.dart';
 import '../widgets/app_nav.dart';
 import '../widgets/profile_header.dart';
 import '../widgets/profile_menu_tile.dart';
-import 'favourites_screen.dart';
-import 'home_screen.dart';
-import 'orders_screen.dart';
-import 'settings_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
-  Widget build(BuildContext context) => MultiBlocProvider(
-    providers: [
-      BlocProvider(create: (_) => getIt<BiometricCubit>()..authenticate()),
-    ],
-    child: const _ProfileContent(),
-  );
+  Widget build(BuildContext context) => const _ProfileContent();
 }
 
 class _ProfileContent extends StatefulWidget {
@@ -125,10 +117,7 @@ class _ProfileContentState extends State<_ProfileContent> {
   }
 
   void _leaveProfile(BuildContext context) {
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (_) => const HomeScreen()),
-      (route) => false,
-    );
+    Navigator.pushNamedAndRemoveUntil(context, Routes.home, (_) => false);
   }
 
   @override
@@ -145,12 +134,6 @@ class _ProfileContentState extends State<_ProfileContent> {
             centerTitle: true,
             backgroundColor: scheme.surface,
             automaticallyImplyLeading: false,
-            leading: unlocked
-                ? null
-                : IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    onPressed: () => _leaveProfile(context),
-                  ),
           ),
           bottomNavigationBar: unlocked ? const AppNav(index: 4) : null,
           body: unlocked
@@ -242,28 +225,19 @@ class _ProfileContentState extends State<_ProfileContent> {
         ProfileMenuTile(
           icon: Icons.favorite_border,
           title: l10n.favourites,
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => const FavouritesScreen()),
-          ),
+          onTap: () => Navigator.pushNamed(context, Routes.favourites),
         ),
         const SizedBox(height: 10),
         ProfileMenuTile(
           icon: Icons.receipt_long_outlined,
           title: l10n.orderHistory,
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => const OrdersScreen()),
-          ),
+          onTap: () => Navigator.pushNamed(context, Routes.orders),
         ),
         const SizedBox(height: 10),
         ProfileMenuTile(
           icon: Icons.settings_outlined,
           title: l10n.settings,
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => const SettingsScreen()),
-          ),
+          onTap: () => Navigator.pushNamed(context, Routes.settings),
         ),
       ],
     );

@@ -65,8 +65,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       final items = await repository.load(event.uid!);
       if (event.uid == _uid) add(CartLoaded(event.uid!, items));
     } catch (e) {
-      if (event.uid == _uid)
-        emit(CartState(error: 'Could not load your cart. Please try again.'));
+      if (event.uid == _uid) emit(CartState(error: 'loadCart'));
     }
   }
 

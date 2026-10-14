@@ -16,7 +16,7 @@ class MealDetailsCubit extends Cubit<MealDetailsState> {
       emit(
         MealDetailsState(
           meal: meal,
-          error: meal == null ? 'Meal details are unavailable.' : null,
+          error: meal == null ? 'mealUnavailable' : null,
         ),
       );
     } on DioException catch (error) {
@@ -25,19 +25,12 @@ class MealDetailsCubit extends Cubit<MealDetailsState> {
       emit(
         MealDetailsState(
           meal: state.meal,
-          error: offline
-              ? 'Check your internet connection and try again.'
-              : 'Unable to load meal details. Please try again.',
+          error: offline ? 'checkInternet' : 'loadMealDetails',
         ),
       );
     } catch (_) {
       if (!isClosed)
-        emit(
-          MealDetailsState(
-            meal: state.meal,
-            error: 'Something went wrong. Please try again.',
-          ),
-        );
+        emit(MealDetailsState(meal: state.meal, error: 'somethingWrong'));
     }
   }
 }

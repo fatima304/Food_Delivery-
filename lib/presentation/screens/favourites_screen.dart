@@ -1,11 +1,13 @@
+import '../widgets/app_back_button.dart';
+
+import 'package:food_delivery/core/routing/routes.dart';
+import 'package:food_delivery/core/routing/app_router.dart';
 import 'package:food_delivery/core/helper/localized_state_error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/l10n/app_localizations.dart';
 
 import '../blocs/favourites_cubit.dart';
-import 'meal_details_screen.dart';
-import 'home_screen.dart';
 
 class FavouritesScreen extends StatelessWidget {
   const FavouritesScreen({super.key});
@@ -14,7 +16,10 @@ class FavouritesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.favourites)),
+      appBar: AppBar(
+        leading: const AppBackButton(),
+        title: Text(l10n.favourites),
+      ),
       body: BlocBuilder<FavouritesCubit, FavouritesState>(
         builder: (context, state) {
           if (state.loading)
@@ -62,13 +67,11 @@ class FavouritesScreen extends StatelessWidget {
                       width: double.infinity,
                       height: 50,
                       child: FilledButton(
-                        onPressed: () => Navigator.of(context)
-                            .pushAndRemoveUntil(
-                              MaterialPageRoute(
-                                builder: (_) => const HomeScreen(),
-                              ),
-                              (_) => false,
-                            ),
+                        onPressed: () => Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          Routes.home,
+                          (_) => false,
+                        ),
                         child: Text(l10n.exploreMeals),
                       ),
                     ),
@@ -114,11 +117,12 @@ class FavouritesScreen extends StatelessWidget {
                     onPressed: () =>
                         context.read<FavouritesCubit>().toggle(meal),
                   ),
-                  onTap: () => Navigator.push(
+                  onTap: () => Navigator.pushNamed(
                     context,
-                    MaterialPageRoute(
-                      builder: (_) =>
-                          MealDetailsScreen(mealId: meal.id, initialMeal: meal),
+                    Routes.mealDetails,
+                    arguments: MealDetailsArgs(
+                      mealId: meal.id,
+                      initialMeal: meal,
                     ),
                   ),
                 ),

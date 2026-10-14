@@ -1,7 +1,7 @@
+import 'package:food_delivery/core/routing/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/l10n/app_localizations.dart';
-import 'package:food_delivery/presentation/screens/checkout_screen.dart';
 import 'package:food_delivery/presentation/widgets/custom_button.dart';
 
 import '../blocs/cart_bloc.dart';
@@ -9,7 +9,6 @@ import '../blocs/cart_event.dart';
 import '../blocs/cart_state.dart';
 import '../widgets/app_nav.dart';
 import '../widgets/empty_cart_view.dart';
-import 'home_screen.dart';
 import '../widgets/ui_parts.dart';
 
 class CartScreen extends StatelessWidget {
@@ -23,15 +22,18 @@ class CartScreen extends StatelessWidget {
           previous.items.isNotEmpty && current.items.isEmpty,
       listener: (context, state) => showDemo(context, l10n.yourCartEmpty),
       child: Scaffold(
-        appBar: AppBar(title: Text(l10n.myCart)),
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: Text(l10n.myCart),
+          centerTitle: true,
+        ),
         bottomNavigationBar: const AppNav(index: 2),
         body: BlocBuilder<CartBloc, CartState>(
           builder: (context, state) {
             if (!state.loading && state.items.isEmpty) {
               return EmptyCartView(
-                onBrowseMeals: () => Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (_) => const HomeScreen()),
-                ),
+                onBrowseMeals: () =>
+                    Navigator.pushReplacementNamed(context, Routes.home),
               );
             }
             return ListView(
@@ -50,7 +52,7 @@ class CartScreen extends StatelessWidget {
                             width: 72,
                             height: 72,
                             fit: BoxFit.cover,
-                            errorBuilder: (_, __, ___) =>
+                            errorBuilder: (_, _, _) =>
                                 const FoodPhoto(width: 72, height: 72),
                           ),
                         ),
@@ -101,12 +103,7 @@ class CartScreen extends StatelessWidget {
                   text: l10n.proceedToCheckout,
                   onPressed: state.loading || state.items.isEmpty
                       ? null
-                      : () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => const CheckoutScreen(),
-                          ),
-                        ),
+                      : () => Navigator.pushNamed(context, Routes.checkout),
                 ),
               ],
             );

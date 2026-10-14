@@ -1,10 +1,10 @@
+import 'package:food_delivery/core/routing/routes.dart';
 import 'package:food_delivery/l10n/app_localizations.dart';
 
 import 'package:flutter/material.dart';
 
 import '../../core/constants/app_colors.dart';
 import '../../core/style/app_text_styles.dart';
-import 'onboarding_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -69,10 +69,7 @@ class _SplashScreenState extends State<SplashScreen>
     Future.delayed(const Duration(seconds: 10), () {
       if (!mounted) return;
 
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const OnboardingScreen()),
-      );
+      Navigator.pushReplacementNamed(context, Routes.onboarding);
     });
   }
 

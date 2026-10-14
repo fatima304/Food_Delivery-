@@ -49,6 +49,7 @@
   "unableRequest": "تعذر إكمال طلبك. حاول مرة أخرى.",
   "networkError": "خطأ في الشبكة. تحقق من اتصالك بالإنترنت.",
   "unexpectedError": "حدث خطأ غير متوقع. حاول مرة أخرى.",
+  "homeScreen": "الشاشة الرئيسية",
   "nearbyVendors": "المطاعم القريبة",
   "nearbyVendorsSubtitle": "اكتشف 5 أماكن طعام على الخريطة",
   "searchHint": "ابحث عن وجبات أو مطاعم",

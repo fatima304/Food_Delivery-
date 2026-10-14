@@ -25,7 +25,7 @@ class BiometricCubit extends Cubit<BiometricState> {
         emit(
           const BiometricState(
             status: BiometricStatus.failure,
-            errorMessage: 'Biometric authentication was cancelled or failed.',
+            errorMessage: 'biometricFailed',
           ),
         );
       }
@@ -33,7 +33,7 @@ class BiometricCubit extends Cubit<BiometricState> {
       emit(
         const BiometricState(
           status: BiometricStatus.failure,
-          errorMessage: 'Unable to authenticate. Please try again.',
+          errorMessage: 'authenticate',
         ),
       );
     }

@@ -59,7 +59,7 @@ class FavouritesCubit extends Cubit<FavouritesState> {
                 FavouritesState(
                   meals: state.meals,
                   loading: false,
-                  error: 'Could not load favourites. Check your connection and Firestore rules.',
+                  error: 'loadFavourites',
                 ),
               );
             }
@@ -81,7 +81,7 @@ class FavouritesCubit extends Cubit<FavouritesState> {
           FavouritesState(
             meals: state.meals,
             loading: false,
-            error: 'Could not update favourites. Please try again.',
+            error: 'updateFavourites',
           ),
         );
     } finally {

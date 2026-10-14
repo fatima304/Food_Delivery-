@@ -10,7 +10,6 @@ import 'package:food_delivery/l10n/app_localizations.dart';
 
 import '../../core/style/app_text_styles.dart';
 import '../../data/models/meal_model.dart';
-import '../../injection.dart';
 import '../blocs/meal_details_cubit.dart';
 import '../blocs/meal_details_state.dart';
 
@@ -21,10 +20,8 @@ class MealDetailsScreen extends StatelessWidget {
   final MealModel? initialMeal;
 
   @override
-  Widget build(BuildContext context) => BlocProvider(
-    create: (_) => getIt<MealDetailsCubit>()..load(mealId),
-    child: _MealDetailsContent(mealId: mealId, initialMeal: initialMeal),
-  );
+  Widget build(BuildContext context) =>
+      _MealDetailsContent(mealId: mealId, initialMeal: initialMeal);
 }
 
 class _MealDetailsContent extends StatefulWidget {
@@ -56,7 +53,24 @@ class _MealDetailsContentState extends State<_MealDetailsContent> {
     );
 
     return BlocBuilder<FavouritesCubit, FavouritesState>(
-      builder: (context, favourites) => BlocBuilder<MealDetailsCubit, MealDetailsState>(
+      builder: (context, favourites) => BlocConsumer<MealDetailsCubit, MealDetailsState>(
+        listenWhen: (previous, current) =>
+            current.error != null &&
+            current.meal != null &&
+            (previous.error != current.error || previous.loading),
+        listener: (context, state) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(localizedStateError(context, state.error)),
+              behavior: SnackBarBehavior.floating,
+              action: SnackBarAction(
+                label: AppLocalizations.of(context)!.tryAgain,
+                onPressed: () =>
+                    context.read<MealDetailsCubit>().load(widget.mealId),
+              ),
+            ),
+          );
+        },
         builder: (context, state) {
           final meal = state.meal ?? widget.initialMeal;
           final favorite = favourites.contains(widget.mealId);
@@ -352,25 +366,6 @@ class _MealDetailsContentState extends State<_MealDetailsContent> {
                                               const SizedBox(height: 15),
                                               const LinearProgressIndicator(
                                                 minHeight: 2,
-                                              ),
-                                            ],
-
-                                            if (state.error != null) ...[
-                                              const SizedBox(height: 12),
-                                              Text(
-                                                localizedStateError(
-                                                  context,
-                                                  state.error,
-                                                ),
-                                                style: TextStyle(
-                                                  color: colors.error,
-                                                ),
-                                              ),
-                                              TextButton(
-                                                onPressed: () => context
-                                                    .read<MealDetailsCubit>()
-                                                    .load(widget.mealId),
-                                                child: Text(l10n.tryAgain),
                                               ),
                                             ],
 

@@ -1,3 +1,6 @@
+import '../widgets/app_back_button.dart';
+
+import 'package:food_delivery/core/routing/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/l10n/app_localizations.dart';
@@ -8,7 +11,6 @@ import '../../domain/repositories/payment_method.dart';
 import '../blocs/cart_bloc.dart';
 import '../blocs/cart_event.dart';
 import '../blocs/cart_state.dart';
-import 'orders_screen.dart';
 
 import 'package:food_delivery/presentation/widgets/custom_button.dart';
 
@@ -45,8 +47,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           content: Text(AppLocalizations.of(context)!.orderPlacedSuccessfully),
         ),
       );
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (_) => const OrdersScreen()),
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        Routes.orders,
         (route) => route.isFirst,
       );
     } catch (_) {
@@ -65,7 +68,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.checkout)),
+      appBar: AppBar(
+        leading: const AppBackButton(),
+        title: Text(l10n.checkout),
+      ),
       bottomNavigationBar: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16),

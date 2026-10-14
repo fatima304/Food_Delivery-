@@ -1,3 +1,4 @@
+import 'package:food_delivery/core/routing/routes.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../blocs/cart_bloc.dart';
@@ -6,12 +7,6 @@ import '../blocs/cart_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery/l10n/app_localizations.dart';
-
-import '../screens/home_screen.dart';
-import '../screens/search_screen.dart';
-import '../screens/cart_screen.dart';
-import '../screens/orders_screen.dart';
-import '../screens/profile_screen.dart';
 
 class AppNav extends StatelessWidget {
   const AppNav({super.key, required this.index});
@@ -33,15 +28,20 @@ class AppNav extends StatelessWidget {
       showUnselectedLabels: true,
       onTap: (i) {
         if (i == index) return;
-        final screens = [
-          const HomeScreen(),
-          const SearchScreen(),
-          const CartScreen(),
-          const OrdersScreen(),
-          const ProfileScreen(),
+        const tabRoutes = [
+          Routes.home,
+          Routes.search,
+          Routes.cart,
+          Routes.orders,
+          Routes.profile,
         ];
-        Navigator.of(context)
-            .pushReplacement(MaterialPageRoute(builder: (_) => screens[i]));
+        // Keep the first route (AuthGate) as the tab navigation anchor.
+        // Switching tabs must not leave duplicate tab routes in the stack.
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          tabRoutes[i],
+          (route) => route.isFirst,
+        );
       },
       items: [
         BottomNavigationBarItem(

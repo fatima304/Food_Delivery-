@@ -89,13 +89,13 @@ class HomeCubit extends Cubit<HomeState> {
       if (error.type == DioExceptionType.connectionTimeout ||
           error.type == DioExceptionType.receiveTimeout ||
           error.type == DioExceptionType.sendTimeout) {
-        return 'The request timed out. Please try again.';
+        return 'requestTimedOut';
       }
       if (error.type == DioExceptionType.connectionError) {
-        return 'Could not connect. Check your internet connection.';
+        return 'couldNotConnect';
       }
-      return 'Unable to load meals right now. Please try again.';
+      return 'loadMealsNow';
     }
-    return 'Something went wrong while loading meals.';
+    return 'loadingMeals';
   }
 }

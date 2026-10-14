@@ -49,6 +49,7 @@
   "unableRequest": "Unable to complete your request. Please try again.",
   "networkError": "Network error. Please check your internet connection.",
   "unexpectedError": "An unexpected error occurred. Please try again.",
+  "homeScreen": "Home Screen",
   "nearbyVendors": "Nearby Vendors",
   "nearbyVendorsSubtitle": "Explore 5 food spots on the map",
   "searchHint": "Search for meals or vendors",

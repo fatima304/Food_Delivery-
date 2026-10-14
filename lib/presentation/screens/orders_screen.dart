@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/l10n/app_localizations.dart';
 
+import '../widgets/app_nav.dart';
 import '../../injection.dart';
 import '../../data/models/order_model.dart';
 import '../../data/repositories/orders_repository.dart';
@@ -12,11 +13,16 @@ class OrdersScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.orderHistory), centerTitle: true),
+      appBar: AppBar(
+        title: Text(l10n.orderHistory),
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+      ),
+      bottomNavigationBar: const AppNav(index: 3),
       body: StreamBuilder<List<OrderModel>>(
         stream: getIt<OrdersRepository>().watchOrders(),
         builder: (context, snapshot) {
-          if (snapshot.hasError)
+          if (snapshot.hasError) {
             return Center(
               child: Padding(
                 padding: const EdgeInsets.all(24),
@@ -26,6 +32,7 @@ class OrdersScreen extends StatelessWidget {
                 ),
               ),
             );
+          }
           if (!snapshot.hasData)
             return const Center(child: CircularProgressIndicator());
           final orders = snapshot.data!;

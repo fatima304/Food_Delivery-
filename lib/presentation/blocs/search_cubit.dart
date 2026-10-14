@@ -103,9 +103,9 @@ class SearchCubit extends Cubit<SearchState> {
     if (error is DioException) {
       if (error.type == DioExceptionType.connectionError ||
           error.type == DioExceptionType.connectionTimeout) {
-        return 'Check your internet connection and try again.';
+        return 'checkInternet';
       }
     }
-    return 'Could not load meals. Please try again.';
+    return 'loadMeals';
   }
 }
