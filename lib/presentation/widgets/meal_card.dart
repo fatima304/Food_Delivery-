@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/l10n/app_localizations.dart';
 
-import '../../core/constants/app_colors.dart';
 import 'ui_parts.dart';
 
 class MealCard extends StatelessWidget {
@@ -32,24 +31,27 @@ class MealCard extends StatelessWidget {
             ),
             Text(
               l10n.freshAndDelicious,
-              style: const TextStyle(fontSize: 12, color: AppColors.textGrey),
+              style: TextStyle(
+                fontSize: 12,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
             ),
             Row(
               children: [
                 Expanded(
                   child: Text(
                     '\$${price.toStringAsFixed(2)}',
-                    style: const TextStyle(
-                      color: AppColors.primaryGreen,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
                 IconButton(
                   onPressed: () => showDemo(context, l10n.addedToCart),
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.add_circle,
-                    color: AppColors.primaryGreen,
+                    color: Theme.of(context).colorScheme.primary,
                   ),
                 ),
               ],

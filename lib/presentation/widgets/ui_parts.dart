@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/l10n/app_localizations.dart';
 
-import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_images.dart';
 import '../../core/style/app_text_styles.dart';
 
@@ -21,9 +20,7 @@ class SectionHeading extends StatelessWidget {
               title,
               style: AppTextStyles.heading24BlackBold.copyWith(
                 fontSize: 18,
-                color: Theme.of(context).brightness == Brightness.dark
-                    ? Theme.of(context).colorScheme.onSurface
-                    : AppColors.black,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
           ),
@@ -58,10 +55,15 @@ class GreenTag extends StatelessWidget {
   Widget build(BuildContext context) => Container(
     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
     decoration: BoxDecoration(
-      color: AppColors.lightGreen,
+      color: Theme.of(context).colorScheme.primaryContainer,
       borderRadius: BorderRadius.circular(18),
     ),
-    child: Text(label, style: AppTextStyles.link14GreenMedium),
+    child: Text(
+      label,
+      style: AppTextStyles.link14GreenMedium.copyWith(
+        color: Theme.of(context).colorScheme.onPrimaryContainer,
+      ),
+    ),
   );
 }
 

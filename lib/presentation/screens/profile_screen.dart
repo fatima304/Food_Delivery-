@@ -124,14 +124,6 @@ class _ProfileContentState extends State<_ProfileContent> {
     }
   }
 
-  void _comingSoon(BuildContext context, String feature) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('$feature ${AppLocalizations.of(context)!.comingSoon}'),
-      ),
-    );
-  }
-
   void _leaveProfile(BuildContext context) {
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(builder: (_) => const HomeScreen()),

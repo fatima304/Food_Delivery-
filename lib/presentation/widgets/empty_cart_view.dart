@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery/core/constants/app_colors.dart';
 import 'package:food_delivery/core/constants/app_images.dart';
 import 'package:food_delivery/l10n/app_localizations.dart';
 import 'package:food_delivery/presentation/widgets/custom_button.dart';
@@ -27,10 +26,10 @@ class EmptyCartView extends StatelessWidget {
                 width: 270,
                 height: 230,
                 fit: BoxFit.contain,
-                errorBuilder: (_, __, ___) => const Icon(
+                errorBuilder: (_, __, ___) => Icon(
                   Icons.remove_shopping_cart_outlined,
                   size: 115,
-                  color: AppColors.textGrey,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
               ),
               const SizedBox(height: 24),
@@ -46,7 +45,7 @@ class EmptyCartView extends StatelessWidget {
                 l10n.addMealsToGetStarted,
                 textAlign: TextAlign.center,
                 style: theme.textTheme.bodyMedium?.copyWith(
-                  color: AppColors.textGrey,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                   height: 1.6,
                 ),
               ),

@@ -35,7 +35,7 @@ class FoodDeliveryApp extends StatelessWidget {
             builder: (_, darkMode, _) => MaterialApp(
               debugShowCheckedModeBanner: false,
               title: 'StreetBite',
-              locale:  Locale('ar'),
+              locale: Locale(arabic ? 'ar' : 'en'),
               localizationsDelegates: AppLocalizations.localizationsDelegates,
               supportedLocales: AppLocalizations.supportedLocales,
               theme: AppTheme.light,

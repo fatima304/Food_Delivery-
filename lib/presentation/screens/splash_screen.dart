@@ -85,7 +85,7 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -118,7 +118,7 @@ class _SplashScreenState extends State<SplashScreen>
                     Text(
                       'StreetBite',
                       style: AppTextStyles.heading36BlackBold.copyWith(
-                        color: AppColors.darkGreen,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                     ),
                     const SizedBox(height: 6),

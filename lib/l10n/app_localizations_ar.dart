@@ -1,5 +1,6 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
+
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -72,7 +73,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get onboardingAccent => 'باب منزلك';
 
   @override
-  String get onboardingDescription => 'اكتشف أفضل المطاعم القريبة منك واستمتع بوجباتك المفضلة في المنزل.';
+  String get onboardingDescription =>
+      'اكتشف أفضل المطاعم القريبة منك واستمتع بوجباتك المفضلة في المنزل.';
 
   @override
   String get getStarted => 'ابدأ الآن  ←';
@@ -90,7 +92,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get dismiss => 'إغلاق';
 
   @override
-  String get sessionError => 'تعذر التحقق من جلسة الدخول. يرجى إعادة تشغيل التطبيق.';
+  String get sessionError =>
+      'تعذر التحقق من جلسة الدخول. يرجى إعادة تشغيل التطبيق.';
 
   @override
   String get fullNameRequired => 'الاسم الكامل مطلوب';
@@ -138,13 +141,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get tooManyAttempts => 'محاولات كثيرة جدًا. حاول مرة أخرى لاحقًا.';
 
   @override
-  String get incorrectCredentials => 'البريد الإلكتروني أو كلمة المرور غير صحيحين. حاول مجددًا.';
+  String get incorrectCredentials =>
+      'البريد الإلكتروني أو كلمة المرور غير صحيحين. حاول مجددًا.';
 
   @override
-  String get noInternet => 'لا يوجد اتصال بالإنترنت. تحقق من الاتصال وحاول مجددًا.';
+  String get noInternet =>
+      'لا يوجد اتصال بالإنترنت. تحقق من الاتصال وحاول مجددًا.';
 
   @override
-  String get emailUnavailable => 'تسجيل الدخول بالبريد غير متاح حاليًا. تواصل مع الدعم.';
+  String get emailUnavailable =>
+      'تسجيل الدخول بالبريد غير متاح حاليًا. تواصل مع الدعم.';
 
   @override
   String get unableRequest => 'تعذر إكمال طلبك. حاول مرة أخرى.';
@@ -213,7 +219,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get noFavouritesYet => 'لا توجد مفضلات بعد';
 
   @override
-  String get noFavouritesDescription => 'اضغط على القلب على الوجبات لحفظ مفضلاتك هنا.';
+  String get noFavouritesDescription =>
+      'اضغط على القلب على الوجبات لحفظ مفضلاتك هنا.';
 
   @override
   String get exploreMeals => 'استكشف الوجبات';
@@ -438,7 +445,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get editNameTooltip => 'تعديل الاسم';
 
   @override
-  String get demoPreviewMessage => 'معاينة للواجهة فقط — اربطها بـ Bloc أو Firebase';
+  String get demoPreviewMessage =>
+      'معاينة للواجهة فقط — اربطها بـ Bloc أو Firebase';
 
   @override
   String get demoGrilledSalad => 'سلطة دجاج مشوي';
@@ -465,7 +473,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get errorSomethingWrong => 'حدث خطأ ما. حاول مرة أخرى.';
 
   @override
-  String get errorLoadFavourites => 'تعذر تحميل المفضلة. تحقق من الاتصال وإعدادات Firestore.';
+  String get errorLoadFavourites =>
+      'تعذر تحميل المفضلة. تحقق من الاتصال وإعدادات Firestore.';
 
   @override
   String get errorUpdateFavourites => 'تعذر تحديث المفضلة. حاول مرة أخرى.';

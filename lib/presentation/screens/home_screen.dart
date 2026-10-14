@@ -1,4 +1,5 @@
 import 'package:food_delivery/core/helper/localized_state_error.dart';
+import 'package:food_delivery/core/helper/app_settings.dart';
 
 import '../blocs/cart_bloc.dart';
 import '../blocs/cart_event.dart';
@@ -44,7 +45,26 @@ class _HomeContent extends StatelessWidget {
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 18),
               children: [
-                SizedBox(height: 20),
+                const SizedBox(height: 12),
+                Row(
+                  children: [
+                    const Spacer(),
+                    ValueListenableBuilder<bool>(
+                      valueListenable: AppSettings.darkMode,
+                      builder: (context, dark, _) => IconButton(
+                        tooltip: l10n.darkTheme,
+                        onPressed: () => AppSettings.setDarkMode(!dark),
+                        icon: Icon(
+                          dark
+                              ? Icons.light_mode_rounded
+                              : Icons.dark_mode_rounded,
+                          color: colors.primary,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
                 Material(
                   color: colors.primaryContainer,
                   borderRadius: BorderRadius.circular(18),

@@ -41,6 +41,26 @@ class AppTheme {
       ),
       dividerColor: dark ? const Color(0xFF3A4740) : AppColors.dividerGrey,
       iconTheme: IconThemeData(color: secondary),
+      appBarTheme: AppBarTheme(
+        backgroundColor: scheme.surface,
+        foregroundColor: scheme.onSurface,
+        elevation: 0,
+      ),
+      cardTheme: CardThemeData(
+        color: dark ? const Color(0xFF1B2520) : Colors.white,
+        surfaceTintColor: Colors.transparent,
+      ),
+      switchTheme: SwitchThemeData(
+        thumbColor: WidgetStateProperty.resolveWith(
+          (states) =>
+              states.contains(WidgetState.selected) ? scheme.primary : null,
+        ),
+      ),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: scheme.surface,
+        selectedItemColor: scheme.primary,
+        unselectedItemColor: scheme.onSurfaceVariant,
+      ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(foregroundColor: scheme.primary),
       ),
