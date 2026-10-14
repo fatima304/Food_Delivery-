@@ -14,6 +14,8 @@ import '../../data/repositories/profile_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../injection.dart';
+import '../blocs/auth_cubit.dart';
+import '../blocs/auth_state.dart';
 import '../blocs/biometric_cubit.dart';
 import '../blocs/biometric_state.dart';
 import '../widgets/app_nav.dart';
@@ -35,6 +37,7 @@ class _ProfileContent extends StatefulWidget {
 
 class _ProfileContentState extends State<_ProfileContent> {
   bool uploading = false;
+  bool signingOut = false;
   File? localPhoto;
   String? localPhotoUserId;
   final repository = getIt<ProfileRepository>();
@@ -113,6 +116,28 @@ class _ProfileContentState extends State<_ProfileContent> {
           ),
         );
       }
+    }
+  }
+
+  Future<void> _signOut() async {
+    if (signingOut) return;
+    setState(() => signingOut = true);
+    final authCubit = context.read<AuthCubit>();
+    await authCubit.logout();
+    if (!mounted) return;
+    if (FirebaseAuth.instance.currentUser == null) {
+      // Return to the first route (AuthGate), which reacts to Firebase sign-out.
+      Navigator.of(context).popUntil((route) => route.isFirst);
+    } else {
+      setState(() => signingOut = false);
+      final error = authCubit.state;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(error is AuthError
+              ? localizedStateError(context, error.message)
+              : AppLocalizations.of(context)!.errorSomethingWrong),
+        ),
+      );
     }
   }
 
@@ -238,6 +263,12 @@ class _ProfileContentState extends State<_ProfileContent> {
           icon: Icons.settings_outlined,
           title: l10n.settings,
           onTap: () => Navigator.pushNamed(context, Routes.settings),
+        ),
+        const SizedBox(height: 10),
+        ProfileMenuTile(
+          icon: Icons.logout_rounded,
+          title: l10n.signOut,
+          onTap: signingOut ? null : _signOut,
         ),
       ],
     );

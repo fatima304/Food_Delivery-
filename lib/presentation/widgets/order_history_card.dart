@@ -68,8 +68,9 @@ class OrderHistoryCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.symmetric(
+                Flexible(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
                     horizontal: 10,
                     vertical: 6,
                   ),
@@ -79,11 +80,14 @@ class OrderHistoryCard extends StatelessWidget {
                   ),
                   child: Text(
                     status,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.w700,
                       color: colors.onPrimaryContainer,
                     ),
+                  ),
                   ),
                 ),
               ],

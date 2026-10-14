@@ -7,9 +7,10 @@ class OnboardingImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = ResponsiveHelper.height(context);
+    final screenHeight = MediaQuery.sizeOf(context).height -
+        MediaQuery.paddingOf(context).vertical;
 
-    final imageHeight = (screenHeight * 0.40).clamp(190.0, 360.0).toDouble();
+    final imageHeight = (screenHeight * 0.36).clamp(160.0, 340.0).toDouble();
 
     return SizedBox(
       width: double.infinity,

@@ -47,7 +47,7 @@ class OnboardingContent extends StatelessWidget {
               color: Theme.of(context).textTheme.bodyMedium?.color,
             ),
           ),
-          const Spacer(),
+          const SizedBox(height: 16),
           SizedBox(height: isSmall ? 16 : 24),
           CustomButton(
             text: AppLocalizations.of(context)!.getStarted,

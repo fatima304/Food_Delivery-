@@ -11,16 +11,15 @@ class AuthFooter extends StatelessWidget {
   final String message, action;
   final VoidCallback onTap;
   @override
-  Widget build(BuildContext context) => Row(
-    mainAxisAlignment: MainAxisAlignment.center,
+  Widget build(BuildContext context) => Wrap(
+    alignment: WrapAlignment.center,
+    crossAxisAlignment: WrapCrossAlignment.center,
     children: [
-      Flexible(
-        child: Text(
+      Text(
           message,
           style: AppTextStyles.body14DarkRegular.copyWith(
             color: Theme.of(context).colorScheme.onSurface,
           ),
-        ),
       ),
       TextButton(
         onPressed: onTap,
