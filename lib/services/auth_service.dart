@@ -1,3 +1,5 @@
+import '../data/models/user_profile_builder.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -57,8 +59,7 @@ class AuthService {
     final docSnapshot = await userDoc.get();
     if (!docSnapshot.exists) {
       await userDoc.set({
-        'fullName': fullName,
-        'email': email,
+        ...UserProfileBuilder().withFullName(fullName).withEmail(email).build(),
         'createdAt': FieldValue.serverTimestamp(),
       });
     }

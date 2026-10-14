@@ -70,8 +70,9 @@ class _LoginFormState extends State<LoginForm> {
           onPressed: widget.isLoading
               ? null
               : () {
-                  if (key.currentState!.validate())
+                  if (key.currentState!.validate()) {
                     widget.onValidSubmit(email.text.trim(), password.text);
+                  }
                 },
         ),
       ],

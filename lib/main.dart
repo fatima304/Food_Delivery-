@@ -36,7 +36,7 @@ class FoodDeliveryApp extends StatelessWidget {
             theme: AppTheme.light,
             darkTheme: AppTheme.dark,
             themeMode: themeMode,
-            initialRoute: Routes.root,
+            initialRoute: Routes.splash,
             onGenerateRoute: const AppRouter().generateRoute,
           ),
         ),

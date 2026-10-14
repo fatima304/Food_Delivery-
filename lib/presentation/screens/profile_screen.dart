@@ -133,9 +133,11 @@ class _ProfileContentState extends State<_ProfileContent> {
       final error = authCubit.state;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(error is AuthError
-              ? localizedStateError(context, error.message)
-              : AppLocalizations.of(context)!.errorSomethingWrong),
+          content: Text(
+            error is AuthError
+                ? localizedStateError(context, error.message)
+                : AppLocalizations.of(context)!.errorSomethingWrong,
+          ),
         ),
       );
     }

@@ -76,7 +76,7 @@ class FavouritesCubit extends Cubit<FavouritesState> {
         await _repository.save(meal);
       }
     } catch (_) {
-      if (!isClosed)
+      if (!isClosed) {
         emit(
           FavouritesState(
             meals: state.meals,
@@ -84,6 +84,7 @@ class FavouritesCubit extends Cubit<FavouritesState> {
             error: 'updateFavourites',
           ),
         );
+      }
     } finally {
       _pending.remove(meal.id);
     }

@@ -16,10 +16,10 @@ class AuthFooter extends StatelessWidget {
     crossAxisAlignment: WrapCrossAlignment.center,
     children: [
       Text(
-          message,
-          style: AppTextStyles.body14DarkRegular.copyWith(
-            color: Theme.of(context).colorScheme.onSurface,
-          ),
+        message,
+        style: AppTextStyles.body14DarkRegular.copyWith(
+          color: Theme.of(context).colorScheme.onSurface,
+        ),
       ),
       TextButton(
         onPressed: onTap,

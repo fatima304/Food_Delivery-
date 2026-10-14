@@ -1,3 +1,4 @@
+import 'data/repositories/meal_repository_factory.dart';
 import 'presentation/blocs/search_cubit.dart';
 import 'presentation/blocs/theme_bloc.dart';
 import 'data/datasources/meal_cache_data_source.dart';
@@ -22,7 +23,6 @@ import 'package:dio/dio.dart';
 import 'package:food_delivery/services/meal_api_service.dart';
 import 'package:food_delivery/core/constants/api_constants.dart';
 import 'package:food_delivery/domain/repositories/home_repository.dart';
-import 'package:food_delivery/data/repositories/home_repository_impl.dart';
 import 'package:food_delivery/presentation/blocs/home_cubit.dart';
 import 'package:food_delivery/data/repositories/auth_repository_impl.dart';
 import 'package:food_delivery/domain/repositories/auth_repository.dart';
@@ -80,9 +80,9 @@ void setupDependencies() {
     () => MealApiService(getIt<Dio>()),
   );
   getIt.registerLazySingleton<HomeRepository>(
-    () => HomeRepositoryImpl(
-      getIt<MealApiService>(),
-      getIt<MealCacheDataSource>(),
+    () => MealRepositoryFactory.create(
+      api: getIt<MealApiService>(),
+      cache: getIt<MealCacheDataSource>(),
     ),
   );
   getIt.registerFactory<HomeCubit>(() => HomeCubit(getIt<HomeRepository>()));

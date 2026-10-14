@@ -134,7 +134,7 @@ class _NearbyVendorsScreenState extends State<NearbyVendorsScreen> {
                       child: ListView.separated(
                         scrollDirection: Axis.horizontal,
                         itemCount: _vendors.length,
-                        separatorBuilder: (_, __) => const SizedBox(width: 8),
+                        separatorBuilder: (_, _) => const SizedBox(width: 8),
                         itemBuilder: (context, index) {
                           final vendor = _vendors[index];
                           return ActionChip(

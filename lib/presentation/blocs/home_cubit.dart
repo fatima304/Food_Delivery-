@@ -48,8 +48,9 @@ class HomeCubit extends Cubit<HomeState> {
   Future<void> selectCategory(String? category) async {
     if (category == state.selectedCategory &&
         !state.loading &&
-        state.error == null)
+        state.error == null) {
       return;
+    }
     final request = ++_request;
     emit(
       HomeState(

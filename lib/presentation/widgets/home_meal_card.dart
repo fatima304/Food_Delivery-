@@ -36,7 +36,7 @@ class HomeMealCard extends StatelessWidget {
                   Image.network(
                     meal.imageUrl,
                     fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => ColoredBox(
+                    errorBuilder: (_, _, _) => ColoredBox(
                       color: scheme.surfaceContainerLow,
                       child: Center(
                         child: Icon(

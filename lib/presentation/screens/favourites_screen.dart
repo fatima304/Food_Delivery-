@@ -22,8 +22,9 @@ class FavouritesScreen extends StatelessWidget {
       ),
       body: BlocBuilder<FavouritesCubit, FavouritesState>(
         builder: (context, state) {
-          if (state.loading)
+          if (state.loading) {
             return const Center(child: CircularProgressIndicator());
+          }
           if (state.error != null && state.meals.isEmpty) {
             return Center(
               child: Text(
@@ -45,7 +46,7 @@ class FavouritesScreen extends StatelessWidget {
                     Image.asset(
                       'assets/images/empty_favourites.png',
                       height: 220,
-                      errorBuilder: (_, __, ___) =>
+                      errorBuilder: (_, _, _) =>
                           const Icon(Icons.favorite_border_rounded, size: 100),
                     ),
                     const SizedBox(height: 8),
@@ -83,7 +84,7 @@ class FavouritesScreen extends StatelessWidget {
           return ListView.separated(
             padding: const EdgeInsets.all(18),
             itemCount: state.meals.length,
-            separatorBuilder: (_, __) => const SizedBox(height: 12),
+            separatorBuilder: (_, _) => const SizedBox(height: 12),
             itemBuilder: (context, index) {
               final meal = state.meals[index];
               return Card(
@@ -100,7 +101,7 @@ class FavouritesScreen extends StatelessWidget {
                       width: 64,
                       height: 64,
                       fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) => const SizedBox(
+                      errorBuilder: (_, _, _) => const SizedBox(
                         width: 64,
                         child: Icon(Icons.restaurant),
                       ),

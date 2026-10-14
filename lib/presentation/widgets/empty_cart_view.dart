@@ -23,10 +23,16 @@ class EmptyCartView extends StatelessWidget {
             children: [
               Image.asset(
                 AppImages.emptyCart,
-                width: (MediaQuery.sizeOf(context).width - 56).clamp(0.0, 270.0),
-                height: (MediaQuery.sizeOf(context).height * .28).clamp(140.0, 230.0),
+                width: (MediaQuery.sizeOf(context).width - 56).clamp(
+                  0.0,
+                  270.0,
+                ),
+                height: (MediaQuery.sizeOf(context).height * .28).clamp(
+                  140.0,
+                  230.0,
+                ),
                 fit: BoxFit.contain,
-                errorBuilder: (_, __, ___) => Icon(
+                errorBuilder: (_, _, _) => Icon(
                   Icons.remove_shopping_cart_outlined,
                   size: 115,
                   color: Theme.of(context).colorScheme.onSurfaceVariant,

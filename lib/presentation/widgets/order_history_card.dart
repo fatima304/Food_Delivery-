@@ -71,23 +71,23 @@ class OrderHistoryCard extends StatelessWidget {
                 Flexible(
                   child: Container(
                     padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: colors.primaryContainer,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Text(
-                    status,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 10,
-                      fontWeight: FontWeight.w700,
-                      color: colors.onPrimaryContainer,
+                      horizontal: 10,
+                      vertical: 6,
                     ),
-                  ),
+                    decoration: BoxDecoration(
+                      color: colors.primaryContainer,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      status,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w700,
+                        color: colors.onPrimaryContainer,
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -107,7 +107,7 @@ class OrderHistoryCard extends StatelessWidget {
                               width: 45,
                               height: 45,
                               fit: BoxFit.cover,
-                              errorBuilder: (_, __, ___) => const SizedBox(
+                              errorBuilder: (_, _, _) => const SizedBox(
                                 width: 45,
                                 height: 45,
                                 child: Icon(Icons.fastfood_outlined),

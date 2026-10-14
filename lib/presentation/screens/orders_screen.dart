@@ -33,11 +33,12 @@ class OrdersScreen extends StatelessWidget {
               ),
             );
           }
-          if (!snapshot.hasData)
+          if (!snapshot.hasData) {
             return const Center(child: CircularProgressIndicator());
+          }
           final orders = snapshot.data!;
-          if (orders.isEmpty)
-            return Center(
+          if (orders.isEmpty) {
+            return  Center(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -59,6 +60,7 @@ class OrdersScreen extends StatelessWidget {
                 ],
               ),
             );
+          }
           return ListView(
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 28),
             children: [
