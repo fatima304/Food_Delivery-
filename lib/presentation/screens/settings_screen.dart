@@ -7,6 +7,7 @@ import 'package:food_delivery/core/helper/app_settings.dart';
 import 'package:food_delivery/l10n/app_localizations.dart';
 
 import '../blocs/device_info_cubit.dart';
+import '../blocs/theme_bloc.dart';
 import '../blocs/device_info_state.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -22,14 +23,12 @@ class SettingsScreen extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          ValueListenableBuilder<bool>(
-            valueListenable: AppSettings.darkMode,
-            builder: (_, dark, _) => SwitchListTile(
+          BlocBuilder<ThemeBloc, ThemeMode>(
+            builder: (context, themeMode) => SwitchListTile(
               title: Text(l10n.darkTheme),
-              value: dark,
+              value: themeMode == ThemeMode.dark,
               onChanged: (value) async {
-                await AppSettings.setDarkMode(value);
-                // Theme will update automatically via ValueListenableBuilder in main.dart
+                context.read<ThemeBloc>().add(ThemeChanged(value));
               },
             ),
           ),

@@ -16,7 +16,7 @@ class CashPayment implements PaymentMethod {
 class CardPayment implements PaymentMethod {
   const CardPayment();
   @override
-  String get id => 'card_demo';
+  String get id => 'card';
   @override
   Future<void> process(double total) async {}
 }

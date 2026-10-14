@@ -180,5 +180,6 @@
   "orderStatusProcessing": "قيد التجهيز",
   "orderStatusCompleted": "مكتمل",
   "orderStatusDelivered": "تم التوصيل",
-  "orderStatusCancelled": "ملغي"
+  "orderStatusCancelled": "ملغي",
+  "pageNotFound": "الصفحة غير موجودة"
 }

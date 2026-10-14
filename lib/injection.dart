@@ -1,4 +1,6 @@
 import 'presentation/blocs/search_cubit.dart';
+import 'presentation/blocs/theme_bloc.dart';
+import 'data/datasources/meal_cache_data_source.dart';
 import 'data/repositories/profile_repository.dart';
 import 'data/repositories/cart_repository.dart';
 import 'data/repositories/orders_repository.dart';
@@ -32,6 +34,8 @@ import 'package:food_delivery/services/firestore_service.dart';
 final getIt = GetIt.instance;
 
 void setupDependencies() {
+  getIt.registerFactory<ThemeBloc>(() => ThemeBloc());
+  getIt.registerLazySingleton<MealCacheDataSource>(() => MealCacheDataSource());
   getIt.registerLazySingleton<ProfileRepository>(
     () => ProfileRepository(FirebaseAuth.instance, FirebaseFirestore.instance),
   );
@@ -76,7 +80,10 @@ void setupDependencies() {
     () => MealApiService(getIt<Dio>()),
   );
   getIt.registerLazySingleton<HomeRepository>(
-    () => HomeRepositoryImpl(getIt<MealApiService>()),
+    () => HomeRepositoryImpl(
+      getIt<MealApiService>(),
+      getIt<MealCacheDataSource>(),
+    ),
   );
   getIt.registerFactory<HomeCubit>(() => HomeCubit(getIt<HomeRepository>()));
   getIt.registerFactory<SearchCubit>(

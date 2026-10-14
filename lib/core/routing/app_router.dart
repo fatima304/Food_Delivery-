@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery/l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/models/meal_model.dart';
@@ -125,7 +126,7 @@ class AppRouter {
         settings: settings,
         builder: (context) => Scaffold(
           appBar: AppBar(),
-          body: const Center(child: Text('Page not found')),
+          body: Center(child: Text(AppLocalizations.of(context)!.pageNotFound)),
         ),
       );
 }

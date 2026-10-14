@@ -180,5 +180,6 @@
   "orderStatusProcessing": "Processing",
   "orderStatusCompleted": "Completed",
   "orderStatusDelivered": "Delivered",
-  "orderStatusCancelled": "Cancelled"
+  "orderStatusCancelled": "Cancelled",
+  "pageNotFound": "Page not found"
 }

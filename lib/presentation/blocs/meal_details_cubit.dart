@@ -1,4 +1,5 @@
-import 'package:dio/dio.dart';
+import '../../core/errors/error_codes.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../domain/repositories/home_repository.dart';
@@ -19,18 +20,11 @@ class MealDetailsCubit extends Cubit<MealDetailsState> {
           error: meal == null ? 'mealUnavailable' : null,
         ),
       );
-    } on DioException catch (error) {
+    } catch (error) {
       if (isClosed) return;
-      final offline = error.type == DioExceptionType.connectionError;
       emit(
-        MealDetailsState(
-          meal: state.meal,
-          error: offline ? 'checkInternet' : 'loadMealDetails',
-        ),
+        MealDetailsState(meal: state.meal, error: ErrorCodes.forMeals(error)),
       );
-    } catch (_) {
-      if (!isClosed)
-        emit(MealDetailsState(meal: state.meal, error: 'somethingWrong'));
     }
   }
 }

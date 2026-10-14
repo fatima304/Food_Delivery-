@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../injection.dart';
 import '../../presentation/blocs/auth_cubit.dart';
+import '../../presentation/blocs/theme_bloc.dart';
 import '../../presentation/blocs/cart_bloc.dart';
 import '../../presentation/blocs/favourites_cubit.dart';
 
@@ -17,6 +18,7 @@ class AppProviders extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider<ThemeBloc>(create: (_) => getIt<ThemeBloc>()),
         BlocProvider<AuthCubit>(create: (_) => getIt<AuthCubit>()),
         BlocProvider<CartBloc>.value(value: getIt<CartBloc>()),
         BlocProvider<FavouritesCubit>.value(value: getIt<FavouritesCubit>()),

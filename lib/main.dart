@@ -8,6 +8,8 @@ import 'package:food_delivery/injection.dart';
 import 'package:food_delivery/core/routing/app_router.dart';
 import 'package:food_delivery/core/routing/routes.dart';
 import 'package:food_delivery/core/providers/app_providers.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_delivery/presentation/blocs/theme_bloc.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,9 +26,8 @@ class FoodDeliveryApp extends StatelessWidget {
     return AppProviders(
       child: ValueListenableBuilder<bool>(
         valueListenable: AppSettings.arabic,
-        builder: (context, arabic, _) => ValueListenableBuilder<bool>(
-          valueListenable: AppSettings.darkMode,
-          builder: (context, darkMode, _) => MaterialApp(
+        builder: (context, arabic, _) => BlocBuilder<ThemeBloc, ThemeMode>(
+          builder: (context, themeMode) => MaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'StreetBite',
             locale: Locale(arabic ? 'ar' : 'en'),
@@ -34,7 +35,7 @@ class FoodDeliveryApp extends StatelessWidget {
             supportedLocales: AppLocalizations.supportedLocales,
             theme: AppTheme.light,
             darkTheme: AppTheme.dark,
-            themeMode: darkMode ? ThemeMode.dark : ThemeMode.light,
+            themeMode: themeMode,
             initialRoute: Routes.root,
             onGenerateRoute: const AppRouter().generateRoute,
           ),

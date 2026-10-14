@@ -559,4 +559,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get orderStatusCancelled => 'ملغي';
+
+  @override
+  String get pageNotFound => 'الصفحة غير موجودة';
 }

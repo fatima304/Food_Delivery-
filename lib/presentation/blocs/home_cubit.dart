@@ -1,4 +1,5 @@
-import 'package:dio/dio.dart';
+import '../../core/errors/error_codes.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../domain/repositories/home_repository.dart';
@@ -37,7 +38,7 @@ class HomeCubit extends Cubit<HomeState> {
         HomeState(
           categories: state.categories,
           meals: state.meals,
-          error: _message(error),
+          error: ErrorCodes.forMeals(error),
           offers: state.offers,
         ),
       );
@@ -77,25 +78,10 @@ class HomeCubit extends Cubit<HomeState> {
           categories: state.categories,
           meals: state.meals,
           selectedCategory: category,
-          error: _message(error),
+          error: ErrorCodes.forMeals(error),
           offers: state.offers,
         ),
       );
     }
-  }
-
-  String _message(Object error) {
-    if (error is DioException) {
-      if (error.type == DioExceptionType.connectionTimeout ||
-          error.type == DioExceptionType.receiveTimeout ||
-          error.type == DioExceptionType.sendTimeout) {
-        return 'requestTimedOut';
-      }
-      if (error.type == DioExceptionType.connectionError) {
-        return 'couldNotConnect';
-      }
-      return 'loadMealsNow';
-    }
-    return 'loadingMeals';
   }
 }

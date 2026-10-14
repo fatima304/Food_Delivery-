@@ -1,4 +1,5 @@
-import 'package:dio/dio.dart';
+import '../../core/errors/error_codes.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../domain/repositories/home_repository.dart';
@@ -29,7 +30,7 @@ class SearchCubit extends Cubit<SearchState> {
         SearchState(
           categories: state.categories,
           meals: state.meals,
-          error: _errorMessage(error),
+          error: ErrorCodes.forMeals(error),
         ),
       );
     }
@@ -62,7 +63,7 @@ class SearchCubit extends Cubit<SearchState> {
         SearchState(
           categories: state.categories,
           query: query,
-          error: _errorMessage(error),
+          error: ErrorCodes.forMeals(error),
         ),
       );
     }
@@ -93,19 +94,9 @@ class SearchCubit extends Cubit<SearchState> {
         SearchState(
           categories: state.categories,
           selectedCategory: category,
-          error: _errorMessage(error),
+          error: ErrorCodes.forMeals(error),
         ),
       );
     }
-  }
-
-  String _errorMessage(Object error) {
-    if (error is DioException) {
-      if (error.type == DioExceptionType.connectionError ||
-          error.type == DioExceptionType.connectionTimeout) {
-        return 'checkInternet';
-      }
-    }
-    return 'loadMeals';
   }
 }

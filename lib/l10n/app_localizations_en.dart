@@ -572,4 +572,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get orderStatusCancelled => 'Cancelled';
+
+  @override
+  String get pageNotFound => 'Page not found';
 }
