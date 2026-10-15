@@ -1,4 +1,4 @@
-import '../widgets/app_back_button.dart';
+import '../../core/widgets/app_back_button.dart';
 
 import 'package:food_delivery/core/helper/localized_state_error.dart';
 import 'package:flutter/material.dart';

@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/l10n/app_localizations.dart';
 
-import '../blocs/favourites_cubit.dart';
+import '../../blocs/favourites_cubit.dart';
 
-import '../../data/models/meal_model.dart';
-import '../../core/style/app_text_styles.dart';
+import '../../../data/models/meal_model.dart';
+import '../../../core/style/app_text_styles.dart';
+import '../common/meal_image.dart';
+import '../common/meal_card_details.dart';
 
 class HomeMealCard extends StatelessWidget {
   const HomeMealCard({super.key, required this.meal, this.onAdd});
@@ -33,20 +35,7 @@ class HomeMealCard extends StatelessWidget {
               child: Stack(
                 fit: StackFit.expand,
                 children: [
-                  Image.network(
-                    meal.imageUrl,
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, _, _) => ColoredBox(
-                      color: scheme.surfaceContainerLow,
-                      child: Center(
-                        child: Icon(
-                          Icons.restaurant_menu_rounded,
-                          color: scheme.primary,
-                          size: 36,
-                        ),
-                      ),
-                    ),
-                  ),
+                  MealImage(imageUrl: meal.imageUrl),
                   Positioned(
                     top: 7,
                     right: 7,
@@ -78,52 +67,33 @@ class HomeMealCard extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(10, 9, 8, 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  meal.name,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: AppTextStyles.body14DarkRegular.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: scheme.onSurface,
+            child: MealCardDetails(
+              meal: meal,
+              nameStyle: AppTextStyles.body14DarkRegular.copyWith(
+                fontWeight: FontWeight.w700,
+                color: scheme.onSurface,
+              ),
+              priceStyle: AppTextStyles.body16DarkRegular.copyWith(
+                color: dark ? scheme.primary : const Color(0xFF08A865),
+                fontWeight: FontWeight.w800,
+              ),
+              trailing: Material(
+                color: scheme.primary,
+                shape: const CircleBorder(),
+                child: InkWell(
+                  customBorder: const CircleBorder(),
+                  onTap: onAdd == null ? null : () => onAdd!(meal),
+                  child: const SizedBox(
+                    width: 33,
+                    height: 33,
+                    child: Icon(
+                      Icons.add_rounded,
+                      color: Colors.white,
+                      size: 21,
+                    ),
                   ),
                 ),
-                const SizedBox(height: 6),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        '\$${meal.price.toStringAsFixed(2)}',
-                        style: AppTextStyles.body16DarkRegular.copyWith(
-                          color: dark
-                              ? scheme.primary
-                              : const Color(0xFF08A865),
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                    ),
-                    Material(
-                      color: scheme.primary,
-                      shape: const CircleBorder(),
-                      child: InkWell(
-                        customBorder: const CircleBorder(),
-                        onTap: onAdd == null ? null : () => onAdd!(meal),
-                        child: const SizedBox(
-                          width: 33,
-                          height: 33,
-                          child: Icon(
-                            Icons.add_rounded,
-                            color: Colors.white,
-                            size: 21,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+              ),
             ),
           ),
         ],

@@ -5,7 +5,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:food_delivery/l10n/app_localizations.dart';
 
@@ -18,9 +17,9 @@ import '../blocs/auth_cubit.dart';
 import '../blocs/auth_state.dart';
 import '../blocs/biometric_cubit.dart';
 import '../blocs/biometric_state.dart';
-import '../widgets/app_nav.dart';
-import '../widgets/profile_header.dart';
-import '../widgets/profile_menu_tile.dart';
+import '../../core/widgets/app_nav.dart';
+import '../widgets/profile/biometric_gate.dart';
+import '../widgets/profile/profile_body.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -99,26 +98,6 @@ class _ProfileContentState extends State<_ProfileContent> {
     }
   }
 
-  Future<void> _editName(String current) async {
-    final name = await showDialog<String>(
-      context: context,
-      builder: (_) => _EditNameDialog(initialName: current),
-    );
-    if (!mounted) return;
-    if (name == null || name.trim().isEmpty) return;
-    try {
-      await repository.updateName(name);
-    } catch (error) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context)!.couldNotUpdateName),
-          ),
-        );
-      }
-    }
-  }
-
   Future<void> _signOut() async {
     if (signingOut) return;
     setState(() => signingOut = true);
@@ -176,151 +155,22 @@ class _ProfileContentState extends State<_ProfileContent> {
     BiometricState state,
     AppLocalizations l10n,
   ) {
-    final busy =
-        state.status == BiometricStatus.loading ||
-        state.status == BiometricStatus.initial;
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(Icons.fingerprint, size: 64),
-            const SizedBox(height: 16),
-            Text(
-              busy ? l10n.verifyingIdentity : l10n.unlockProfile,
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            if (!busy) ...[
-              const SizedBox(height: 10),
-              Text(
-                state.errorMessage == null
-                    ? l10n.biometricRequired
-                    : localizedStateError(context, state.errorMessage),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 20),
-              FilledButton.icon(
-                onPressed: () => context.read<BiometricCubit>().authenticate(),
-                icon: const Icon(Icons.fingerprint),
-                label: Text(l10n.tryAgain),
-              ),
-              TextButton(
-                onPressed: () => _leaveProfile(context),
-                child: Text(l10n.backToHome),
-              ),
-            ] else ...[
-              const SizedBox(height: 20),
-              const CircularProgressIndicator(),
-            ],
-          ],
-        ),
-      ),
+    return BiometricGate(
+      state: state,
+      onAuthenticate: () => context.read<BiometricCubit>().authenticate(),
+      onLeave: () => _leaveProfile(context),
     );
   }
 
   Widget _buildProfile(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    return ListView(
-      children: [
-        const SizedBox(height: 10),
-
-        StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-          stream: repository.watchProfile(),
-          builder: (context, snapshot) {
-            final data = snapshot.data?.data() ?? {};
-            final user = FirebaseAuth.instance.currentUser;
-            final storedName = data['name'] as String?;
-            final name = storedName?.trim().isNotEmpty == true
-                ? storedName!
-                : (user?.displayName?.trim().isNotEmpty == true
-                      ? user!.displayName!
-                      : l10n.streetBiteUser);
-            final uid = user?.uid;
-            final photo = localPhotoUserId == uid ? localPhoto : null;
-            return ProfileHeader(
-              name: name,
-              email: user?.email ?? '',
-              localPhoto: photo,
-              uploading: uploading,
-              onPhotoTap: _pickPhoto,
-              onNameTap: () => _editName(name),
-            );
-          },
-        ),
-        const SizedBox(height: 10),
-        ProfileMenuTile(
-          icon: Icons.favorite_border,
-          title: l10n.favourites,
-          onTap: () => Navigator.pushNamed(context, Routes.favourites),
-        ),
-        const SizedBox(height: 10),
-        ProfileMenuTile(
-          icon: Icons.receipt_long_outlined,
-          title: l10n.orderHistory,
-          onTap: () => Navigator.pushNamed(context, Routes.orders),
-        ),
-        const SizedBox(height: 10),
-        ProfileMenuTile(
-          icon: Icons.settings_outlined,
-          title: l10n.settings,
-          onTap: () => Navigator.pushNamed(context, Routes.settings),
-        ),
-        const SizedBox(height: 10),
-        ProfileMenuTile(
-          icon: Icons.logout_rounded,
-          title: l10n.signOut,
-          onTap: signingOut ? null : _signOut,
-        ),
-      ],
-    );
-  }
-}
-
-class _EditNameDialog extends StatefulWidget {
-  const _EditNameDialog({required this.initialName});
-  final String initialName;
-
-  @override
-  State<_EditNameDialog> createState() => _EditNameDialogState();
-}
-
-class _EditNameDialogState extends State<_EditNameDialog> {
-  late final TextEditingController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = TextEditingController(text: widget.initialName);
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    return AlertDialog(
-      title: Text(l10n.editName),
-      content: TextField(
-        controller: _controller,
-        autofocus: true,
-        textCapitalization: TextCapitalization.words,
-        decoration: InputDecoration(labelText: l10n.fullName),
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: Text(l10n.cancel),
-        ),
-        FilledButton(
-          onPressed: () => Navigator.pop(context, _controller.text.trim()),
-          child: Text(l10n.save),
-        ),
-      ],
+    return ProfileBody(
+      repository: repository,
+      localPhoto: localPhoto,
+      localPhotoUserId: localPhotoUserId,
+      uploading: uploading,
+      onPhotoTap: _pickPhoto,
+      onSignOut: _signOut,
+      signingOut: signingOut,
     );
   }
 }

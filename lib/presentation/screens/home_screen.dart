@@ -1,20 +1,18 @@
-import 'package:food_delivery/core/routing/routes.dart';
-import 'package:food_delivery/core/routing/app_router.dart';
 import 'package:food_delivery/core/helper/localized_state_error.dart';
-
-import '../blocs/cart_bloc.dart';
-import '../blocs/cart_event.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/l10n/app_localizations.dart';
 
 import '../blocs/home_cubit.dart';
 import '../blocs/home_state.dart';
-import '../widgets/app_nav.dart';
-import '../widgets/home_categories.dart';
-import '../widgets/home_meal_card.dart';
-import '../widgets/ui_parts.dart';
+import '../../core/widgets/app_nav.dart';
+import '../widgets/home/home_categories.dart';
+import '../../core/widgets/ui_parts.dart';
+import '../widgets/home/nearby_vendors_card.dart';
+import '../widgets/home/home_search_field.dart';
+import '../widgets/home/offers_carousel.dart';
+import '../widgets/home/hot_offers_list.dart';
+import '../widgets/home/popular_meals_grid.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -28,7 +26,6 @@ class _HomeContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
@@ -45,84 +42,11 @@ class _HomeContent extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 18),
               children: [
                 const SizedBox(height: 12),
-                Material(
-                  color: colors.primaryContainer,
-                  borderRadius: BorderRadius.circular(18),
-                  child: ListTile(
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 5,
-                    ),
-                    leading: Icon(
-                      Icons.map_outlined,
-                      color: colors.primary,
-                      size: 30,
-                    ),
-                    title: Text(
-                      l10n.nearbyVendors,
-                      style: const TextStyle(fontWeight: FontWeight.w700),
-                    ),
-                    subtitle: Text(l10n.nearbyVendorsSubtitle),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios_rounded,
-                      color: colors.primary,
-                      size: 18,
-                    ),
-                    onTap: () =>
-                        Navigator.pushNamed(context, Routes.nearbyVendors),
-                  ),
-                ),
+                const NearbyVendorsCard(),
                 const SizedBox(height: 16),
-                TextField(
-                  readOnly: true,
-                  onTap: () => Navigator.pushNamed(context, Routes.search),
-                  decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.search),
-                    hintText: l10n.searchHint,
-                    filled: true,
-                    fillColor: colors.surfaceContainerLow,
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.circular(18),
-                    ),
-                  ),
-                ),
+                const HomeSearchField(),
                 const SizedBox(height: 16),
-
-                SizedBox(
-                  height: 165,
-                  child: PageView(
-                    children: [
-                      for (final title in [
-                        l10n.specialOffers,
-                        l10n.freshMeals,
-                        l10n.streetFoodFavourites,
-                      ])
-                        Card(
-                          color: colors.primaryContainer,
-                          elevation: 0,
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(16),
-                                  child: Text(
-                                    title,
-                                    style: TextStyle(
-                                      fontSize: 21,
-                                      fontWeight: FontWeight.bold,
-                                      color: colors.onPrimaryContainer,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const Expanded(child: FoodPhoto(height: 150)),
-                            ],
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
+                const OffersCarousel(),
                 SectionHeading(l10n.categories),
                 HomeCategories(
                   categories: state.categories,
@@ -130,38 +54,7 @@ class _HomeContent extends StatelessWidget {
                   onSelected: context.read<HomeCubit>().selectCategory,
                 ),
                 SectionHeading(l10n.hotOffers),
-                SizedBox(
-                  height: 130,
-                  child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: state.offers.length,
-                    separatorBuilder: (_, _) => const SizedBox(width: 12),
-                    itemBuilder: (context, i) => SizedBox(
-                      width: 145,
-                      child: Column(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: Image.network(
-                              state.offers[i].imageUrl,
-                              width: 145,
-                              height: 90,
-                              fit: BoxFit.cover,
-                              errorBuilder: (_, _, _) =>
-                                  const FoodPhoto(height: 90),
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            state.offers[i].name,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+                HotOffersList(offers: state.offers),
                 SectionHeading(l10n.popularMeals),
                 if (state.loading)
                   const Padding(
@@ -195,41 +88,7 @@ class _HomeContent extends StatelessWidget {
                     ),
                   ),
                 if (state.meals.isNotEmpty)
-                  GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: state.meals.length,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: .87,
-                          crossAxisSpacing: 12,
-                          mainAxisSpacing: 12,
-                        ),
-                    itemBuilder: (context, i) => GestureDetector(
-                      onTap: () => Navigator.pushNamed(
-                        context,
-                        Routes.mealDetails,
-                        arguments: MealDetailsArgs(
-                          mealId: state.meals[i].id,
-                          initialMeal: state.meals[i],
-                        ),
-                      ),
-                      child: HomeMealCard(
-                        meal: state.meals[i],
-                        onAdd: (meal) {
-                          context.read<CartBloc>().add(CartAdd(meal));
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('${l10n.addedToCart} ${meal.name}'),
-                              behavior: SnackBarBehavior.floating,
-                              duration: const Duration(seconds: 2),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
+                  PopularMealsGrid(meals: state.meals),
                 const SizedBox(height: 20),
               ],
             ),

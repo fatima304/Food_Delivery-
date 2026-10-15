@@ -2,7 +2,7 @@ import 'package:food_delivery/core/helper/localized_validation.dart';
 import 'package:food_delivery/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery/core/helper/validator.dart';
-import 'package:food_delivery/presentation/widgets/custom_text_form_field.dart';
+import 'package:food_delivery/core/widgets/custom_text_form_field.dart';
 
 class PasswordField extends StatefulWidget {
   const PasswordField({super.key, required this.controller, this.hint});

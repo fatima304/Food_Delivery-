@@ -59,7 +59,11 @@ class AuthService {
     final docSnapshot = await userDoc.get();
     if (!docSnapshot.exists) {
       await userDoc.set({
-        ...UserProfileBuilder().withFullName(fullName).withEmail(email).build(),
+        ...UserProfileBuilder()
+            .withFullName(fullName)
+            .withEmail(email)
+            .build()
+            .toJson(),
         'createdAt': FieldValue.serverTimestamp(),
       });
     }

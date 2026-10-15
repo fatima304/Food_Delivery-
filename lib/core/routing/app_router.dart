@@ -12,7 +12,6 @@ import '../../presentation/blocs/search_cubit.dart';
 import '../../presentation/screens/auth_gate.dart';
 import '../../presentation/screens/cart_screen.dart';
 import '../../presentation/screens/checkout_screen.dart';
-import '../../presentation/screens/empty_cart_screen.dart';
 import '../../presentation/screens/favourites_screen.dart';
 import '../../presentation/screens/home_screen.dart';
 import '../../presentation/screens/login_screen.dart';
@@ -111,9 +110,6 @@ class AppRouter {
         break;
       case Routes.nearbyVendors:
         page = const NearbyVendorsScreen();
-        break;
-      case Routes.emptyCart:
-        page = const EmptyCartScreen();
         break;
       default:
         return _invalidRoute(settings);

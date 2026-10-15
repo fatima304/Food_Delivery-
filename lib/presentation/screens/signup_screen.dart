@@ -4,11 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/presentation/blocs/auth_cubit.dart';
 import 'package:food_delivery/presentation/blocs/auth_state.dart';
 
-import '../widgets/auth_scaffold.dart';
-import '../widgets/auth_header.dart';
-import '../widgets/signup_form.dart';
-import '../widgets/auth_footer.dart';
-import '../widgets/auth_feedback.dart';
+import '../widgets/auth/auth_scaffold.dart';
+import '../widgets/auth/auth_header.dart';
+import '../widgets/auth/signup_form.dart';
+import '../widgets/auth/auth_footer.dart';
+import '../widgets/auth/auth_feedback.dart';
 
 class SignupScreen extends StatelessWidget {
   const SignupScreen({super.key});

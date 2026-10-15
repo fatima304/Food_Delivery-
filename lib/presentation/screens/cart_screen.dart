@@ -2,14 +2,15 @@ import 'package:food_delivery/core/routing/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/l10n/app_localizations.dart';
-import 'package:food_delivery/presentation/widgets/custom_button.dart';
+import 'package:food_delivery/presentation/widgets/orders/empty_cart_view.dart';
+import 'package:food_delivery/core/widgets/custom_button.dart';
 
 import '../blocs/cart_bloc.dart';
 import '../blocs/cart_event.dart';
 import '../blocs/cart_state.dart';
-import '../widgets/app_nav.dart';
-import '../widgets/empty_cart_view.dart';
-import '../widgets/ui_parts.dart';
+import '../../core/widgets/app_nav.dart';
+import '../../core/widgets/ui_parts.dart';
+import '../widgets/common/meal_image.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
@@ -45,16 +46,12 @@ class CartScreen extends StatelessWidget {
                   UiCard(
                     child: Row(
                       children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(16),
-                          child: Image.network(
-                            item.meal.imageUrl,
-                            width: 72,
-                            height: 72,
-                            fit: BoxFit.cover,
-                            errorBuilder: (_, _, _) =>
-                                const FoodPhoto(width: 72, height: 72),
-                          ),
+                        MealImage(
+                          imageUrl: item.meal.imageUrl,
+                          width: 72,
+                          height: 72,
+                          borderRadius: 16,
+                          fallback: const FoodPhoto(width: 72, height: 72),
                         ),
                         const SizedBox(width: 12),
                         Expanded(

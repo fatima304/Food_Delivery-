@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:food_delivery/l10n/app_localizations.dart';
 
-import '../../core/constants/app_colors.dart';
+import '../../../core/constants/app_colors.dart';
 
 class ProfileHeader extends StatelessWidget {
   const ProfileHeader({

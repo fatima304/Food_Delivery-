@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/core/constants/app_images.dart';
 import 'package:food_delivery/l10n/app_localizations.dart';
-import 'package:food_delivery/presentation/widgets/custom_button.dart';
+import 'package:food_delivery/core/widgets/custom_button.dart';
 
 /// Empty cart illustration and action; kept separate from cart business logic.
 class EmptyCartView extends StatelessWidget {

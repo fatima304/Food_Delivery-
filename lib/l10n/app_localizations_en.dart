@@ -1,6 +1,5 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
-
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -58,8 +57,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get creatingAccount => 'Creating account...';
 
   @override
-  String get termsAgreement =>
-      'I agree to the Terms of Service and Privacy Policy';
+  String get termsAgreement => 'I agree to the Terms of Service and Privacy Policy';
 
   @override
   String get acceptTerms => 'Please accept the terms first';
@@ -74,8 +72,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingAccent => 'your doorstep';
 
   @override
-  String get onboardingDescription =>
-      'Discover the best restaurants near you and enjoy your favorite meals at home.';
+  String get onboardingDescription => 'Discover the best restaurants near you and enjoy your favorite meals at home.';
 
   @override
   String get getStarted => 'Get Started  →';
@@ -84,17 +81,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingSignIn => 'Already have an account?  Sign In';
 
   @override
-  String get signedIn => 'You are signed in!';
-
-  @override
   String get signOut => 'Sign out';
 
   @override
   String get dismiss => 'Dismiss';
 
   @override
-  String get sessionError =>
-      'Unable to check your session. Please restart the app.';
+  String get sessionError => 'Unable to check your session. Please restart the app.';
 
   @override
   String get fullNameRequired => 'Full name is required';
@@ -142,28 +135,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tooManyAttempts => 'Too many attempts. Please try again later.';
 
   @override
-  String get incorrectCredentials =>
-      'Incorrect email or password. Please try again.';
+  String get incorrectCredentials => 'Incorrect email or password. Please try again.';
 
   @override
-  String get noInternet =>
-      'No internet connection. Check your connection and try again.';
+  String get noInternet => 'No internet connection. Check your connection and try again.';
 
   @override
-  String get emailUnavailable =>
-      'Email sign-in is unavailable right now. Please contact support.';
+  String get emailUnavailable => 'Email sign-in is unavailable right now. Please contact support.';
 
   @override
-  String get unableRequest =>
-      'Unable to complete your request. Please try again.';
+  String get unableRequest => 'Unable to complete your request. Please try again.';
 
   @override
-  String get networkError =>
-      'Network error. Please check your internet connection.';
+  String get networkError => 'Network error. Please check your internet connection.';
 
   @override
-  String get unexpectedError =>
-      'An unexpected error occurred. Please try again.';
+  String get unexpectedError => 'An unexpected error occurred. Please try again.';
 
   @override
   String get homeScreen => 'Home Screen';
@@ -226,8 +213,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noFavouritesYet => 'No favourites yet';
 
   @override
-  String get noFavouritesDescription =>
-      'Tap the heart on meals to save your favourites here.';
+  String get noFavouritesDescription => 'Tap the heart on meals to save your favourites here.';
 
   @override
   String get exploreMeals => 'Explore Meals';
@@ -249,9 +235,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get couldNotUpdateName => 'Could not update name:';
-
-  @override
-  String get comingSoon => 'is coming soon';
 
   @override
   String get verifyingIdentity => 'Verifying your identity...';
@@ -329,8 +312,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get meal => 'Meal';
 
   @override
-  String get couldNotLoadOrders =>
-      'Could not load your orders. Please try again.';
+  String get couldNotLoadOrders => 'Could not load your orders. Please try again.';
 
   @override
   String get noOrdersYet => 'No orders yet';
@@ -381,8 +363,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get yourCartEmpty => 'Your cart is empty';
 
   @override
-  String get addMealsToGetStarted =>
-      'Add some delicious meals\nand get started!';
+  String get addMealsToGetStarted => 'Add some delicious meals\nand get started!';
 
   @override
   String get browseMeals => 'Browse Meals';
@@ -406,8 +387,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get orderPlacedSuccessfully => 'Order placed successfully!';
 
   @override
-  String get couldNotPlaceOrder =>
-      'Could not place your order. Please try again.';
+  String get couldNotPlaceOrder => 'Could not place your order. Please try again.';
 
   @override
   String get paymentMethod => 'Payment Method';
@@ -455,8 +435,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get editNameTooltip => 'Edit name';
 
   @override
-  String get demoPreviewMessage =>
-      'UI preview only — connect your Bloc / Firebase';
+  String get demoPreviewMessage => 'UI preview only — connect your Bloc / Firebase';
 
   @override
   String get demoGrilledSalad => 'Grilled Chicken Salad';
@@ -474,41 +453,34 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorMealDetailsUnavailable => 'Meal details are unavailable.';
 
   @override
-  String get errorCheckInternet =>
-      'Check your internet connection and try again.';
+  String get errorCheckInternet => 'Check your internet connection and try again.';
 
   @override
-  String get errorLoadMealDetails =>
-      'Unable to load meal details. Please try again.';
+  String get errorLoadMealDetails => 'Unable to load meal details. Please try again.';
 
   @override
   String get errorSomethingWrong => 'Something went wrong. Please try again.';
 
   @override
-  String get errorLoadFavourites =>
-      'Could not load favourites. Check your connection and Firestore rules.';
+  String get errorLoadFavourites => 'Could not load favourites. Check your connection and Firestore rules.';
 
   @override
-  String get errorUpdateFavourites =>
-      'Could not update favourites. Please try again.';
+  String get errorUpdateFavourites => 'Could not update favourites. Please try again.';
 
   @override
   String get errorRequestTimedOut => 'The request timed out. Please try again.';
 
   @override
-  String get errorCouldNotConnect =>
-      'Could not connect. Check your internet connection.';
+  String get errorCouldNotConnect => 'Could not connect. Check your internet connection.';
 
   @override
-  String get errorLoadMealsNow =>
-      'Unable to load meals right now. Please try again.';
+  String get errorLoadMealsNow => 'Unable to load meals right now. Please try again.';
 
   @override
   String get errorLoadingMeals => 'Something went wrong while loading meals.';
 
   @override
-  String get errorBiometricFailed =>
-      'Biometric authentication was cancelled or failed.';
+  String get errorBiometricFailed => 'Biometric authentication was cancelled or failed.';
 
   @override
   String get errorAuthenticate => 'Unable to authenticate. Please try again.';

@@ -1,8 +1,8 @@
 import 'package:food_delivery/core/routing/routes.dart';
 import 'package:flutter/material.dart';
 
-import '../widgets/onboarding_image.dart';
-import '../widgets/onboarding_content.dart';
+import '../widgets/onboarding/onboarding_image.dart';
+import '../widgets/onboarding/onboarding_content.dart';
 
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});

@@ -1,4 +1,4 @@
-import '../widgets/app_back_button.dart';
+import '../../core/widgets/app_back_button.dart';
 
 import 'package:food_delivery/core/routing/routes.dart';
 import 'package:food_delivery/core/routing/app_router.dart';
@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/l10n/app_localizations.dart';
 
 import '../blocs/favourites_cubit.dart';
+import '../widgets/common/meal_image.dart';
 
 class FavouritesScreen extends StatelessWidget {
   const FavouritesScreen({super.key});
@@ -94,18 +95,13 @@ class FavouritesScreen extends StatelessWidget {
                     horizontal: 12,
                     vertical: 6,
                   ),
-                  leading: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Image.network(
-                      meal.imageUrl,
-                      width: 64,
-                      height: 64,
-                      fit: BoxFit.cover,
-                      errorBuilder: (_, _, _) => const SizedBox(
-                        width: 64,
-                        child: Icon(Icons.restaurant),
-                      ),
-                    ),
+                  leading: MealImage(
+                    imageUrl: meal.imageUrl,
+                    width: 64,
+                    height: 64,
+                    borderRadius: 10,
+                    placeholderIcon: Icons.restaurant,
+                    placeholderSize: 24,
                   ),
                   title: Text(
                     meal.name,

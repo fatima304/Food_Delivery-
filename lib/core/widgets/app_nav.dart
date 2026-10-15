@@ -1,8 +1,8 @@
 import 'package:food_delivery/core/routing/routes.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../blocs/cart_bloc.dart';
-import '../blocs/cart_state.dart';
+import '../../presentation/blocs/cart_bloc.dart';
+import '../../presentation/blocs/cart_state.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

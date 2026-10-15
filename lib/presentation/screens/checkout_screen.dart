@@ -1,4 +1,4 @@
-import '../widgets/app_back_button.dart';
+import '../../core/widgets/app_back_button.dart';
 
 import 'package:food_delivery/core/routing/routes.dart';
 import 'package:flutter/material.dart';
@@ -12,9 +12,9 @@ import '../blocs/cart_bloc.dart';
 import '../blocs/cart_event.dart';
 import '../blocs/cart_state.dart';
 
-import 'package:food_delivery/presentation/widgets/custom_button.dart';
+import 'package:food_delivery/core/widgets/custom_button.dart';
 
-import '../widgets/ui_parts.dart';
+import '../../core/widgets/ui_parts.dart';
 
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({super.key});
@@ -86,17 +86,27 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         children: [
           const FoodPhoto(height: 150),
           SectionHeading(l10n.paymentMethod),
-          RadioListTile<bool>(
-            title: Text(l10n.cashOnDelivery),
-            value: true,
+          RadioGroup<bool>(
             groupValue: payment is CashPayment,
-            onChanged: (v) => setState(() => payment = const CashPayment()),
-          ),
-          RadioListTile<bool>(
-            title: Text(l10n.creditDebitCard),
-            value: false,
-            groupValue: payment is CashPayment,
-            onChanged: (v) => setState(() => payment = const CardPayment()),
+            onChanged: (value) {
+              setState(() {
+                payment = value == true
+                    ? const CashPayment()
+                    : const CardPayment();
+              });
+            },
+            child: Column(
+              children: [
+                RadioListTile<bool>(
+                  title: Text(l10n.cashOnDelivery),
+                  value: true,
+                ),
+                RadioListTile<bool>(
+                  title: Text(l10n.creditDebitCard),
+                  value: false,
+                ),
+              ],
+            ),
           ),
           SectionHeading(l10n.orderSummary),
           BlocBuilder<CartBloc, CartState>(

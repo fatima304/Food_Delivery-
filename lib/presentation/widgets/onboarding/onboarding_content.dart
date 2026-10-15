@@ -2,7 +2,7 @@ import 'package:food_delivery/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery/core/helper/responsive_helper.dart';
 import 'package:food_delivery/core/style/app_text_styles.dart';
-import 'package:food_delivery/presentation/widgets/custom_button.dart';
+import 'package:food_delivery/core/widgets/custom_button.dart';
 
 class OnboardingContent extends StatelessWidget {
   const OnboardingContent({

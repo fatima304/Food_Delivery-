@@ -2,7 +2,7 @@ import 'package:food_delivery/core/helper/localized_vendor.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery/l10n/app_localizations.dart';
 
-import '../../domain/entities/vendor.dart';
+import '../../../domain/entities/vendor.dart';
 
 class VendorDetailsCard extends StatelessWidget {
   const VendorDetailsCard({

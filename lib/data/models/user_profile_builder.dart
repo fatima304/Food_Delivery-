@@ -1,5 +1,6 @@
-/// Builds the Firestore profile payload for a newly registered user.
-/// Firebase's server timestamp is added by the data service.
+import 'user_profile_model.dart';
+
+/// Builder Pattern: prepare a profile before saving it to Firestore.
 class UserProfileBuilder {
   String _fullName = '';
   String _email = '';
@@ -14,5 +15,6 @@ class UserProfileBuilder {
     return this;
   }
 
-  Map<String, dynamic> build() => {'fullName': _fullName, 'email': _email};
+  UserProfileModel build() =>
+      UserProfileModel(fullName: _fullName, email: _email);
 }

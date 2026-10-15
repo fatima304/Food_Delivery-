@@ -1,17 +1,15 @@
 import 'package:food_delivery/core/routing/routes.dart';
 import 'package:food_delivery/core/routing/app_router.dart';
 import 'package:food_delivery/core/helper/localized_state_error.dart';
-
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/l10n/app_localizations.dart';
-
 import '../../data/models/meal_model.dart';
 import '../blocs/search_cubit.dart';
 import '../blocs/search_state.dart';
-import '../widgets/app_nav.dart';
+import '../../core/widgets/app_nav.dart';
+import '../widgets/search/search_meal_card.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
@@ -263,7 +261,7 @@ class _SearchContentState extends State<_SearchContent> {
                         ),
                         delegate: SliverChildBuilderDelegate((context, index) {
                           final meal = state.meals[index];
-                          return _SearchMealCard(
+                          return SearchMealCard(
                             meal: meal,
                             onTap: () => _openMeal(meal),
                           );
@@ -274,75 +272,6 @@ class _SearchContentState extends State<_SearchContent> {
                 ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _SearchMealCard extends StatelessWidget {
-  const _SearchMealCard({required this.meal, required this.onTap});
-  final MealModel meal;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
-    final l10n = AppLocalizations.of(context)!;
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      elevation: 0,
-      color: colors.surfaceContainerLow,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: InkWell(
-        onTap: onTap,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(
-              child: Image.network(
-                meal.imageUrl,
-                fit: BoxFit.cover,
-                errorBuilder: (_, _, _) => Icon(
-                  Icons.restaurant_menu,
-                  size: 42,
-                  color: colors.primary,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    meal.name,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontWeight: FontWeight.w700),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    meal.category ?? l10n.meal,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: colors.onSurfaceVariant,
-                    ),
-                  ),
-                  const SizedBox(height: 5),
-                  Text(
-                    '\$${meal.price.toStringAsFixed(2)}',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: colors.primary,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
         ),
       ),
     );

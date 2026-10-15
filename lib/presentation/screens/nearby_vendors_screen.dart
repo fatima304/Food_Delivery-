@@ -1,13 +1,15 @@
-import '../widgets/app_back_button.dart';
+import '../../core/widgets/app_back_button.dart';
 
-import 'package:food_delivery/core/helper/localized_vendor.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:food_delivery/l10n/app_localizations.dart';
 
 import '../../data/datasources/vendor_local_data_source.dart';
 import '../../domain/entities/vendor.dart';
-import '../widgets/vendor_details_card.dart';
+import '../widgets/nearby_vendors/vendor_details_card.dart';
+import '../widgets/nearby_vendors/vendor_map.dart';
+import '../widgets/nearby_vendors/vendor_chip_list.dart';
+import '../widgets/nearby_vendors/map_info_banner.dart';
 
 class NearbyVendorsScreen extends StatefulWidget {
   const NearbyVendorsScreen({super.key});
@@ -25,18 +27,6 @@ class _NearbyVendorsScreenState extends State<NearbyVendorsScreen> {
   final List<Vendor> _vendors = const VendorLocalDataSource().getVendors();
   GoogleMapController? _mapController;
   Vendor? _selectedVendor;
-
-  Set<Marker> _markersFor(BuildContext context) => _vendors.map((vendor) {
-    return Marker(
-      markerId: MarkerId(vendor.id),
-      position: vendor.location,
-      infoWindow: InfoWindow(
-        title: localizedVendorName(context, vendor),
-        snippet: localizedVendorCuisine(context, vendor),
-      ),
-      onTap: () => _selectVendor(vendor),
-    );
-  }).toSet();
 
   Future<void> _selectVendor(Vendor vendor) async {
     if (!mounted) return;
@@ -56,7 +46,6 @@ class _NearbyVendorsScreenState extends State<NearbyVendorsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
@@ -78,44 +67,18 @@ class _NearbyVendorsScreenState extends State<NearbyVendorsScreen> {
       ),
       body: Stack(
         children: [
-          GoogleMap(
-            initialCameraPosition: _initialCamera,
-            markers: _markersFor(context),
-            mapType: MapType.normal,
-            compassEnabled: true,
-            zoomControlsEnabled: false,
-            myLocationEnabled: false,
-            myLocationButtonEnabled: false,
+          VendorMap(
+            vendors: _vendors,
+            initialCamera: _initialCamera,
             onMapCreated: (controller) => _mapController = controller,
-            onTap: (_) => setState(() => _selectedVendor = null),
+            onMarkerTap: _selectVendor,
+            onMapTap: () => setState(() => _selectedVendor = null),
           ),
-          Positioned(
+          const Positioned(
             left: 16,
             right: 16,
             top: 16,
-            child: Material(
-              color: scheme.surface,
-              elevation: 2,
-              borderRadius: BorderRadius.circular(18),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 14,
-                  vertical: 12,
-                ),
-                child: Row(
-                  children: [
-                    Icon(Icons.storefront_rounded, color: scheme.primary),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Text(
-                        l10n.exploreDemoVendors,
-                        style: const TextStyle(fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            child: MapInfoBanner(),
           ),
           Positioned(
             left: 16,
@@ -129,26 +92,9 @@ class _NearbyVendorsScreenState extends State<NearbyVendorsScreen> {
                       onClose: () => setState(() => _selectedVendor = null),
                       onLocate: () => _selectVendor(_selectedVendor!),
                     )
-                  : SizedBox(
-                      height: 94,
-                      child: ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: _vendors.length,
-                        separatorBuilder: (_, _) => const SizedBox(width: 8),
-                        itemBuilder: (context, index) {
-                          final vendor = _vendors[index];
-                          return ActionChip(
-                            avatar: Icon(
-                              Icons.location_on,
-                              size: 17,
-                              color: scheme.primary,
-                            ),
-                            label: Text(localizedVendorCity(context, vendor)),
-                            backgroundColor: scheme.surface,
-                            onPressed: () => _selectVendor(vendor),
-                          );
-                        },
-                      ),
+                  : VendorChipList(
+                      vendors: _vendors,
+                      onVendorSelected: _selectVendor,
                     ),
             ),
           ),

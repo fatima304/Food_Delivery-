@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/l10n/app_localizations.dart';
 
-import '../../data/models/meal_category_model.dart';
+import '../../../data/models/meal_category_model.dart';
 
 class HomeCategories extends StatelessWidget {
   const HomeCategories({

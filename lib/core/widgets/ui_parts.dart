@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/l10n/app_localizations.dart';
 
-import '../../core/constants/app_images.dart';
-import '../../core/style/app_text_styles.dart';
+import '../constants/app_images.dart';
+import '../style/app_text_styles.dart';
 
 class SectionHeading extends StatelessWidget {
   const SectionHeading(this.title, {super.key, this.action});

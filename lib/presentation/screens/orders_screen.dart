@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/l10n/app_localizations.dart';
 
-import '../widgets/app_nav.dart';
+import '../../core/widgets/app_nav.dart';
 import '../../injection.dart';
 import '../../data/models/order_model.dart';
 import '../../data/repositories/orders_repository.dart';
-import '../widgets/order_history_card.dart';
+import '../widgets/orders/order_history_card.dart';
 
 class OrdersScreen extends StatelessWidget {
   const OrdersScreen({super.key});
@@ -38,7 +38,7 @@ class OrdersScreen extends StatelessWidget {
           }
           final orders = snapshot.data!;
           if (orders.isEmpty) {
-            return  Center(
+            return Center(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [

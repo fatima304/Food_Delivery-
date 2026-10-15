@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/l10n/app_localizations.dart';
 
-import '../../data/models/order_model.dart';
+import '../../../data/models/order_model.dart';
+import '../common/meal_image.dart';
 
 class OrderHistoryCard extends StatelessWidget {
   const OrderHistoryCard({super.key, required this.order});
@@ -29,7 +30,7 @@ class OrderHistoryCard extends StatelessWidget {
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(18),
-        side: BorderSide(color: colors.outlineVariant.withOpacity(.6)),
+        side: BorderSide(color: colors.outlineVariant.withValues(alpha: .6)),
       ),
       child: Padding(
         padding: const EdgeInsets.all(15),
@@ -93,31 +94,19 @@ class OrderHistoryCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 14),
-            Divider(color: colors.outlineVariant.withOpacity(.5)),
+            Divider(color: colors.outlineVariant.withValues(alpha: .5)),
             for (final item in order.items)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
                 child: Row(
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(9),
-                      child: (item['imageUrl']?.toString().isNotEmpty ?? false)
-                          ? Image.network(
-                              item['imageUrl'].toString(),
-                              width: 45,
-                              height: 45,
-                              fit: BoxFit.cover,
-                              errorBuilder: (_, _, _) => const SizedBox(
-                                width: 45,
-                                height: 45,
-                                child: Icon(Icons.fastfood_outlined),
-                              ),
-                            )
-                          : const SizedBox(
-                              width: 45,
-                              height: 45,
-                              child: Icon(Icons.fastfood_outlined),
-                            ),
+                    MealImage(
+                      imageUrl: item['imageUrl']?.toString() ?? '',
+                      width: 45,
+                      height: 45,
+                      borderRadius: 9,
+                      placeholderIcon: Icons.fastfood_outlined,
+                      placeholderSize: 24,
                     ),
                     const SizedBox(width: 10),
                     Expanded(
@@ -138,7 +127,7 @@ class OrderHistoryCard extends StatelessWidget {
                   ],
                 ),
               ),
-            Divider(color: colors.outlineVariant.withOpacity(.5)),
+            Divider(color: colors.outlineVariant.withValues(alpha: .5)),
             Row(
               children: [
                 Icon(

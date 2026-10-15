@@ -34,7 +34,9 @@ class FavouritesCubit extends Cubit<FavouritesState> {
 
   void _onAuthChanged(User? user) {
     final uid = user?.uid;
-    if (_activeUid == uid && _subscription != null) return;
+    if (_activeUid == uid && _subscription != null) {
+      return;
+    }
     _activeUid = uid;
     final generation = ++_generation;
     _subscription?.cancel();
@@ -68,7 +70,9 @@ class FavouritesCubit extends Cubit<FavouritesState> {
   }
 
   Future<void> toggle(MealModel meal) async {
-    if (_activeUid == null || state.loading || !_pending.add(meal.id)) return;
+    if (_activeUid == null || state.loading || !_pending.add(meal.id)) {
+      return;
+    }
     try {
       if (state.contains(meal.id)) {
         await _repository.remove(meal.id);

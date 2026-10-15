@@ -24,7 +24,9 @@ class HomeCubit extends Cubit<HomeState> {
     try {
       final categories = await repository.getCategories();
       final meals = await repository.getMeals();
-      if (isClosed || request != _request) return;
+      if (isClosed || request != _request) {
+        return;
+      }
       emit(
         HomeState(
           categories: categories,
@@ -33,7 +35,9 @@ class HomeCubit extends Cubit<HomeState> {
         ),
       );
     } catch (error) {
-      if (isClosed || request != _request) return;
+      if (isClosed || request != _request) {
+        return;
+      }
       emit(
         HomeState(
           categories: state.categories,
@@ -63,7 +67,9 @@ class HomeCubit extends Cubit<HomeState> {
     );
     try {
       final meals = await repository.getMeals(category: category);
-      if (isClosed || request != _request) return;
+      if (isClosed || request != _request) {
+        return;
+      }
       emit(
         HomeState(
           categories: state.categories,
@@ -73,7 +79,9 @@ class HomeCubit extends Cubit<HomeState> {
         ),
       );
     } catch (error) {
-      if (isClosed || request != _request) return;
+      if (isClosed || request != _request) {
+        return;
+      }
       emit(
         HomeState(
           categories: state.categories,
