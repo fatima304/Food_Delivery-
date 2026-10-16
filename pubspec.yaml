@@ -1,6 +1,6 @@
 
 name: food_delivery
-description: "A new Flutter project."
+description: "StreetBite is a bilingual Flutter food discovery and ordering app with Firebase, meal search, favourites, cart, and nearby vendors."
 publish_to: 'none'
 
 version: 1.0.0+1

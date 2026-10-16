@@ -15,6 +15,8 @@ class MealModel {
   final String? area;
   @JsonKey(name: 'strInstructions')
   final String? instructions;
+  @JsonKey(readValue: _readIngredients, includeToJson: false)
+  final List<String> ingredients;
 
   const MealModel({
     required this.id,
@@ -23,12 +25,24 @@ class MealModel {
     this.category,
     this.area,
     this.instructions,
+    this.ingredients = const [],
   });
 
   factory MealModel.fromJson(Map<String, dynamic> json) =>
       _$MealModelFromJson(json);
   Map<String, dynamic> toJson() => _$MealModelToJson(this);
   static String _asString(Object? value) => value?.toString() ?? '';
+  static Object _readIngredients(Map json, String key) {
+    final result = <String>[];
+    for (var i = 1; i <= 20; i++) {
+      final name = (json['strIngredient$i'] ?? '').toString().trim();
+      if (name.isEmpty) continue;
+      final amount = (json['strMeasure$i'] ?? '').toString().trim();
+      result.add(amount.isEmpty ? name : '$name — $amount');
+    }
+    return result;
+  }
+
   double get price => DemoMealPricing.priceFor(id);
 }
 

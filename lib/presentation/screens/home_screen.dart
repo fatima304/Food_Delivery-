@@ -46,7 +46,7 @@ class _HomeContent extends StatelessWidget {
                 const SizedBox(height: 16),
                 const HomeSearchField(),
                 const SizedBox(height: 16),
-                const OffersCarousel(),
+                OffersCarousel(),
                 SectionHeading(l10n.categories),
                 HomeCategories(
                   categories: state.categories,

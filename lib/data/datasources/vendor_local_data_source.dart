@@ -32,20 +32,20 @@ class VendorLocalDataSource {
       location: LatLng(31.2001, 29.9187),
     ),
     Vendor(
-      id: 'mansoura',
-      name: 'StreetBite Mansoura',
-      city: 'Mansoura',
+      id: 'suez',
+      name: 'StreetBite Suez',
+      city: 'Suez',
       cuisine: 'Italian',
       rating: 4.5,
-      location: LatLng(31.0409, 31.3785),
+      location: LatLng(29.9668, 32.5498),
     ),
     Vendor(
-      id: 'tanta',
-      name: 'StreetBite Tanta',
-      city: 'Tanta',
+      id: 'luxor',
+      name: 'StreetBite Luxor',
+      city: 'Luxor',
       cuisine: 'Fast Food',
       rating: 4.4,
-      location: LatLng(30.7865, 31.0004),
+      location: LatLng(25.6872, 32.6396),
     ),
   ];
 }

@@ -12,10 +12,10 @@ String localizedVendorCity(BuildContext context, Vendor vendor) {
       return l.vendorCityGiza;
     case 'alexandria':
       return l.vendorCityAlexandria;
-    case 'mansoura':
-      return l.vendorCityMansoura;
-    case 'tanta':
-      return l.vendorCityTanta;
+    case 'suez':
+      return l.vendorCitySuez;
+    case 'luxor':
+      return l.vendorCityLuxor;
     default:
       return vendor.city;
   }
@@ -30,9 +30,9 @@ String localizedVendorCuisine(BuildContext context, Vendor vendor) {
       return l.vendorCuisineGrills;
     case 'alexandria':
       return l.vendorCuisineSeafood;
-    case 'mansoura':
+    case 'suez':
       return l.vendorCuisineItalian;
-    case 'tanta':
+    case 'luxor':
       return l.vendorCuisineFastFood;
     default:
       return vendor.cuisine;

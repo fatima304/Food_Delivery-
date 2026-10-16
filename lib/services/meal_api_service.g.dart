@@ -104,6 +104,49 @@ class _MealApiService implements MealApiService {
   }
 
   @override
+  Future<Map<String, dynamic>> fetchAreas(String value) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'a': value};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<Map<String, dynamic>>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(_dio.options, 'list.php',
+              queryParameters: queryParameters, data: _data)
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    return _result.data!;
+  }
+
+  @override
+  Future<MealsResponse> filterMealsByArea(String area) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'a': area};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<MealsResponse>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            'filter.php',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late MealsResponse _value;
+    try {
+      _value = MealsResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<MealsResponse> mealDetails(String id) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'i': id};

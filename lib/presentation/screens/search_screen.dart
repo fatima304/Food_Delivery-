@@ -1,10 +1,13 @@
 import 'package:food_delivery/core/routing/routes.dart';
 import 'package:food_delivery/core/routing/app_router.dart';
 import 'package:food_delivery/core/helper/localized_state_error.dart';
+
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/l10n/app_localizations.dart';
+
 import '../../data/models/meal_model.dart';
 import '../blocs/search_cubit.dart';
 import '../blocs/search_state.dart';
@@ -121,74 +124,76 @@ class _SearchContentState extends State<_SearchContent> {
                     ),
                     const SizedBox(height: 12),
                     if (state.categories.isNotEmpty)
-                      SizedBox(
-                        height: 110,
-                        child: ListView.separated(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: state.categories.length,
-                          separatorBuilder: (_, _) => const SizedBox(width: 10),
-                          itemBuilder: (context, index) {
-                            final category = state.categories[index];
-                            final selected =
-                                state.selectedCategory == category.name;
-                            return InkWell(
+                      GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 10,
+                              childAspectRatio: 2.2,
+                            ),
+                        itemCount: state.categories.length,
+                        itemBuilder: (context, index) {
+                          final category = state.categories[index];
+                          final selected =
+                              state.selectedCategory == category.name;
+
+                          return Material(
+                            color: selected
+                                ? colors.primaryContainer
+                                : colors.surfaceContainerLow,
+                            borderRadius: BorderRadius.circular(16),
+                            child: InkWell(
                               borderRadius: BorderRadius.circular(16),
                               onTap: () => _chooseCategory(category.name),
-                              child: Container(
-                                width: 104,
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  color: selected
-                                      ? colors.primaryContainer
-                                      : colors.surfaceContainerLow,
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                                child: Column(
+                              child: Padding(
+                                padding: const EdgeInsets.all(12),
+                                child: Row(
                                   children: [
-                                    Expanded(
-                                      child: Image.network(
+                                    CircleAvatar(
+                                      radius: 22,
+                                      backgroundColor: Colors.transparent,
+                                      backgroundImage: NetworkImage(
                                         category.imageUrl,
-                                        fit: BoxFit.contain,
-                                        errorBuilder: (_, _, _) => Icon(
-                                          Icons.restaurant,
-                                          color: colors.primary,
-                                        ),
                                       ),
                                     ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      category.name,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600,
+                                    const SizedBox(width: 8),
+                                    Expanded(
+                                      child: Text(
+                                        category.name,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          color: colors.onSurface,
+                                        ),
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
-                            );
-                          },
-                        ),
+                            ),
+                          );
+                        },
                       ),
-                    const SizedBox(height: 24),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            state.selectedCategory != null
-                                ? '${state.selectedCategory} ${l10n.categoryMeals}'
-                                : state.query.isNotEmpty
-                                ? '${l10n.resultsFor} "${state.query}"'
-                                : l10n.recommendedForYou,
-                            style: Theme.of(context).textTheme.titleLarge
-                                ?.copyWith(fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
+
+                    if (state.query.isNotEmpty ||
+                        state.selectedCategory != null ||
+                        state.selectedArea != null) ...[
+                      const SizedBox(height: 24),
+                      Text(
+                        state.selectedCategory != null
+                            ? '${state.selectedCategory} ${l10n.categoryMeals}'
+                            : state.selectedArea != null
+                            ? '${state.selectedArea} ${l10n.categoryMeals}'
+                            : '${l10n.resultsFor} "${state.query}"',
+                        style: Theme.of(context).textTheme.titleLarge
+                            ?.copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 12),
+                    ],
                     if (state.loading)
                       const Center(
                         child: Padding(
@@ -212,6 +217,10 @@ class _SearchContentState extends State<_SearchContent> {
                                   context.read<SearchCubit>().selectCategory(
                                     state.selectedCategory!,
                                   );
+                                } else if (state.selectedArea != null) {
+                                  context.read<SearchCubit>().selectArea(
+                                    state.selectedArea!,
+                                  );
                                 } else if (state.query.isNotEmpty) {
                                   context.read<SearchCubit>().search(
                                     state.query,
@@ -228,6 +237,9 @@ class _SearchContentState extends State<_SearchContent> {
                       ),
                     if (!state.loading &&
                         state.error == null &&
+                        (state.query.isNotEmpty ||
+                            state.selectedCategory != null ||
+                            state.selectedArea != null) &&
                         state.meals.isEmpty)
                       Center(
                         child: Padding(
@@ -246,6 +258,9 @@ class _SearchContentState extends State<_SearchContent> {
               ),
               if (!state.loading &&
                   state.error == null &&
+                  (state.query.isNotEmpty ||
+                      state.selectedCategory != null ||
+                      state.selectedArea != null) &&
                   state.meals.isNotEmpty)
                 SliverPadding(
                   padding: const EdgeInsets.fromLTRB(18, 0, 18, 24),

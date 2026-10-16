@@ -140,7 +140,7 @@ class OrderHistoryCard extends StatelessWidget {
                   child: Text(
                     order.paymentMethod == 'cash'
                         ? l10n.cashOnDelivery
-                        : order.paymentMethod == 'card_demo'
+                        : order.paymentMethod == 'card'
                         ? l10n.creditDebitCard
                         : order.paymentMethod,
                     style: TextStyle(

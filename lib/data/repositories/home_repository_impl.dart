@@ -33,6 +33,20 @@ class HomeRepositoryImpl implements HomeRepository {
   }
 
   @override
+  Future<List<String>> getAreas() async {
+    final response = await api.fetchAreas('list');
+    final items = response['meals'] as List<dynamic>? ?? [];
+    return items
+        .map((item) => (item['strArea'] ?? '').toString())
+        .where((name) => name.isNotEmpty)
+        .toList();
+  }
+
+  @override
+  Future<List<MealModel>> getMealsByArea(String area) async =>
+      (await api.filterMealsByArea(area)).meals ?? [];
+
+  @override
   Future<List<MealModel>> getMeals({String? category}) async {
     final key = category == null ? 'all' : 'category_$category';
     try {

@@ -43,17 +43,6 @@ class MealDetailsImageSection extends StatelessWidget {
             onTap: onBack,
           ),
         ),
-        PositionedDirectional(
-          top: 16,
-          end: 18,
-          child: _RoundIcon(
-            icon: isFavorite
-                ? Icons.favorite_rounded
-                : Icons.favorite_border_rounded,
-            onTap: onFavorite,
-            iconColor: isFavorite ? colors.error : colors.onSurface,
-          ),
-        ),
       ],
     );
   }

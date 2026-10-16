@@ -21,7 +21,7 @@ class MapInfoBanner extends StatelessWidget {
             const SizedBox(width: 10),
             Expanded(
               child: Text(
-                l10n.exploreDemoVendors,
+                l10n.exploreVendors,
                 style: const TextStyle(fontWeight: FontWeight.w600),
               ),
             ),

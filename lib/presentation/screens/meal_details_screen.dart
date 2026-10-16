@@ -171,7 +171,40 @@ class _MealDetailsContentState extends State<_MealDetailsContent> {
                         onFavorite: () =>
                             context.read<FavouritesCubit>().toggle(meal),
                       ),
-                      _buildDescriptionSection(colors, l10n, meal),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 18),
+                        child: _buildDescriptionSection(colors, l10n, meal),
+                      ),
+                      if (meal.ingredients.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(18, 20, 18, 0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SectionTitle(
+                                title: l10n.ingredients,
+                                color: colors.onSurface,
+                              ),
+                              const SizedBox(height: 10),
+                              ...meal.ingredients.map(
+                                (item) => Padding(
+                                  padding: const EdgeInsets.only(bottom: 7),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.check_circle_outline_rounded,
+                                        size: 17,
+                                        color: colors.primary,
+                                      ),
+                                      const SizedBox(width: 9),
+                                      Expanded(child: Text(item)),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       if (state.loading) ...[
                         const SizedBox(height: 15),
                         const LinearProgressIndicator(minHeight: 2),

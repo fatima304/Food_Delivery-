@@ -15,8 +15,14 @@ abstract class MealApiService {
   @GET(ApiConstants.search)
   Future<MealsResponse> searchMeals(@Query('s') String query);
 
-  @GET(ApiConstants.filterByCategory)
+  @GET(ApiConstants.filterBy)
   Future<MealsResponse> filterMeals(@Query('c') String category);
+
+  @GET(ApiConstants.areas)
+  Future<Map<String, dynamic>> fetchAreas(@Query('a') String value);
+
+  @GET(ApiConstants.filterBy)
+  Future<MealsResponse> filterMealsByArea(@Query('a') String area);
 
   @GET(ApiConstants.mealDetails)
   Future<MealsResponse> mealDetails(@Query('i') String id);

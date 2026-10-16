@@ -75,13 +75,6 @@ class VendorDetailsCard extends StatelessWidget {
                         style: const TextStyle(fontWeight: FontWeight.w600),
                       ),
                       const SizedBox(width: 12),
-                      Text(
-                        l10n.demoVendor,
-                        style: TextStyle(
-                          fontSize: 11,
-                          color: scheme.onSurfaceVariant,
-                        ),
-                      ),
                     ],
                   ),
                 ],
