@@ -49,3 +49,6 @@ app.*.map.json
 
 /android/build/
 *.zip
+
+/android/build/
+*.zip
