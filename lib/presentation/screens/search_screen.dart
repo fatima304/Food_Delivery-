@@ -124,60 +124,61 @@ class _SearchContentState extends State<_SearchContent> {
                     ),
                     const SizedBox(height: 12),
                     if (state.categories.isNotEmpty)
-                      GridView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              crossAxisSpacing: 10,
-                              mainAxisSpacing: 10,
-                              childAspectRatio: 2.2,
-                            ),
-                        itemCount: state.categories.length,
-                        itemBuilder: (context, index) {
-                          final category = state.categories[index];
-                          final selected =
-                              state.selectedCategory == category.name;
+                   
+  SizedBox(
+    height: 105,
+    child: ListView.separated(
+      scrollDirection: Axis.horizontal,
+      itemCount: state.categories.length,
+      separatorBuilder: (context, index) =>
+          const SizedBox(width: 12),
+      itemBuilder: (context, index) {
+        final category = state.categories[index];
+        final selected =
+            state.selectedCategory == category.name;
 
-                          return Material(
-                            color: selected
-                                ? colors.primaryContainer
-                                : colors.surfaceContainerLow,
-                            borderRadius: BorderRadius.circular(16),
-                            child: InkWell(
-                              borderRadius: BorderRadius.circular(16),
-                              onTap: () => _chooseCategory(category.name),
-                              child: Padding(
-                                padding: const EdgeInsets.all(12),
-                                child: Row(
-                                  children: [
-                                    CircleAvatar(
-                                      radius: 22,
-                                      backgroundColor: Colors.transparent,
-                                      backgroundImage: NetworkImage(
-                                        category.imageUrl,
-                                      ),
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Expanded(
-                                      child: Text(
-                                        category.name,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          color: colors.onSurface,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
+        return Material(
+          color: selected
+              ? colors.primaryContainer
+              : colors.surfaceContainerLow,
+          borderRadius: BorderRadius.circular(16),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(16),
+            onTap: () => _chooseCategory(category.name),
+            child: Container(
+              width: 105,
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircleAvatar(
+                    radius: 25,
+                    backgroundColor: Colors.transparent,
+                    backgroundImage: NetworkImage(
+                      category.imageUrl,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    category.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: colors.onSurface,
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    ),
+  ),
+
 
                     if (state.query.isNotEmpty ||
                         state.selectedCategory != null ||
