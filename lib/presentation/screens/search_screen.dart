@@ -124,61 +124,59 @@ class _SearchContentState extends State<_SearchContent> {
                     ),
                     const SizedBox(height: 12),
                     if (state.categories.isNotEmpty)
-                   
-  SizedBox(
-    height: 105,
-    child: ListView.separated(
-      scrollDirection: Axis.horizontal,
-      itemCount: state.categories.length,
-      separatorBuilder: (context, index) =>
-          const SizedBox(width: 12),
-      itemBuilder: (context, index) {
-        final category = state.categories[index];
-        final selected =
-            state.selectedCategory == category.name;
+                      SizedBox(
+                        height: 105,
+                        child: ListView.separated(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: state.categories.length,
+                          separatorBuilder: (context, index) =>
+                              const SizedBox(width: 12),
+                          itemBuilder: (context, index) {
+                            final category = state.categories[index];
+                            final selected =
+                                state.selectedCategory == category.name;
 
-        return Material(
-          color: selected
-              ? colors.primaryContainer
-              : colors.surfaceContainerLow,
-          borderRadius: BorderRadius.circular(16),
-          child: InkWell(
-            borderRadius: BorderRadius.circular(16),
-            onTap: () => _chooseCategory(category.name),
-            child: Container(
-              width: 105,
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircleAvatar(
-                    radius: 25,
-                    backgroundColor: Colors.transparent,
-                    backgroundImage: NetworkImage(
-                      category.imageUrl,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    category.name,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      color: colors.onSurface,
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    ),
-  ),
-
+                            return Material(
+                              color: selected
+                                  ? colors.primaryContainer
+                                  : colors.surfaceContainerLow,
+                              borderRadius: BorderRadius.circular(16),
+                              child: InkWell(
+                                borderRadius: BorderRadius.circular(16),
+                                onTap: () => _chooseCategory(category.name),
+                                child: Container(
+                                  width: 105,
+                                  padding: const EdgeInsets.all(10),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      CircleAvatar(
+                                        radius: 25,
+                                        backgroundColor: Colors.transparent,
+                                        backgroundImage: NetworkImage(
+                                          category.imageUrl,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      Text(
+                                        category.name,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          color: colors.onSurface,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
 
                     if (state.query.isNotEmpty ||
                         state.selectedCategory != null ||
