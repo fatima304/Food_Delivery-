@@ -49,7 +49,7 @@ class MealDetailsImageSection extends StatelessWidget {
 }
 
 class _RoundIcon extends StatelessWidget {
-  const _RoundIcon({required this.icon, required this.onTap, this.iconColor});
+  const _RoundIcon({required this.icon, required this.onTap}) : iconColor = null;
 
   final IconData icon;
   final VoidCallback onTap;
