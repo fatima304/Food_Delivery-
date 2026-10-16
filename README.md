@@ -180,15 +180,26 @@ The tests connect to Appium at `http://127.0.0.1:4723`. Maven Surefire uses [`au
 
 ## App Screenshots
 
-| Home | Explore | Cart |
-| --- | --- | --- |
-| ![Home](ScreenShots/home.jpg) | ![Explore](ScreenShots/explore%20screen.jpg) | ![Cart](ScreenShots/cart.jpg) |
+| Splash | Onboarding | Login |
+|:---:|:---:|:---:|
+| ![Splash](ScreenShots/splash.jpg) | ![Onboarding](ScreenShots/onboarding.jpg) | ![Login](ScreenShots/load%20login.jpg) |
 
-| Profile | Checkout | Nearby Vendors |
-| --- | --- | --- |
-| ![Profile](ScreenShots/profile.jpg) | ![Checkout](ScreenShots/checkout.jpg) | ![Vendors](ScreenShots/explore%20vendors.jpg) |
+| Home | Meal Details | Ingredients |
+|:---:|:---:|:---:|
+| ![Home](ScreenShots/home.jpg) | ![Meal Details](ScreenShots/meal%20details.jpg) | ![Ingredients](ScreenShots/ingredients.jpg) |
 
-Additional Arabic and English screenshots are available in [`ScreenShots/`](ScreenShots/).
+| Cart | Checkout | Payment |
+|:---:|:---:|:---:|
+| ![Cart](ScreenShots/cart.jpg) | ![Checkout](ScreenShots/checkout.jpg) | ![Payment](ScreenShots/%D8%A7%D9%84%D8%AF%D9%81%D8%B9.jpg) |
+
+| Profile | Favourites | Settings |
+|:---:|:---:|:---:|
+| ![Profile](ScreenShots/profile.jpg) | ![Favourites](ScreenShots/%D8%A7%D9%84%D9%85%D9%81%D8%B6%D9%84%D8%A9.jpg) | ![Settings](ScreenShots/setting.jpg) |
+
+| Nearby Vendors | Order History | Search |
+|:---:|:---:|:---:|
+| ![Nearby Vendors](ScreenShots/explore%20vendors.jpg) | ![Order History](ScreenShots/order%20history.jpg) | ![Search](ScreenShots/search.jpg) |
+
 
 ## Project Notes
 
