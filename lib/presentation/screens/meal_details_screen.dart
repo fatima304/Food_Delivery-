@@ -210,25 +210,28 @@ class _MealDetailsContentState extends State<_MealDetailsContent> {
                         const LinearProgressIndicator(minHeight: 2),
                       ],
                       const SizedBox(height: 25),
-                      MealDetailsQuantitySection(
-                        meal: meal,
-                        quantity: quantity,
-                        onQuantityChanged: (newQuantity) {
-                          setState(() => quantity = newQuantity);
-                        },
-                        onAddToCart: () {
-                          context.read<CartBloc>().add(
-                            CartAdd(meal, quantity: quantity),
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                '$quantity x ${meal.name} ${l10n.addedToCartQuantity}',
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(18, 20, 18, 18),
+                        child: MealDetailsQuantitySection(
+                          meal: meal,
+                          quantity: quantity,
+                          onQuantityChanged: (newQuantity) {
+                            setState(() => quantity = newQuantity);
+                          },
+                          onAddToCart: () {
+                            context.read<CartBloc>().add(
+                              CartAdd(meal, quantity: quantity),
+                            );
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  '$quantity x ${meal.name} ${l10n.addedToCartQuantity}',
+                                ),
+                                behavior: SnackBarBehavior.floating,
                               ),
-                              behavior: SnackBarBehavior.floating,
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
                       ),
                     ],
                   ),
