@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="StreetBite Final Automation Suite"
+       parallel="false"
+       preserve-order="true">
+    <test name="StreetBite Tests"
+          preserve-order="true">
+        <classes>
+            <class name="LoginTests">
+                <methods>
+                    <include name="emptyLogin"/>
+                    <include name="invalidLogin"/>
+                    <include name="validLogin"/>
+                </methods>
+            </class>
+            <class name="HomeAndCartTests"/>
+            <class name="SearchTests"/>
+            <class name="MealDetailsTests"/>
+            <class name="BottomNavigationTests"/>
+            <class name="RemoveFromCartTests"/>
+            <class name="CategoryFilteringTests"/>
+
+        </classes>
+    </test>
+</suite>

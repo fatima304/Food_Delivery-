@@ -1,0 +1,2 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="StreetBite RemoveFromCartTests"><test name="RemoveFromCartTests"><classes><class name="RemoveFromCartTests"/></classes></test></suite>

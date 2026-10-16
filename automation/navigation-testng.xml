@@ -1,0 +1,2 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="StreetBite BottomNavigationTests"><test name="BottomNavigationTests"><classes><class name="BottomNavigationTests"/></classes></test></suite>
