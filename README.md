@@ -177,9 +177,6 @@ The tests connect to Appium at `http://127.0.0.1:4723`. Maven Surefire uses [`au
 | --- | --- |
 | Automation summary | ![Automation suite](ScreenShots/All%20tests.png) |
 | Login tests | ![Login test](ScreenShots/login%20test.png) |
-| Search | ![Search test](ScreenShots/search.png) |
-| Category filtering | ![Category test](ScreenShots/category%20test.png) |
-| Navigation | ![Navigation test](ScreenShots/nav%20bar.png) |
 
 ## App Screenshots
 
