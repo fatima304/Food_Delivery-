@@ -1183,6 +1183,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Page not found'**
   String get pageNotFound;
+
+  /// No description provided for @paymentCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment was cancelled.'**
+  String get paymentCancelled;
+
+  /// No description provided for @paymentNotConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment could not be confirmed. Check Stripe test dashboard before retrying.'**
+  String get paymentNotConfirmed;
+
+  /// No description provided for @paymentOrderSaveFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment confirmed but the order could not be saved. Do not pay again; retry saving the order.'**
+  String get paymentOrderSaveFailed;
+
+  /// No description provided for @checkoutOrderFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not complete the order. Please try again.'**
+  String get checkoutOrderFailed;
+
+  /// No description provided for @paymentSuccessful.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment successful'**
+  String get paymentSuccessful;
+
+  /// No description provided for @paymentStatusPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment pending'**
+  String get paymentStatusPending;
 }
 
 class _AppLocalizationsDelegate

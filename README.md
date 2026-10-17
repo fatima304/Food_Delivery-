@@ -1,6 +1,6 @@
 # StreetBite 🍽️
 
-**StreetBite** is a Flutter mobile application for discovering meals, exploring recipes, managing favourites and a shopping cart, and placing demo orders. It uses TheMealDB for meal information and Firebase for authentication and application data.
+**StreetBite** is a Flutter mobile application for discovering meals, exploring recipes, managing favourites and a shopping cart, and placing orders with cash on delivery or Stripe card payments in test mode. It uses TheMealDB for meal information and Firebase for authentication and application data.
 
 **Version:** 1.0.0+1  
 **Platform:** Android (Flutter mobile app)  
@@ -13,8 +13,8 @@
 - **Explore & Search:** Search meals and filter by category; horizontally scrollable category list.
 - **Meal Details:** Images, ingredients/description and preparation instructions.
 - **Favourites:** Save and manage favourite meals with Firestore.
-- **Cart & Checkout:** Add or remove meals, update quantities, view totals, and place demo orders.
-- **Orders:** View order history.
+- **Cart & Checkout:** Add or remove meals, update quantities, review totals, and choose Cash on Delivery or card payment via Stripe Payment Sheet (test mode).
+- **Orders:** Save orders to Cloud Firestore and view order history with payment method and order status. Stripe card orders can store the PaymentIntent reference and payment status.
 - **Nearby Vendors:** View vendor locations on Google Maps and tap markers for details.
 - **Profile & Settings:** Profile editing, biometric authentication, device information, and app preferences.
 - **Localization:** English and Arabic with RTL support.
@@ -30,6 +30,7 @@
 | Dependency injection | GetIt |
 | Backend | Firebase Authentication, Cloud Firestore |
 | Networking | Dio, Retrofit |
+| Test card payments | flutter_stripe, Stripe Payment Sheet (test mode only) |
 | Serialization | json_serializable, build_runner |
 | Meal data | TheMealDB API |
 | Maps | Google Maps Flutter |
@@ -48,6 +49,7 @@ food_delivery/
 │   ├── domain/              # Domain logic and use cases
 │   ├── presentation/        # Screens, BLoC/Cubit and UI widgets
 │   └── l10n/                # Localization resources
+├── docs/screenshots/        # Stripe test-flow screenshots
 ├── assets/                  # Images and fonts
 ├── automation/
 │   ├── src/test/java/       # Appium/TestNG test classes
@@ -82,6 +84,36 @@ dart run build_runner build --delete-conflicting-outputs
 ```
 
 Firebase and Google Maps configuration must be supplied for the environment. Do not commit private credentials or service-account keys. The Android application ID used by the automation suite is `com.example.food_delivery`.
+
+### Stripe card payment (TEST MODE ONLY)
+
+StreetBite integrates **Stripe Payment Sheet** for test card payments on Android. The checkout supports **Cash on Delivery** and **Credit / Debit Card**. The card flow creates a test PaymentIntent, displays the Stripe-hosted Payment Sheet, checks the returned payment status, and then attempts to save the order in Firestore. Cash on Delivery does not require Stripe.
+
+> **Security limitation:** This graduation-project test build currently calls Stripe's PaymentIntents API directly from the mobile app using a **test secret key**. This is **not safe for production**: `--dart-define`, CI/CD variables and `.gitignore` do not make a secret embedded in an APK secure. Use only `sk_test_` credentials; never embed `sk_live_` or process real payments this way. Before production, move PaymentIntent creation and payment/order verification to a trusted backend and use webhooks/idempotency.
+
+Create a local `stripe_test.json` alongside `pubspec.yaml` (do **not** commit this file):
+
+```json
+{
+  "STRIPE_PUBLISHABLE_KEY": "pk_test_REPLACE_WITH_YOUR_TEST_KEY",
+  "STRIPE_TEST_SECRET_KEY": "sk_test_REPLACE_WITH_YOUR_TEST_KEY"
+}
+```
+
+Add `stripe_test.json` to `.gitignore`, and run on a connected **Android** device:
+
+```powershell
+flutter pub get
+flutter gen-l10n
+flutter devices
+flutter run -d YOUR_ANDROID_DEVICE_ID --dart-define-from-file=stripe_test.json
+```
+
+The currently tested Android device was a Realme RMX3840 (Android 16). **Chrome/web is not a supported target for this Android-oriented Stripe setup** and can raise `MissingPluginException` on `flutter.stripe/payments`.
+
+For a successful test card, use Stripe's official number `4242 4242 4242 4242`, any future expiration (e.g. `12/30`) and any three-digit CVC (e.g. `123`). Test declined payments with `4000 0000 0000 0002`. See [Stripe test cards](https://docs.stripe.com/testing).
+
+**Verification checklist:** Confirm that Payment Sheet opens, card payment completes, Stripe Dashboard (test mode) shows `Succeeded`, and a matching order is stored in Firestore with the expected amount and payment reference. Also test cancellation, declined cards and Cash on Delivery. A screenshot of the Payment Sheet or a pending order **does not on its own prove a successful charge**.
 
 ### Build an Android release APK
 
@@ -181,23 +213,26 @@ The tests connect to Appium at `http://127.0.0.1:4723`. Maven Surefire uses [`au
 | Category filtering | ![Category test](ScreenShots/category%20test.png) |
 | Navigation | ![Navigation test](ScreenShots/nav%20bar.png) |
 
-## App Screenshots
+## App Screenshots — Stripe Test Flow
 
-| Home | Explore | Cart |
+The following screenshots were captured from the Android app while exercising Stripe **test mode**. They demonstrate the payment UI and order history; they do not independently verify a settled Stripe charge.
+
+| Choose payment method | Enter test card | Processing payment |
 | --- | --- | --- |
-| ![Home](ScreenShots/home.jpg) | ![Explore](ScreenShots/explore%20screen.jpg) | ![Cart](ScreenShots/cart.jpg) |
+| ![Stripe payment methods](docs/screenshots/stripe_payment_methods.jpg) | ![Stripe test card](docs/screenshots/stripe_test_card.jpg) | ![Stripe processing](docs/screenshots/stripe_processing.jpg) |
 
-| Profile | Checkout | Nearby Vendors |
-| --- | --- | --- |
-| ![Profile](ScreenShots/profile.jpg) | ![Checkout](ScreenShots/checkout.jpg) | ![Vendors](ScreenShots/explore%20vendors.jpg) |
+| Card form reset | Firestore-backed order history |
+| --- | --- |
+| ![Stripe card form](docs/screenshots/stripe_card_form.jpg) | ![Order history](docs/screenshots/order_history.jpg) |
 
-Additional Arabic and English screenshots are available in [`ScreenShots/`](ScreenShots/).
+The full app UI and QA evidence are stored separately in the project's `ScreenShots/` folder in the submission repository. Keep the existing Home, Explore, Cart, Profile, Checkout, Nearby Vendors, localization and QA screenshots there.
 
 ## Project Notes
 
 - Designed as a **mobile-first** Flutter project.
 - Meal data and images require an internet connection.
-- Payments and vendor listings are intended for demonstration/evaluation.
+- Stripe card payments run in **test mode** only; no live payment processing is claimed. Vendor listings are demonstration data.
+- Stripe test integration was exercised on Android; Stripe Dashboard confirmation and a matching Firestore order should be checked before claiming a fully verified payment.
 - The README documents the project's final tested Android configuration; adapting Appium to a different device requires changing the test device capabilities.
 
 ## Developer

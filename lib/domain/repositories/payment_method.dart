@@ -1,4 +1,4 @@
-/// Demo payment strategy; no card data is collected or charged.
+/// Payment-method selection; card processing is handled by StripePaymentCubit.
 abstract class PaymentMethod {
   const PaymentMethod();
   String get id;

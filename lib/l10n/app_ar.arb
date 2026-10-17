@@ -180,5 +180,11 @@
   "orderStatusCompleted": "مكتمل",
   "orderStatusDelivered": "تم التوصيل",
   "orderStatusCancelled": "ملغي",
-  "pageNotFound": "الصفحة غير موجودة"
+  "pageNotFound": "الصفحة غير موجودة",
+  "paymentCancelled": "تم إلغاء عملية الدفع.",
+  "paymentNotConfirmed": "تعذر تأكيد الدفع. راجعي لوحة Stripe التجريبية قبل المحاولة مرة أخرى.",
+  "paymentOrderSaveFailed": "تم تأكيد الدفع لكن تعذر حفظ الطلب. لا تدفعي مرة أخرى؛ أعيدي محاولة حفظ الطلب.",
+  "checkoutOrderFailed": "تعذر إتمام الطلب. حاولي مرة أخرى.",
+  "paymentSuccessful": "تم الدفع بنجاح",
+  "paymentStatusPending": "الدفع قيد الانتظار"
 }

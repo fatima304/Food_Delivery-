@@ -13,8 +13,11 @@ MealModel _$MealModelFromJson(Map<String, dynamic> json) => MealModel(
   category: json['strCategory'] as String?,
   area: json['strArea'] as String?,
   instructions: json['strInstructions'] as String?,
-  ingredients: (MealModel._readIngredients(json, 'ingredients') as List)
-      .cast<String>(),
+  ingredients:
+      (MealModel._readIngredients(json, 'ingredients') as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList() ??
+      const [],
 );
 
 Map<String, dynamic> _$MealModelToJson(MealModel instance) => <String, dynamic>{

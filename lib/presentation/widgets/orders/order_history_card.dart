@@ -6,16 +6,25 @@ import '../common/meal_image.dart';
 
 class OrderHistoryCard extends StatelessWidget {
   const OrderHistoryCard({super.key, required this.order});
+
   final OrderModel order;
+
+  double _toDouble(Object? value) {
+    if (value is num) return value.toDouble();
+    return double.tryParse(value?.toString() ?? '') ?? 0;
+  }
 
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
     final l10n = AppLocalizations.of(context)!;
     final date = order.createdAt;
+
     final dateText = date == null
         ? l10n.processing
-        : '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}';
+        : '${date.day.toString().padLeft(2, '0')}/'
+              '${date.month.toString().padLeft(2, '0')}/${date.year}';
+
     final status = switch (order.status.toLowerCase()) {
       'pending' => l10n.orderStatusPending,
       'placed' => l10n.orderStatusPlaced,
@@ -25,6 +34,16 @@ class OrderHistoryCard extends StatelessWidget {
       'cancelled' || 'canceled' => l10n.orderStatusCancelled,
       _ => order.status,
     };
+
+    final paymentMethod = switch (order.paymentMethod.toLowerCase()) {
+      'cash' => l10n.cashOnDelivery,
+      'card' => l10n.creditDebitCard,
+      _ => order.paymentMethod,
+    };
+
+    final paymentStatus = order.paymentStatus.toLowerCase();
+    final isPaid = paymentStatus == 'paid' || paymentStatus == 'succeeded';
+
     return Card(
       margin: const EdgeInsets.only(bottom: 14),
       elevation: 0,
@@ -52,7 +71,8 @@ class OrderHistoryCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '${l10n.orderPrefix}${order.id.length > 8 ? order.id.substring(0, 8) : order.id}',
+                        '${l10n.orderPrefix}'
+                        '${order.id.length > 8 ? order.id.substring(0, 8) : order.id}',
                         style: const TextStyle(
                           fontWeight: FontWeight.w700,
                           fontSize: 15,
@@ -122,7 +142,7 @@ class OrderHistoryCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 10),
                     Text(
-                      '\$${OrderModel.amount(item['lineTotal']).toStringAsFixed(2)}',
+                      '\$${_toDouble(item['lineTotal']).toStringAsFixed(2)}',
                     ),
                   ],
                 ),
@@ -138,11 +158,7 @@ class OrderHistoryCard extends StatelessWidget {
                 const SizedBox(width: 6),
                 Expanded(
                   child: Text(
-                    order.paymentMethod == 'cash'
-                        ? l10n.cashOnDelivery
-                        : order.paymentMethod == 'card'
-                        ? l10n.creditDebitCard
-                        : order.paymentMethod,
+                    paymentMethod,
                     style: TextStyle(
                       fontSize: 12,
                       color: colors.onSurfaceVariant,
@@ -159,6 +175,27 @@ class OrderHistoryCard extends StatelessWidget {
                 ),
               ],
             ),
+            if (order.paymentMethod.toLowerCase() == 'card' &&
+                paymentStatus.isNotEmpty) ...[
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Icon(
+                    isPaid ? Icons.check_circle_outline : Icons.info_outline,
+                    size: 15,
+                    color: isPaid ? colors.primary : colors.onSurfaceVariant,
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    isPaid ? l10n.paymentSuccessful : l10n.paymentStatusPending,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: isPaid ? colors.primary : colors.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ],
         ),
       ),

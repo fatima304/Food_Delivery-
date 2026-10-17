@@ -559,4 +559,24 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get pageNotFound => 'الصفحة غير موجودة';
+
+  @override
+  String get paymentCancelled => 'تم إلغاء عملية الدفع.';
+
+  @override
+  String get paymentNotConfirmed =>
+      'تعذر تأكيد الدفع. راجعي لوحة Stripe التجريبية قبل المحاولة مرة أخرى.';
+
+  @override
+  String get paymentOrderSaveFailed =>
+      'تم تأكيد الدفع لكن تعذر حفظ الطلب. لا تدفعي مرة أخرى؛ أعيدي محاولة حفظ الطلب.';
+
+  @override
+  String get checkoutOrderFailed => 'تعذر إتمام الطلب. حاولي مرة أخرى.';
+
+  @override
+  String get paymentSuccessful => 'تم الدفع بنجاح';
+
+  @override
+  String get paymentStatusPending => 'الدفع قيد الانتظار';
 }
