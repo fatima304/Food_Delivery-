@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../../domain/entities/cart_item.dart';
 import '../../domain/repositories/payment_method.dart';
 import '../models/order_model.dart';
+import '../../domain/entities/payment_receipt.dart';
 
 class OrdersRepository {
   OrdersRepository(this.db, this.auth);
@@ -29,14 +30,20 @@ class OrdersRepository {
     required double subtotal,
     required double deliveryFee,
     required PaymentMethod payment,
+    PaymentReceipt? receipt,
   }) async {
     final uid = auth.currentUser?.uid;
     if (uid == null) throw StateError('Please sign in to place an order.');
     if (items.isEmpty) throw StateError('Your cart is empty.');
+    if (payment is CardPayment && receipt == null) {
+      throw StateError('A confirmed card payment is required.');
+    }
     final total = subtotal + deliveryFee;
-    await payment.process(total);
     final user = db.collection('users').doc(uid);
-    final order = user.collection('orders').doc();
+    // A stable document ID prevents duplicates on retries of the same payment.
+    final order = receipt == null
+        ? user.collection('orders').doc()
+        : user.collection('orders').doc(receipt.paymentIntentId);
     final cart = user.collection('cart').doc('current');
     final batch = db.batch();
     batch.set(order, {
@@ -57,6 +64,8 @@ class OrdersRepository {
       'deliveryFee': deliveryFee,
       'total': total,
       'paymentMethod': payment.id,
+      'paymentStatus': receipt == null ? 'cash_on_delivery' : receipt.status,
+      'paymentIntentId': receipt?.paymentIntentId,
       'status': 'pending',
       'createdAt': FieldValue.serverTimestamp(),
     });

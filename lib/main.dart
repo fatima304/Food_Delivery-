@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:food_delivery/core/helper/app_settings.dart';
 import 'package:food_delivery/core/providers/app_providers.dart';
 import 'package:food_delivery/core/routing/app_router.dart';
@@ -14,6 +15,10 @@ import 'package:food_delivery/presentation/blocs/theme_bloc.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  Stripe.publishableKey = const String.fromEnvironment(
+    'STRIPE_PUBLISHABLE_KEY',
+  );
+  await Stripe.instance.applySettings();
   await AppSettings.load();
   setupDependencies();
   runApp(const FoodDeliveryApp());

@@ -572,4 +572,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pageNotFound => 'Page not found';
+
+  @override
+  String get paymentCancelled => 'Payment was cancelled.';
+
+  @override
+  String get paymentNotConfirmed =>
+      'Payment could not be confirmed. Check Stripe test dashboard before retrying.';
+
+  @override
+  String get paymentOrderSaveFailed =>
+      'Payment confirmed but the order could not be saved. Do not pay again; retry saving the order.';
+
+  @override
+  String get checkoutOrderFailed =>
+      'Could not complete the order. Please try again.';
+
+  @override
+  String get paymentSuccessful => 'Payment successful';
+
+  @override
+  String get paymentStatusPending => 'Payment pending';
 }

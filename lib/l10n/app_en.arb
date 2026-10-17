@@ -180,5 +180,11 @@
   "orderStatusCompleted": "Completed",
   "orderStatusDelivered": "Delivered",
   "orderStatusCancelled": "Cancelled",
-  "pageNotFound": "Page not found"
+  "pageNotFound": "Page not found",
+  "paymentCancelled": "Payment was cancelled.",
+  "paymentNotConfirmed": "Payment could not be confirmed. Check Stripe test dashboard before retrying.",
+  "paymentOrderSaveFailed": "Payment confirmed but the order could not be saved. Do not pay again; retry saving the order.",
+  "checkoutOrderFailed": "Could not complete the order. Please try again.",
+  "paymentSuccessful": "Payment successful",
+  "paymentStatusPending": "Payment pending"
 }

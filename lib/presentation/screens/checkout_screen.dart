@@ -1,3 +1,8 @@
+import '../../domain/repositories/payment_method.dart';
+
+import 'package:food_delivery/presentation/blocs/stripe_payment_cubit.dart';
+import 'package:food_delivery/domain/entities/payment_receipt.dart';
+
 import '../../core/widgets/app_back_button.dart';
 
 import 'package:food_delivery/core/routing/routes.dart';
@@ -7,7 +12,6 @@ import 'package:food_delivery/l10n/app_localizations.dart';
 
 import '../../injection.dart';
 import '../../data/repositories/orders_repository.dart';
-import '../../domain/repositories/payment_method.dart';
 import '../blocs/cart_bloc.dart';
 import '../blocs/cart_event.dart';
 import '../blocs/cart_state.dart';
@@ -25,42 +29,98 @@ class CheckoutScreen extends StatefulWidget {
 class _CheckoutScreenState extends State<CheckoutScreen> {
   PaymentMethod payment = const CashPayment();
   bool placing = false;
+  PaymentReceipt? _confirmedPayment;
+  String? _paidCartSignature;
+
+  String _cartSignature(CartState state) =>
+      "${state.items.map((item) => "${item.meal.id}:${item.quantity}:${item.meal.price}").join("|")}:${state.total.toStringAsFixed(2)}";
 
   Future<void> _placeOrder() async {
     if (placing) return;
+
     final cart = context.read<CartBloc>();
     final state = cart.state;
+
     if (state.items.isEmpty) return;
+
     setState(() => placing = true);
+
     try {
       await cart.waitForWrites();
+
+      if (_confirmedPayment != null &&
+          _paidCartSignature != _cartSignature(state)) {
+        throw StateError('Cart changed after card payment.');
+      }
+      if (payment is CardPayment && _confirmedPayment == null) {
+        final stripeCubit = getIt<StripePaymentCubit>();
+        final receipt = await stripeCubit.makePayment(total: state.total);
+
+        if (!mounted) return;
+
+        if (receipt == null) {
+          final paymentState = stripeCubit.state;
+
+          final message = paymentState is StripePaymentFailure
+              ? paymentState.message
+              : 'paymentNotConfirmed';
+
+          final l10n = AppLocalizations.of(context)!;
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                message == 'paymentCancelled'
+                    ? l10n.paymentCancelled
+                    : l10n.paymentNotConfirmed,
+              ),
+            ),
+          );
+
+          return;
+        }
+        _confirmedPayment = receipt;
+        _paidCartSignature = _cartSignature(state);
+      }
+
       await getIt<OrdersRepository>().placeOrder(
         items: state.items,
         subtotal: state.subtotal,
         deliveryFee: state.deliveryFee,
         payment: payment,
+        receipt: payment is CardPayment ? _confirmedPayment : null,
       );
+
       cart.add(const CartClear());
+
       if (!mounted) return;
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(AppLocalizations.of(context)!.orderPlacedSuccessfully),
         ),
       );
+
       Navigator.pushNamedAndRemoveUntil(
         context,
         Routes.orders,
         (route) => route.isFirst,
       );
-    } catch (_) {
+    } catch (e) {
       if (!mounted) return;
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(AppLocalizations.of(context)!.couldNotPlaceOrder),
+          content: Text(
+            _confirmedPayment != null
+                ? AppLocalizations.of(context)!.paymentOrderSaveFailed
+                : AppLocalizations.of(context)!.checkoutOrderFailed,
+          ),
         ),
       );
     } finally {
-      if (mounted) setState(() => placing = false);
+      if (mounted) {
+        setState(() => placing = false);
+      }
     }
   }
 
@@ -93,6 +153,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 payment = value == true
                     ? const CashPayment()
                     : const CardPayment();
+                _confirmedPayment = null;
+                _paidCartSignature = null;
               });
             },
             child: Column(
